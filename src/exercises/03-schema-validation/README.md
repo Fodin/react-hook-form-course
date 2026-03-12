@@ -1,11 +1,27 @@
-# Уровень 3: Валидация по схемам
+# Уровень 3: Валидация по схемам — Zod и Yup
 
-## 3.1 Zod + React Hook Form
+## Введение
 
-**Zod** — это TypeScript-first библиотека для валидации схем.
+Валидация по схемам — это декларативный способ описания правил валидации всей формы в одном месте. Это делает код чище, типобезопаснее и легче для поддержки.
 
-### Установка
+**Почему схемы лучше встроенной валидации?**
 
+| Встроенная валидация | Валидация по схемам |
+|---------------------|---------------------|
+| Правила разбросаны по полям | Все правила в одном месте |
+| Сложная кросс-полевая валидация | Легкая кросс-полевая валидация |
+| Меньше типобезопасности | Полная типобезопасность |
+| Сложно переиспользовать | Легко переиспользовать |
+
+---
+
+## Часть 1: Zod
+
+### Что такое Zod?
+
+**Zod** — это TypeScript-first библиотека для валидации схем с нулевыми зависимостями.
+
+**Установка:**
 ```bash
 npm install zod @hookform/resolvers
 ```
@@ -32,12 +48,238 @@ const { register, handleSubmit } = useForm<FormData>({
 })
 ```
 
-## 3.2 Yup + React Hook Form
+---
 
-**Yup** — альтернативная библиотека для валидации схем.
+### Основные типы Zod
 
-### Установка
+#### Строки
 
+```tsx
+const schema = z.object({
+  // Обязательная строка
+  name: z.string(),
+  
+  // Email
+  email: z.string().email('Неверный email'),
+  
+  // URL
+  website: z.string().url('Неверный URL'),
+  
+  // UUID
+  id: z.string().uuid('Неверный UUID'),
+  
+  // С длиной
+  username: z.string().min(3).max(20),
+  
+  // С паттерном
+  phone: z.string().regex(/^\+7\d{10}$/, 'Неверный формат'),
+  
+  // Опциональная
+  bio: z.string().optional(),
+  
+  // С дефолтным значением
+  role: z.string().default('user'),
+})
+```
+
+#### Числа
+
+```tsx
+const schema = z.object({
+  // Обязательное число
+  age: z.number(),
+  
+  // С диапазоном
+  rating: z.number().min(1).max(10),
+  
+  // Положительное
+  price: z.number().positive('Цена должна быть положительной'),
+  
+  // Отрицательное
+  balance: z.number().negative(),
+  
+  // Целое
+  count: z.number().int('Должно быть целым числом'),
+  
+  // Опциональное
+  discount: z.number().optional(),
+})
+```
+
+#### Булевы значения
+
+```tsx
+const schema = z.object({
+  agree: z.boolean().refine(v => v === true, 'Необходимо согласие'),
+  newsletter: z.boolean().optional(),
+})
+```
+
+#### Массивы
+
+```tsx
+const schema = z.object({
+  // Массив строк
+  tags: z.array(z.string()),
+  
+  // С минимальной длиной
+  skills: z.array(z.string()).min(1, 'Выберите хотя бы один навык'),
+  
+  // Массив объектов
+  contacts: z.array(z.object({
+    type: z.string(),
+    value: z.string(),
+  })),
+})
+```
+
+#### Enum (перечисления)
+
+```tsx
+const schema = z.object({
+  // Zod enum
+  role: z.enum(['admin', 'user', 'guest']),
+  
+  // TypeScript enum
+  status: z.nativeEnum(Status),
+})
+```
+
+#### Объекты
+
+```tsx
+const schema = z.object({
+  // Вложенный объект
+  address: z.object({
+    city: z.string(),
+    street: z.string(),
+    zip: z.string().regex(/^\d{5}$/, 'Неверный индекс'),
+  }),
+  
+  // Опциональный объект
+  company: z.object({
+    name: z.string(),
+    position: z.string(),
+  }).optional(),
+})
+```
+
+---
+
+### Кастомная валидация с `refine`
+
+#### Одиночное refine
+
+```tsx
+const schema = z.object({
+  password: z.string(),
+  confirmPassword: z.string(),
+}).refine(
+  (data) => data.password === data.confirmPassword,
+  {
+    message: 'Пароли не совпадают',
+    path: ['confirmPassword'], // К какому полю применить ошибку
+  }
+)
+```
+
+#### Несколько refine
+
+```tsx
+const schema = z.object({
+  currentPassword: z.string(),
+  newPassword: z.string(),
+}).refine(
+  (data) => data.newPassword !== data.currentPassword,
+  {
+    message: 'Новый пароль должен отличаться',
+    path: ['newPassword'],
+  }
+).refine(
+  (data) => data.newPassword.length >= 8,
+  {
+    message: 'Минимум 8 символов',
+    path: ['newPassword'],
+  }
+)
+```
+
+#### refine с асинхронностью
+
+```tsx
+const schema = z.object({
+  username: z.string(),
+}).refine(
+  async (data) => {
+    const response = await fetch(`/api/check-username?username=${data.username}`)
+    const { available } = await response.json()
+    return available
+  },
+  {
+    message: 'Имя пользователя занято',
+    path: ['username'],
+  }
+)
+```
+
+---
+
+### Полная схема регистрации
+
+```tsx
+import { z } from 'zod'
+
+const registrationSchema = z.object({
+  // Личная информация
+  firstName: z.string().min(1, 'Обязательно'),
+  lastName: z.string().min(1, 'Обязательно'),
+  email: z.string().email('Неверный email'),
+  age: z.number().min(18, 'Минимум 18 лет').max(120, 'Максимум 120 лет'),
+  
+  // Пароль
+  password: z.string()
+    .min(8, 'Минимум 8 символов')
+    .regex(/[A-Z]/, 'Должна быть заглавная буква')
+    .regex(/\d/, 'Должна быть цифра')
+    .regex(/[!@#$%^&*]/, 'Должен быть спецсимвол'),
+  
+  confirmPassword: z.string(),
+  
+  // Адрес
+  address: z.object({
+    country: z.string().min(1, 'Обязательно'),
+    city: z.string().min(1, 'Обязательно'),
+    zip: z.string().regex(/^\d{5}$/, 'Неверный индекс'),
+  }),
+  
+  // Навыки
+  skills: z.array(z.string()).min(1, 'Выберите хотя бы один'),
+  
+  // Роль
+  role: z.enum(['developer', 'designer', 'manager']),
+  
+  // Согласие
+  agree: z.boolean().refine(v => v === true, 'Необходимо согласие'),
+})
+
+// Кросс-полевая валидация
+.refine(
+  (data) => data.password === data.confirmPassword,
+  { message: 'Пароли не совпадают', path: ['confirmPassword'] }
+)
+
+type RegistrationForm = z.infer<typeof registrationSchema>
+```
+
+---
+
+## Часть 2: Yup
+
+### Что такое Yup?
+
+**Yup** — это проверенная временем библиотека для валидации схем с цепочечным API.
+
+**Установка:**
 ```bash
 npm install yup @hookform/resolvers
 ```
@@ -55,7 +297,7 @@ const schema = yup.object({
   password: yup.string().min(8, 'Минимум 8 символов').required('Обязательно'),
 })
 
-// 2. Выведите тип из схемы (для TypeScript)
+// 2. Выведите тип
 type FormData = yup.InferType<typeof schema>
 
 // 3. Используйте с useForm
@@ -64,101 +306,237 @@ const { register, handleSubmit } = useForm<FormData>({
 })
 ```
 
-## 3.3 Сложные схемы
+---
 
-### Zod примеры
+### Основные типы Yup
 
-```tsx
-const schema = z.object({
-  // Строки
-  email: z.string().email(),
-  username: z.string().min(3).max(20),
-  
-  // Числа
-  age: z.number().min(18).max(120),
-  price: z.number().positive(),
-  
-  // Массивы
-  tags: z.array(z.string()).min(1),
-  
-  // Enum
-  role: z.enum(['admin', 'user', 'guest']),
-  
-  // Union
-  contact: z.union([
-    z.object({ type: z.literal('email'), value: z.string().email() }),
-    z.object({ type: z.literal('phone'), value: z.string() }),
-  ]),
-  
-  // Объекты
-  address: z.object({
-    city: z.string(),
-    street: z.string(),
-    zip: z.string().regex(/^\d{5}$/),
-  }),
-})
-```
-
-### Yup примеры
+#### Строки
 
 ```tsx
 const schema = yup.object({
-  // Строки
-  email: yup.string().email(),
+  // Обязательная строка
+  name: yup.string().required('Обязательно'),
+  
+  // Email
+  email: yup.string().email('Неверный email').required('Обязательно'),
+  
+  // URL
+  website: yup.string().url('Неверный URL'),
+  
+  // С длиной
   username: yup.string().min(3).max(20),
   
-  // Числа
-  age: yup.number().min(18).max(120),
-  price: yup.number().positive(),
+  // С паттерном
+  phone: yup.string().matches(/^\+7\d{10}$/, 'Неверный формат'),
   
-  // Массивы
-  tags: yup.array().of(yup.string()).min(1),
+  // Опциональная
+  bio: yup.string(),
   
-  // Enum
-  role: yup.string().oneOf(['admin', 'user', 'guest']),
+  // С дефолтным значением
+  role: yup.string().default('user'),
   
-  // Объекты
+  // Один из значений
+  status: yup.string().oneOf(['active', 'inactive']),
+})
+```
+
+#### Числа
+
+```tsx
+const schema = yup.object({
+  // Обязательное число
+  age: yup.number().required('Обязательно'),
+  
+  // С диапазоном
+  rating: yup.number().min(1).max(10),
+  
+  // Положительное
+  price: yup.number().positive('Цена должна быть положительной'),
+  
+  // Целое
+  count: yup.number().integer('Должно быть целым числом'),
+  
+  // Опциональное
+  discount: yup.number(),
+})
+```
+
+#### Булевы значения
+
+```tsx
+const schema = yup.object({
+  agree: yup.boolean().oneOf([true], 'Необходимо согласие'),
+  newsletter: yup.boolean(),
+})
+```
+
+#### Массивы
+
+```tsx
+const schema = yup.object({
+  // Массив строк
+  tags: yup.array().of(yup.string()),
+  
+  // С минимальной длиной
+  skills: yup.array().of(yup.string()).min(1, 'Выберите хотя бы один'),
+  
+  // Массив объектов
+  contacts: yup.array().of(
+    yup.object({
+      type: yup.string(),
+      value: yup.string(),
+    })
+  ),
+})
+```
+
+#### Объекты
+
+```tsx
+const schema = yup.object({
+  // Вложенный объект
   address: yup.object({
-    city: yup.string(),
-    street: yup.string(),
-    zip: yup.string().matches(/^\d{5}$/),
+    city: yup.string().required('Обязательно'),
+    street: yup.string().required('Обязательно'),
+    zip: yup.string().matches(/^\d{5}$/, 'Неверный индекс'),
+  }),
+  
+  // Опциональный объект
+  company: yup.object({
+    name: yup.string(),
+    position: yup.string(),
   }),
 })
 ```
 
-## 3.4 Кастомные сообщения и i18n
+---
+
+### Кастомная валидация с `test`
 
 ```tsx
-// Zod с кастомными сообщениями
-const schema = z.object({
-  email: z.string({
-    required_error: 'Email обязателен',
-    invalid_type_error: 'Должна быть строка',
-  }).email('Неверный формат email'),
-})
-
-// Или через refine для сложных случаев
-const schema = z.object({
-  password: z.string(),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: 'Пароли не совпадают',
-  path: ['confirmPassword'],
+const schema = yup.object({
+  password: yup.string(),
+  confirmPassword: yup.string()
+    .oneOf([yup.ref('password')], 'Пароли должны совпадать'),
+  
+  // Кастомный test
+  username: yup.string().test(
+    'is-available',
+    'Имя занято',
+    async (value) => {
+      const response = await fetch(`/api/check-username?username=${value}`)
+      const { available } = await response.json()
+      return available
+    }
+  ),
 })
 ```
 
-## 3.5 Zod vs Yup
+---
+
+## Часть 3: Сравнение Zod vs Yup
 
 | Критерий | Zod | Yup |
 |----------|-----|-----|
-| Размер | ~12KB | ~14KB |
-| TypeScript | First-class | Хорошая |
-| API | Функциональный | Цепочки |
-| Производительность | Быстрее | Медленнее |
-| Сообщества | Большое | Очень большое |
+| **Размер** | ~12 KB | ~14 KB |
+| **TypeScript** | First-class, отличный вывод типов | Хороший, но иногда требует аннотаций |
+| **API** | Функциональный, композируемый | Цепочечный, выразительный |
+| **Производительность** | Быстрее | Медленнее |
+| **Асинхронная валидация** | Через `refine` | Через `test` |
+| **Сообщество** | Большое, растущее | Очень большое, зрелое |
+| **Документация** | Отличная | Хорошая |
+
+### Когда выбирать Zod?
+
+- ✅ Новый TypeScript проект
+- ✅ Важна типобезопасность
+- ✅ Нужна лучшая производительность
+- ✅ Предпочитаете функциональный API
+
+### Когда выбирать Yup?
+
+- ✅ JavaScript проект
+- ✅ Уже используете Yup в проекте
+- ✅ Любите цепочечный API
+- ✅ Нужно много готовых примеров
+
+---
+
+## Часть 4: Интеграция с React Hook Form
+
+### Полный пример с Zod
+
+```tsx
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+
+const schema = z.object({
+  email: z.string().email('Неверный email'),
+  password: z.string().min(8, 'Минимум 8 символов'),
+  confirmPassword: z.string(),
+}).refine(
+  (data) => data.password === data.confirmPassword,
+  { message: 'Пароли не совпадают', path: ['confirmPassword'] }
+)
+
+type FormData = z.infer<typeof schema>
+
+export function RegistrationForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid, isSubmitting },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    mode: 'onChange',
+  })
+
+  const onSubmit = (data: FormData) => {
+    console.log('Submitted:', data)
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div>
+        <label>Email</label>
+        <input type="email" {...register('email')} />
+        {errors.email && <span className="error">{errors.email.message}</span>}
+      </div>
+
+      <div>
+        <label>Password</label>
+        <input type="password" {...register('password')} />
+        {errors.password && <span className="error">{errors.password.message}</span>}
+      </div>
+
+      <div>
+        <label>Confirm Password</label>
+        <input type="password" {...register('confirmPassword')} />
+        {errors.confirmPassword && (
+          <span className="error">{errors.confirmPassword.message}</span>
+        )}
+      </div>
+
+      <button type="submit" disabled={!isValid || isSubmitting}>
+        {isSubmitting ? 'Отправка...' : 'Зарегистрироваться'}
+      </button>
+    </form>
+  )
+}
+```
 
 ---
 
 ## 📝 Задания
 
-Смотрите файл `task.md` для подробных заданий.
+Переходите к файлу [`task.md`](./task.md) для выполнения практических заданий.
+
+---
+
+## 📚 Дополнительные ресурсы
+
+- [Zod документация](https://zod.dev/)
+- [Yup документация](https://github.com/jquense/yup)
+- [@hookform/resolvers](https://react-hook-form.com/docs/useform/resolver)
+- [Zod GitHub](https://github.com/colinhacks/zod)
