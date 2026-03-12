@@ -1,0 +1,114 @@
+import { useState } from 'react'
+import { Task3_1_Template, Task3_2_Template, Task3_3_Template, Task3_4_Template, Task3_5_Template } from './Template'
+import { Task3_1_Solution, Task3_2_Solution, Task3_3_Solution, Task3_4_Solution, Task3_5_Solution } from './Solution'
+
+type Task = '3.1' | '3.2' | '3.3' | '3.4' | '3.5'
+
+export function SchemaValidationExercise() {
+  const [currentTask, setCurrentTask] = useState<Task>('3.1')
+  const [showSolution, setShowSolution] = useState(false)
+
+  const templates: Record<Task, React.ReactNode> = {
+    '3.1': <Task3_1_Template />,
+    '3.2': <Task3_2_Template />,
+    '3.3': <Task3_3_Template />,
+    '3.4': <Task3_4_Template />,
+    '3.5': <Task3_5_Template />,
+  }
+
+  const solutions: Record<Task, React.ReactNode> = {
+    '3.1': <Task3_1_Solution />,
+    '3.2': <Task3_2_Solution />,
+    '3.3': <Task3_3_Solution />,
+    '3.4': <Task3_4_Solution />,
+    '3.5': <Task3_5_Solution />,
+  }
+
+  const tasks: { id: Task; name: string }[] = [
+    { id: '3.1', name: 'Zod базовая' },
+    { id: '3.2', name: 'Yup базовая' },
+    { id: '3.3', name: 'Сложные схемы' },
+    { id: '3.4', name: 'refine' },
+    { id: '3.5', name: 'Сравнение' },
+  ]
+
+  return (
+    <div>
+      <header style={{ marginBottom: '2rem' }}>
+        <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
+          Уровень 3: Валидация по схемам
+        </h1>
+        <p style={{ color: '#6c757d' }}>
+          Zod, Yup, @hookform/resolvers, сложные схемы, refine
+        </p>
+      </header>
+
+      <div style={{ marginBottom: '1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+        {tasks.map((task) => (
+          <button
+            key={task.id}
+            onClick={() => setCurrentTask(task.id)}
+            style={{
+              background: currentTask === task.id ? '#646cff' : '#ffffff',
+              color: currentTask === task.id ? '#fff' : '#213547',
+              border: currentTask === task.id ? '2px solid #646cff' : '1px solid #ddd',
+              padding: '0.5rem 1rem',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
+          >
+            Задание {task.id}
+          </button>
+        ))}
+      </div>
+
+      <div style={{ marginBottom: '1.5rem' }}>
+        <button 
+          onClick={() => setShowSolution(!showSolution)}
+          style={{
+            background: showSolution ? '#4caf50' : '#646cff',
+            color: '#fff',
+            border: 'none',
+            padding: '0.5rem 1rem',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+          {showSolution ? '🙈 Скрыть решение' : '💡 Показать решение'}
+        </button>
+      </div>
+
+      {showSolution ? solutions[currentTask] : templates[currentTask]}
+
+      <section style={{ 
+        marginTop: '3rem', 
+        padding: '1.5rem', 
+        background: '#f8f9fa', 
+        borderRadius: '8px' 
+      }}>
+        <h2 style={{ marginBottom: '1rem' }}>📚 Теория</h2>
+        <div style={{ lineHeight: 1.8 }}>
+          <h3>Zod</h3>
+          <p>
+            TypeScript-first библиотека для валидации схем. Отличная типизация, функциональный API.
+          </p>
+          
+          <h3 style={{ marginTop: '1rem' }}>Yup</h3>
+          <p>
+            Проверенная временем библиотека с цепочечным API и большим сообществом.
+          </p>
+          
+          <h3 style={{ marginTop: '1rem' }}>@hookform/resolvers</h3>
+          <p>
+            Пакет для интеграции схем валидации с React Hook Form через resolver.
+          </p>
+          
+          <h3 style={{ marginTop: '1rem' }}>refine</h3>
+          <p>
+            Метод для создания кастомных правил валидации, включая cross-field.
+          </p>
+        </div>
+      </section>
+    </div>
+  )
+}

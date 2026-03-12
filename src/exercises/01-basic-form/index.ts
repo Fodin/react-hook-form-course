@@ -1,0 +1,1 @@
+export { BasicFormExercise } from './BasicFormExercise'

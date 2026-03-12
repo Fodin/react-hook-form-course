@@ -1,0 +1,1 @@
+export { SchemaValidationExercise } from './SchemaValidationExercise'
