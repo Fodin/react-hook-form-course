@@ -230,10 +230,44 @@ section {
 .theory-content pre code {
   background: transparent;
   color: inherit;
-  padding: 0;
+  padding: 0.5rem;
   font-size: 1em;
   font-weight: normal;
+  display: block;
 }
+
+/* Highlight.js стили для подсветки синтаксиса (светлая тема) */
+.theory-content .hljs {
+  background: #e9ecef;
+  color: #213547;
+}
+
+.theory-content .hljs-keyword { color: #d73a49; font-weight: bold; }
+.theory-content .hljs-built_in { color: #d73a49; }
+.theory-content .hljs-type { color: #005cc5; }
+.theory-content .hljs-literal { color: #005cc5; }
+.theory-content .hljs-number { color: #005cc5; }
+.theory-content .hljs-string { color: #032f62; }
+.theory-content .hljs-regexp { color: #032f62; }
+.theory-content .hljs-template-variable { color: #032f62; }
+.theory-content .hljs-variable { color: #e36209; }
+.theory-content .hljs-title { color: #6f42c1; }
+.theory-content .hljs-params { color: #24292e; }
+.theory-content .hljs-meta { color: #005cc5; }
+.theory-content .hljs-meta-string { color: #032f62; }
+.theory-content .hljs-comment { color: #22863a; font-style: italic; }
+.theory-content .hljs-doctag { color: #d73a49; }
+.theory-content .hljs-section { color: #005cc5; }
+.theory-content .hljs-selector-tag { color: #d73a49; }
+.theory-content .hljs-selector-id { color: #005cc5; }
+.theory-content .hljs-selector-class { color: #6f42c1; }
+.theory-content .hljs-attr { color: #005cc5; }
+.theory-content .hljs-attribute { color: #005cc5; }
+.theory-content .hljs-symbol { color: #005cc5; }
+.theory-content .hljs-bullet { color: #005cc5; }
+.theory-content .hljs-addition { color: #22863a; background: #f0fff4; }
+.theory-content .hljs-deletion { color: #b31d28; background: #ffeef0; }
+.theory-content .hljs-link { color: #032f62; text-decoration: underline; }
 
 .theory-content table {
   border-collapse: collapse;

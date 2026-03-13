@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import rehypeHighlight from 'rehype-highlight'
 import { theoryContent } from '../data/theory'
 
 interface TheoryBlockProps {
@@ -71,7 +72,10 @@ export function TheoryBlock({ level }: TheoryBlockProps) {
     }}>
       <h2 style={{ marginBottom: '1rem' }}>📚 Теория</h2>
       <div className="theory-content">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+        <ReactMarkdown 
+          remarkPlugins={[remarkGfm]}
+          rehypePlugins={[rehypeHighlight]}
+        >
           {content}
         </ReactMarkdown>
       </div>

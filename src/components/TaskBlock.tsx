@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import { CodeHighlight } from './CodeHighlight'
 
 interface TaskBlockProps {
   taskNumber: string
@@ -154,18 +155,7 @@ export function CodeExample({ code, label }: CodeExampleProps) {
           {label}
         </div>
       )}
-      <pre style={{
-        margin: 0,
-        padding: '1rem',
-        background: '#f8f9fa',
-        borderRadius: '8px',
-        border: '1px solid #e9ecef',
-        overflow: 'auto',
-        fontSize: '0.85rem',
-        lineHeight: 1.6
-      }}>
-        <code>{code}</code>
-      </pre>
+      <CodeHighlight code={code} />
     </div>
   )
 }
@@ -189,19 +179,7 @@ export function InterfaceDef({ name, code }: InterfaceDefProps) {
       }}>
         Интерфейс: <code style={{ background: '#e9ecef', padding: '0.2rem 0.4rem', borderRadius: '4px' }}>{name}</code>
       </h4>
-      <pre style={{
-        margin: 0,
-        padding: '1rem',
-        background: '#f8f9fa',
-        borderRadius: '8px',
-        border: '1px solid #e9ecef',
-        overflow: 'auto',
-        fontSize: '0.85rem',
-        lineHeight: 1.6,
-        color: '#213547'
-      }}>
-        <code>{code}</code>
-      </pre>
+      <CodeHighlight code={code} />
     </div>
   )
 }
