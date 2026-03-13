@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -8,7 +8,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 // ============================================
 
 export function Task6_1_Solution() {
-  const { register, formState: { dirtyFields, touchedFields, isDirty } } = useForm<{ name: string; email: string }>()
+  const { register, formState: { dirtyFields, touchedFields, isDirty } } = useForm<{ name: string; email: string }>({
+    defaultValues: { name: '', email: '' }
+  })
 
   return (
     <div className="exercise-container">
@@ -289,11 +291,20 @@ export function Task6_4_Solution() {
 
 export function Task6_5_Solution() {
   const [renderCount, setRenderCount] = useState(0)
-  const { register, watch } = useForm<{ text: string }>()
+  const { register, watch } = useForm<{ text: string }>({
+    defaultValues: { text: '' }
+  })
   const values = watch()
+  const prevValue = useRef('')
 
+  // Увеличиваем счётчик только когда пользователь меняет текст
   useEffect(() => {
-    setRenderCount((c) => c + 1)
+    if (prevValue.current !== values.text) {
+      prevValue.current = values.text
+      if (values.text) {
+        setRenderCount(c => c + 1)
+      }
+    }
   }, [values])
 
   return (
@@ -313,7 +324,7 @@ export function Task6_5_Solution() {
           marginTop: '1rem',
           fontWeight: 600
         }}>
-          🔄 Рендеров формы: {renderCount}
+          🔄 Рендеров от изменений: {renderCount}
         </div>
 
         <p style={{ fontSize: '0.875rem', color: '#6c757d', marginTop: '1rem' }}>
