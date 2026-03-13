@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { TaskBlock, Requirements, Tip, InterfaceDef } from '../../components/TaskBlock'
 
 // ============================================
 // Задание 1.1: Форма регистрации
@@ -17,24 +18,33 @@ export function Task1_1_Template() {
   }
 
   return (
-    <div className="exercise-container">
-      <h2>Задание 1.1: Форма регистрации</h2>
-      
-      {/* TODO: Создайте форму с полями */}
-      {/* firstName, lastName, email, age, bio, website */}
-      
-      <div style={{ marginTop: '2rem', padding: '1rem', background: '#f5f5f5', borderRadius: '8px' }}>
-        <h3>📝 Поля для реализации:</h3>
-        <ul>
-          <li>firstName — текст (обязательное)</li>
-          <li>lastName — текст (обязательное)</li>
-          <li>email — email (обязательное)</li>
-          <li>age — число, от 18 до 100 (обязательное)</li>
-          <li>bio — textarea (необязательное)</li>
-          <li>website — URL (необязательное)</li>
-        </ul>
-      </div>
-    </div>
+    <TaskBlock taskNumber="1.1" title="Форма регистрации">
+      <Requirements>
+        <li>Создайте форму с полями: <code>firstName</code>, <code>lastName</code>, <code>email</code>, <code>age</code>, <code>bio</code>, <code>website</code></li>
+        <li><code>firstName</code> и <code>lastName</code> — текст, обязательные поля</li>
+        <li><code>email</code> — email, обязательное поле</li>
+        <li><code>age</code> — число, обязательное, от 18 до 100</li>
+        <li><code>bio</code> — textarea, необязательное</li>
+        <li><code>website</code> — URL, необязательное</li>
+        <li>При отправке выводите данные в консоль и отображайте на странице</li>
+      </Requirements>
+
+      <InterfaceDef
+        name="RegistrationForm"
+        code={`interface RegistrationForm {
+  firstName: string
+  lastName: string
+  email: string
+  age: number
+  bio?: string
+  website?: string
+}`}
+      />
+
+      <Tip>
+        Используйте <code>valueAsNumber</code> для поля <code>age</code>, чтобы получить числовое значение.
+      </Tip>
+    </TaskBlock>
   )
 }
 
@@ -44,23 +54,37 @@ export function Task1_1_Template() {
 
 export function Task1_2_Template() {
   // TODO: Используйте watch для отслеживания username и password
-  
+
   return (
-    <div className="exercise-container">
-      <h2>Задание 1.2: Watch в реальном времени</h2>
-      
-      {/* TODO: Создайте форму с username и password */}
-      {/* Отображайте длину username и силу пароля */}
-      
-      <div style={{ marginTop: '2rem', padding: '1rem', background: '#f5f5f5', borderRadius: '8px' }}>
-        <h3>📝 Требования:</h3>
-        <ul>
-          <li>Username: отображать длину в реальном времени</li>
-          <li>Password: показывать "Слабый/Средний/Сильный"</li>
-          <li>Использовать watch для реактивности</li>
-        </ul>
-      </div>
-    </div>
+    <TaskBlock taskNumber="1.2" title="Watch в реальном времени">
+      <Requirements>
+        <li>Создайте форму с полями <code>username</code> и <code>password</code></li>
+        <li>В реальном времени отображайте длину username</li>
+        <li>Показывайте "силу" пароля: <strong>Слабый</strong> (&lt;6), <strong>Средний</strong> (6-10), <strong>Сильный</strong> (&gt;10)</li>
+        <li>Используйте <code>watch</code> для отслеживания изменений</li>
+      </Requirements>
+
+      <InterfaceDef
+        name="LoginForm"
+        code={`interface LoginForm {
+  username: string
+  password: string
+}`}
+      />
+
+      <Tip>
+        <code>watch</code> возвращает текущие значения полей и подписывается на изменения.
+        <br />
+        Пример UI:
+        <pre style={{ margin: '0.5rem 0 0 0', padding: '0.75rem', background: '#fff', borderRadius: '4px', fontSize: '0.8rem' }}>
+          {`Username: [john_doe]
+Длина: 8 символов
+
+Password: [******]
+Сила пароля: Сильный ✓`}
+        </pre>
+      </Tip>
+    </TaskBlock>
   )
 }
 
@@ -70,23 +94,31 @@ export function Task1_2_Template() {
 
 export function Task1_3_Template() {
   // TODO: Используйте setValue для программного изменения значений
-  
+
   return (
-    <div className="exercise-container">
-      <h2>Задание 1.3: setValue и getValues</h2>
-      
-      {/* TODO: Создайте форму с title, description, price */}
-      {/* Добавьте кнопки для управления значениями */}
-      
-      <div style={{ marginTop: '2rem', padding: '1rem', background: '#f5f5f5', borderRadius: '8px' }}>
-        <h3>📝 Кнопки:</h3>
-        <ul>
-          <li>"Заполнить тестовыми данными"</li>
-          <li>"Удвоить цену" (читает price через getValues, умножает, ставит через setValue)</li>
-          <li>"Очистить форму"</li>
-        </ul>
-      </div>
-    </div>
+    <TaskBlock taskNumber="1.3" title="setValue и getValues">
+      <Requirements>
+        <li>Создайте форму с полями: <code>title</code>, <code>description</code>, <code>price</code></li>
+        <li>Кнопка <strong>"Заполнить тестовыми данными"</strong> — заполняет форму preset-значениями</li>
+        <li>Кнопка <strong>"Удвоить цену"</strong> — читает <code>price</code> через <code>getValues</code>, умножает на 2, устанавливает через <code>setValue</code></li>
+        <li>Кнопка <strong>"Очистить форму"</strong> — сбрасывает все поля</li>
+      </Requirements>
+
+      <InterfaceDef
+        name="ProductForm"
+        code={`interface ProductForm {
+  title: string
+  description: string
+  price: number
+}`}
+      />
+
+      <Tip>
+        <code>setValue('price', newValue)</code> — устанавливает значение поля
+        <br />
+        <code>getValues('price')</code> — получает текущее значение
+      </Tip>
+    </TaskBlock>
   )
 }
 
@@ -96,22 +128,31 @@ export function Task1_3_Template() {
 
 export function Task1_4_Template() {
   // TODO: Используйте formState для отображения состояния
-  
+
   return (
-    <div className="exercise-container">
-      <h2>Задание 1.4: formState — состояние формы</h2>
-      
-      {/* TODO: Создайте форму и отображайте состояние */}
-      
-      <div style={{ marginTop: '2rem', padding: '1rem', background: '#f5f5f5', borderRadius: '8px' }}>
-        <h3>📝 Отображать:</h3>
-        <ul>
-          <li>Индикатор валидности (✅/❌)</li>
-          <li>Счётчик ошибок</li>
-          <li>Статус отправки</li>
-          <li>Статус dirty (изменена ли форма)</li>
-        </ul>
-      </div>
-    </div>
+    <TaskBlock taskNumber="1.4" title="formState — состояние формы">
+      <Requirements>
+        <li>Создайте форму с полями <code>email</code> и <code>password</code></li>
+        <li>Отображайте индикатор валидности формы (✅ зелёный / ❌ красный)</li>
+        <li>Показывайте счётчик ошибок: <strong>"Ошибок: 0"</strong></li>
+        <li>Статус отправки: <strong>"Отправка..."</strong> во время submit</li>
+        <li>Статус dirty: <strong>"Форма изменена"</strong>, если поля менялись</li>
+      </Requirements>
+
+      <InterfaceDef
+        name="LoginForm"
+        code={`interface LoginForm {
+  email: string
+  password: string
+}`}
+      />
+
+      <Tip>
+        Деструктуризация из <code>formState</code>:
+        <pre style={{ margin: '0.5rem 0 0 0', padding: '0.75rem', background: '#fff', borderRadius: '4px', fontSize: '0.8rem' }}>
+          {`const { formState: { errors, isValid, isSubmitting, isDirty } } = useForm()`}
+        </pre>
+      </Tip>
+    </TaskBlock>
   )
 }
