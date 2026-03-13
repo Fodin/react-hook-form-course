@@ -35,6 +35,15 @@ export function Task8_1_Template() {
       <Tip>
         Controller передаёт <code>field.onChange</code>, <code>field.onBlur</code>, <code>field.value</code> в кастомный компонент.
       </Tip>
+
+      {/* ============================================================
+          TODO: Создайте форму внутри TaskBlock, после компонента Tip
+          
+          1. Создайте кастомный компонент TextField с label и error
+          2. Создайте кастомный компонент Button с состоянием loading
+          3. Используйте Controller для интеграции компонентов с формой
+          4. Реализуйте форму входа с email и password
+          ============================================================ */}
     </TaskBlock>
   )
 }
@@ -76,6 +85,15 @@ export function Task8_2_Template() {
           {`const { stored, save, clear } = useFormPersist('my-form')`}
         </pre>
       </Tip>
+
+      {/* ============================================================
+          TODO: Создайте форму внутри TaskBlock, после компонента Tip
+          
+          1. Создайте хук useFormPersist(name, defaultValues)
+          2. Хук возвращает: stored (данные из localStorage), save, clear
+          3. Используйте хук в форме с полями title, content
+          4. Реализуйте автовосстановление при загрузке
+          ============================================================ */}
     </TaskBlock>
   )
 }
@@ -116,6 +134,15 @@ export function Task8_3_Template() {
       <Tip>
         <code>useFormContext()</code> даёт доступ к методам формы из вложенных компонентов без prop drilling.
       </Tip>
+
+      {/* ============================================================
+          TODO: Создайте форму внутри TaskBlock, после компонента Tip
+          
+          1. Оберните форму в FormProvider
+          2. Создайте PersonalStep с firstName, lastName (используйте useFormContext)
+          3. Создайте ContactStep с email, phone (используйте useFormContext)
+          4. Реализуйте навигацию между шагами
+          ============================================================ */}
     </TaskBlock>
   )
 }
@@ -155,6 +182,16 @@ export function Task8_4_Template() {
       <Tip>
         Используйте <code>useEffect</code> для автосохранения и <code>defaultValues</code> для восстановления.
       </Tip>
+
+      {/* ============================================================
+          TODO: Создайте форму внутри TaskBlock, после компонента Tip
+          
+          1. Создайте 2 поля: subject, body
+          2. Используйте useEffect для автосохранения при каждом изменении
+          3. Восстанавливайте данные из localStorage при загрузке
+          4. Очищайте localStorage после успешной отправки
+          5. Отображайте индикатор последнего сохранения
+          ============================================================ */}
     </TaskBlock>
   )
 }
@@ -211,6 +248,16 @@ export function Task8_5_Template() {
           <li>localStorage для сохранения черновика</li>
         </ul>
       </Tip>
+
+      {/* ============================================================
+          TODO: Создайте форму внутри TaskBlock, после компонента Tip
+          
+          1. Шаг 1: Аккаунт (email, password, confirmPassword) с async валидацией
+          2. Шаг 2: Профиль (firstName, lastName, avatar с предпросмотром)
+          3. Шаг 3: Настройки (newsletter, notifications — checkbox)
+          4. Валидация перед переходом, сохранение между шагами
+          5. Финальный просмотр всех данных перед отправкой
+          ============================================================ */}
     </TaskBlock>
   )
 }

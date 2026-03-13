@@ -36,6 +36,15 @@ export function Template() {
       <Tip>
         <code>register</code> возвращает <code>onChange</code>, <code>onBlur</code>, <code>name</code>, <code>ref</code> для подключения к input.
       </Tip>
+
+      {/* ============================================================
+          TODO: Создайте форму внутри TaskBlock, после компонента Tip
+          
+          1. Создайте <form onSubmit={handleSubmit(onSubmit)}>
+          2. Добавьте поле email с {...register('email')}
+          3. Добавьте поле password с {...register('password')}
+          4. Добавьте кнопку type="submit"
+          ============================================================ */}
     </TaskBlock>
   )
 }
