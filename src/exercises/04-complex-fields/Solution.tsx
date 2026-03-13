@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -197,32 +197,35 @@ export function Task4_3_Solution() {
   return (
     <div className="exercise-container">
       <h2>✅ Задание 4.3: Checkbox</h2>
-      
+
       <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: '400px' }}>
         <div className="form-group">
-          <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <input 
-              type="checkbox" 
-              {...register('agree')} 
+          <label>Согласие *</label>
+          <div style={{ display: 'grid', gridTemplateColumns: '20px 1fr', gap: '0.5rem', alignItems: 'start' }}>
+            <input
+              type="checkbox"
+              {...register('agree')}
+              style={{ justifySelf: 'start', marginTop: '0.25rem' }}
             />
-            Я согласен с правилами обработки данных *
-          </label>
+            <span style={{ cursor: 'pointer' }}>Я согласен с правилами обработки данных *</span>
+          </div>
           {errors.agree && <span className="error">{errors.agree.message}</span>}
         </div>
-        
+
         <div className="form-group">
           <label>Навыки *</label>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '20px 1fr', gap: '0.5rem 0.5rem', alignItems: 'start' }}>
             {allSkills.map((skill) => (
-              <label key={skill} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <React.Fragment key={skill}>
                 <input
                   type="checkbox"
                   value={skill}
                   checked={selectedSkills.includes(skill)}
                   onChange={(e) => handleSkillChange(skill, e.target.checked)}
+                  style={{ justifySelf: 'start', marginTop: '0.25rem' }}
                 />
-                {skill}
-              </label>
+                <span style={{ cursor: 'pointer' }}>{skill}</span>
+              </React.Fragment>
             ))}
           </div>
           {errors.skills && <span className="error">{errors.skills.message}</span>}
