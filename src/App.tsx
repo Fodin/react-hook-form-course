@@ -94,7 +94,7 @@ function AppContent() {
                 padding: '0.75rem 1rem',
                 background: currentLevel === level.id ? '#646cff' : theme === 'dark' ? '#161b22' : '#ffffff',
                 color: currentLevel === level.id ? '#fff' : theme === 'dark' ? '#e6edf3' : '#213547',
-                border: currentLevel === level.id ? '2px solid #646cff' : '1px solid #30363d',
+                border: '2px solid ' + (currentLevel === level.id ? '#646cff' : '#30363d'),
                 borderRadius: '8px',
                 cursor: 'pointer',
                 transition: 'all 0.2s',

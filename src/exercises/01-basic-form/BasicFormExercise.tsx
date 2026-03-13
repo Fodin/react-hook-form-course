@@ -49,7 +49,7 @@ export function BasicFormExercise() {
             style={{
               background: currentTask === task.id ? '#646cff' : '#ffffff',
               color: currentTask === task.id ? '#fff' : '#213547',
-              border: currentTask === task.id ? '2px solid #646cff' : '1px solid #ddd',
+              border: '2px solid ' + (currentTask === task.id ? '#646cff' : '#ddd'),
               padding: '0.5rem 1rem',
               borderRadius: '4px',
               cursor: 'pointer',
