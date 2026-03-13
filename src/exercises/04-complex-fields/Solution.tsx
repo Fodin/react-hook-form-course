@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTheme } from '../../hooks/useTheme'
 
 // ============================================
 // Задание 4.1: Controller — Решение
@@ -167,12 +168,15 @@ type SkillsForm = z.infer<typeof skillsSchema>
 const allSkills = ['React', 'Vue', 'Angular', 'Svelte']
 
 export function Task4_3_Solution() {
-  const { 
-    register, 
-    handleSubmit, 
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
+  
+  const {
+    register,
+    handleSubmit,
     watch,
     setValue,
-    formState: { errors } 
+    formState: { errors }
   } = useForm<SkillsForm>({
     resolver: zodResolver(skillsSchema),
     defaultValues: {
@@ -231,7 +235,7 @@ export function Task4_3_Solution() {
           {errors.skills && <span className="error">{errors.skills.message}</span>}
         </div>
         
-        <div style={{ marginTop: '1rem', padding: '0.5rem', background: '#f5f5f5', borderRadius: '4px' }}>
+        <div style={{ marginTop: '1rem', padding: '0.5rem', background: isDark ? '#21262d' : '#f5f5f5', borderRadius: '4px', color: isDark ? '#e6edf3' : '#213547' }}>
           Выбрано: {selectedSkills.join(', ') || 'ничего'}
         </div>
         

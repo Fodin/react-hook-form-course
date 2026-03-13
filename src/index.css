@@ -13,6 +13,269 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Темная тема */
+.dark-theme {
+  color-scheme: dark;
+  color: #e6edf3;
+  background-color: #0d1117;
+}
+
+.dark-theme body {
+  background-color: #0d1117;
+}
+
+.dark-theme #root {
+  background-color: #0d1117;
+}
+
+/* Стили для темной темы - общие элементы */
+.dark-theme section {
+  background-color: #161b22 !important;
+  border-color: #30363d !important;
+}
+
+.dark-theme .theory-content pre {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+  color: #e6edf3 !important;
+}
+
+.dark-theme .theory-content .hljs {
+  background: #161b22 !important;
+  color: #e6edf3 !important;
+}
+
+.dark-theme .theory-content .hljs-string,
+.dark-theme .theory-content .hljs-regexp,
+.dark-theme .theory-content .hljs-template-variable {
+  color: #79c0ff !important;
+}
+
+.dark-theme .theory-content .hljs-type,
+.dark-theme .theory-content .hljs-literal,
+.dark-theme .theory-content .hljs-number,
+.dark-theme .theory-content .hljs-meta,
+.dark-theme .theory-content .hljs-section,
+.dark-theme .theory-content .hljs-selector-id,
+.dark-theme .theory-content .hljs-attr,
+.dark-theme .theory-content .hljs-attribute,
+.dark-theme .theory-content .hljs-symbol,
+.dark-theme .theory-content .hljs-bullet {
+  color: #ffa657 !important;
+}
+
+.dark-theme .theory-content .hljs-title,
+.dark-theme .theory-content .hljs-selector-class {
+  color: #d2a8ff !important;
+}
+
+.dark-theme .theory-content h1,
+.dark-theme .theory-content h2,
+.dark-theme .theory-content h3,
+.dark-theme .theory-content h4 {
+  color: #e6edf3 !important;
+}
+
+.dark-theme .theory-content p {
+  color: #8b949e !important;
+}
+
+.dark-theme .theory-content li {
+  color: #8b949e !important;
+}
+
+.dark-theme .theory-content table {
+  border-color: #30363d !important;
+}
+
+.dark-theme .theory-content th {
+  background: #21262d !important;
+  color: #e6edf3 !important;
+  border-color: #30363d !important;
+}
+
+.dark-theme .theory-content td {
+  background: #0d1117 !important;
+  color: #8b949e !important;
+  border-color: #30363d !important;
+}
+
+.dark-theme .theory-content a {
+  color: #58a6ff !important;
+}
+
+.dark-theme .theory-content code {
+  background-color: #21262d !important;
+  color: #e6edf3 !important;
+}
+
+/* TaskBlock стили для темной темы */
+.dark-theme .exercise-container {
+  color: #e6edf3 !important;
+}
+
+.dark-theme .exercise-container > div {
+  background-color: #161b22 !important;
+  border-color: #30363d !important;
+  color: #e6edf3 !important;
+}
+
+.dark-theme .exercise-container h2 {
+  color: #e6edf3 !important;
+}
+
+.dark-theme .exercise-container h3 {
+  color: #e6edf3 !important;
+}
+
+.dark-theme .exercise-container h4 {
+  color: #e6edf3 !important;
+}
+
+.dark-theme .exercise-container li {
+  color: #8b949e !important;
+}
+
+.dark-theme .exercise-container p {
+  color: #8b949e !important;
+}
+
+.dark-theme .exercise-container code {
+  background-color: #21262d !important;
+  color: #e6edf3 !important;
+}
+
+.dark-theme aside {
+  background-color: #161b22 !important;
+  border-color: #30363d !important;
+}
+
+.dark-theme aside h2 {
+  color: #e6edf3 !important;
+}
+
+.dark-theme button {
+  color: #e6edf3 !important;
+}
+
+.dark-theme header h1 {
+  color: #e6edf3 !important;
+}
+
+.dark-theme header p {
+  color: #8b949e !important;
+}
+
+/* Стили для кнопок в темной теме */
+.dark-theme button {
+  background-color: #21262d !important;
+  border-color: #30363d !important;
+}
+
+.dark-theme button:hover {
+  background-color: #30363d !important;
+}
+
+/* Стили для input, select, textarea в темной теме */
+.dark-theme input,
+.dark-theme select,
+.dark-theme textarea {
+  background-color: #0d1117 !important;
+  color: #e6edf3 !important;
+  border-color: #30363d !important;
+}
+
+.dark-theme input::placeholder,
+.dark-theme textarea::placeholder {
+  color: #484f58 !important;
+}
+
+/* Стили для label в темной теме */
+.dark-theme label {
+  color: #8b949e !important;
+}
+
+/* Стили для form-group в темной теме */
+.dark-theme .form-group {
+  border-color: #30363d !important;
+}
+
+.dark-theme .form-group label {
+  color: #e6edf3 !important;
+}
+
+/* Стили для error сообщений в темной теме */
+.dark-theme .error {
+  color: #f85149 !important;
+}
+
+/* Стили для индикаторов статуса в темной теме */
+.dark-theme div[style*="background: #e8f5e9"],
+.dark-theme div[style*="background:#e8f5e9"] {
+  background-color: #238636 !important;
+}
+
+.dark-theme div[style*="background: #fff3cd"],
+.dark-theme div[style*="background:#fff3cd"] {
+  background-color: #9e6a03 !important;
+}
+
+.dark-theme div[style*="background: #d4edda"],
+.dark-theme div[style*="background:#d4edda"] {
+  background-color: #238636 !important;
+}
+
+.dark-theme div[style*="background: #f8d7da"],
+.dark-theme div[style*="background:#f8d7da"] {
+  background-color: #da3633 !important;
+}
+
+.dark-theme div[style*="background: #d0d7de"],
+.dark-theme div[style*="background:#d0d7de"] {
+  background-color: #30363d !important;
+}
+
+.dark-theme div[style*="background: #17a2b8"],
+.dark-theme div[style*="background:#17a2b8"] {
+  background-color: #388bfd !important;
+}
+
+.dark-theme div[style*="background: #e9ecef"],
+.dark-theme div[style*="background:#e9ecef"] {
+  background-color: #21262d !important;
+}
+
+.dark-theme div[style*="background: #f5f5f5"],
+.dark-theme div[style*="background:#f5f5f5"] {
+  background-color: #21262d !important;
+  color: #e6edf3 !important;
+}
+
+.dark-theme div[style*="background: #e8f5e9"],
+.dark-theme div[style*="background:#e8f5e9"] {
+  background-color: #1a4d2e !important;
+  color: #e6edf3 !important;
+}
+
+.dark-theme div[style*="background: #f0f9ff"],
+.dark-theme div[style*="background:#f0f9ff"] {
+  background-color: #1c2128 !important;
+  border-color: #30363d !important;
+  color: #e6edf3 !important;
+}
+
+/* Стили для pre в темной теме */
+.dark-theme pre {
+  background-color: #161b22 !important;
+  border-color: #30363d !important;
+}
+
+/* Стили для code в темной теме */
+.dark-theme code {
+  background-color: #21262d !important;
+  color: #e6edf3 !important;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;

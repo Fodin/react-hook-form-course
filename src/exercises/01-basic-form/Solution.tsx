@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTheme } from '../../hooks/useTheme'
 
 // ============================================
 // Задание 1.1: Форма регистрации — Решение
@@ -15,6 +16,9 @@ interface RegistrationForm {
 }
 
 export function Task1_1_Solution() {
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
+  
   const { register, handleSubmit, reset } = useForm<RegistrationForm>()
   const [submittedData, setSubmittedData] = useState<RegistrationForm | null>(null)
 
@@ -78,11 +82,12 @@ export function Task1_1_Solution() {
       </form>
 
       {submittedData && (
-        <div style={{ 
-          marginTop: '2rem', 
-          padding: '1rem', 
-          background: '#e8f5e9', 
-          borderRadius: '8px' 
+        <div style={{
+          marginTop: '2rem',
+          padding: '1rem',
+          background: isDark ? '#1a4d2e' : '#e8f5e9',
+          borderRadius: '8px',
+          color: isDark ? '#e6edf3' : '#213547'
         }}>
           <h3>📬 Данные:</h3>
           <pre>{JSON.stringify(submittedData, null, 2)}</pre>
@@ -97,13 +102,16 @@ export function Task1_1_Solution() {
 // ============================================
 
 export function Task1_2_Solution() {
-  const { register, watch } = useForm<{ username: string; password: string }>()
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
   
+  const { register, watch } = useForm<{ username: string; password: string }>()
+
   const username = watch('username', '')
   const password = watch('password', '')
 
   const getPasswordStrength = (pwd: string): { label: string; color: string } => {
-    if (pwd.length === 0) return { label: '—', color: '#888' }
+    if (pwd.length === 0) return { label: '—', color: isDark ? '#8b949e' : '#888' }
     if (pwd.length < 6) return { label: 'Слабый 🔴', color: '#f44336' }
     if (pwd.length < 10) return { label: 'Средний 🟡', color: '#ff9800' }
     return { label: 'Сильный 🟢', color: '#4caf50' }
@@ -126,11 +134,12 @@ export function Task1_2_Solution() {
           <input id="password" type="password" {...register('password')} placeholder="Введите пароль" />
         </div>
 
-        <div style={{ 
-          marginTop: '1.5rem', 
-          padding: '1rem', 
-          background: '#f5f5f5', 
-          borderRadius: '8px' 
+        <div style={{
+          marginTop: '1.5rem',
+          padding: '1rem',
+          background: isDark ? '#21262d' : '#f5f5f5',
+          borderRadius: '8px',
+          color: isDark ? '#e6edf3' : '#213547'
         }}>
           <div style={{ marginBottom: '0.5rem' }}>
             <strong>Username:</strong> {username || '(пусто)'}

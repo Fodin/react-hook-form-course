@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { ThemeProvider, useTheme } from './hooks/useTheme'
+import { ThemeToggle } from './components/ThemeToggle'
 import { SetupExercise } from './exercises/00-setup/SetupExercise'
 import { BasicFormExercise } from './exercises/01-basic-form/BasicFormExercise'
 import { ValidationExercise } from './exercises/02-validation/ValidationExercise'
@@ -32,8 +34,9 @@ const levels: { id: Level; name: string; description: string }[] = [
   { id: '8', name: 'Продвинутые', description: 'Интеграции и финальный проект' },
 ]
 
-function App() {
+function AppContent() {
   const [currentLevel, setCurrentLevel] = useState<Level>('0')
+  const { theme } = useTheme()
 
   const renderExercise = () => {
     switch (currentLevel) {
@@ -61,18 +64,26 @@ function App() {
   }
 
   return (
-    <div style={{ 
-      width: '100%', 
-      maxWidth: '1200px', 
-      display: 'flex', 
+    <div style={{
+      width: '100%',
+      maxWidth: '1200px',
+      display: 'flex',
       gap: '2rem',
       flexDirection: window.innerWidth < 768 ? 'column' : 'row'
     }}>
-      <aside style={{ 
+      <aside style={{
         width: window.innerWidth < 768 ? '100%' : '280px',
-        flexShrink: 0 
+        flexShrink: 0
       }}>
-        <h2 style={{ marginBottom: '1rem', fontSize: '1.5rem' }}>📚 Уровни</h2>
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          marginBottom: '1rem' 
+        }}>
+          <h2 style={{ fontSize: '1.5rem', margin: 0 }}>📚 Уровни</h2>
+          <ThemeToggle />
+        </div>
         <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           {levels.map((level) => (
             <button
@@ -81,9 +92,9 @@ function App() {
               style={{
                 textAlign: 'left',
                 padding: '0.75rem 1rem',
-                background: currentLevel === level.id ? '#646cff' : '#ffffff',
-                color: currentLevel === level.id ? '#fff' : '#213547',
-                border: currentLevel === level.id ? '2px solid #646cff' : '1px solid #ddd',
+                background: currentLevel === level.id ? '#646cff' : theme === 'dark' ? '#161b22' : '#ffffff',
+                color: currentLevel === level.id ? '#fff' : theme === 'dark' ? '#e6edf3' : '#213547',
+                border: currentLevel === level.id ? '2px solid #646cff' : '1px solid #30363d',
                 borderRadius: '8px',
                 cursor: 'pointer',
                 transition: 'all 0.2s',
@@ -92,13 +103,13 @@ function App() {
               onMouseEnter={(e) => {
                 if (currentLevel !== level.id) {
                   e.currentTarget.style.borderColor = '#646cff'
-                  e.currentTarget.style.background = '#f8f9fa'
+                  e.currentTarget.style.background = theme === 'dark' ? '#21262d' : '#f8f9fa'
                 }
               }}
               onMouseLeave={(e) => {
                 if (currentLevel !== level.id) {
-                  e.currentTarget.style.borderColor = '#ddd'
-                  e.currentTarget.style.background = '#ffffff'
+                  e.currentTarget.style.borderColor = '#30363d'
+                  e.currentTarget.style.background = theme === 'dark' ? '#161b22' : '#ffffff'
                 }
               }}
             >
@@ -113,6 +124,14 @@ function App() {
         {renderExercise()}
       </main>
     </div>
+  )
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   )
 }
 

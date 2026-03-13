@@ -72,9 +72,9 @@ export function TheoryBlock({ level }: TheoryBlockProps) {
     }}>
       <h2 style={{ marginBottom: '1rem' }}>📚 Теория</h2>
       <div className="theory-content">
-        <ReactMarkdown 
+        <ReactMarkdown
           remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeHighlight]}
+          rehypePlugins={[[rehypeHighlight, { detect: true, ignoreMissing: true }]]}
         >
           {content}
         </ReactMarkdown>
