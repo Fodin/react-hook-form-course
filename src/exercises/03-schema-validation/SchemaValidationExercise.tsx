@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { TheoryBlock } from '../../components/TheoryBlock'
 import { Task3_1_Template, Task3_2_Template, Task3_3_Template, Task3_4_Template, Task3_5_Template } from './Template'
 import { Task3_1_Solution, Task3_2_Solution, Task3_3_Solution, Task3_4_Solution, Task3_5_Solution } from './Solution'
 
@@ -80,35 +81,7 @@ export function SchemaValidationExercise() {
 
       {showSolution ? solutions[currentTask] : templates[currentTask]}
 
-      <section style={{ 
-        marginTop: '3rem', 
-        padding: '1.5rem', 
-        background: '#f8f9fa', 
-        borderRadius: '8px' 
-      }}>
-        <h2 style={{ marginBottom: '1rem' }}>📚 Теория</h2>
-        <div style={{ lineHeight: 1.8 }}>
-          <h3>Zod</h3>
-          <p>
-            TypeScript-first библиотека для валидации схем. Отличная типизация, функциональный API.
-          </p>
-          
-          <h3 style={{ marginTop: '1rem' }}>Yup</h3>
-          <p>
-            Проверенная временем библиотека с цепочечным API и большим сообществом.
-          </p>
-          
-          <h3 style={{ marginTop: '1rem' }}>@hookform/resolvers</h3>
-          <p>
-            Пакет для интеграции схем валидации с React Hook Form через resolver.
-          </p>
-          
-          <h3 style={{ marginTop: '1rem' }}>refine</h3>
-          <p>
-            Метод для создания кастомных правил валидации, включая cross-field.
-          </p>
-        </div>
-      </section>
+      <TheoryBlock level="3" />
     </div>
   )
 }

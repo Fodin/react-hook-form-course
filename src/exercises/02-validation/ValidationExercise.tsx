@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { TheoryBlock } from '../../components/TheoryBlock'
 import { Task2_1_Template, Task2_2_Template, Task2_3_Template, Task2_4_Template } from './Template'
 import { Task2_1_Solution, Task2_2_Solution, Task2_3_Solution, Task2_4_Solution } from './Solution'
 
@@ -77,35 +78,7 @@ export function ValidationExercise() {
 
       {showSolution ? solutions[currentTask] : templates[currentTask]}
 
-      <section style={{ 
-        marginTop: '3rem', 
-        padding: '1.5rem', 
-        background: '#f8f9fa', 
-        borderRadius: '8px' 
-      }}>
-        <h2 style={{ marginBottom: '1rem' }}>📚 Теория</h2>
-        <div style={{ lineHeight: 1.8 }}>
-          <h3>Built-in валидация</h3>
-          <p>
-            React Hook Form предоставляет встроенные правила: required, minLength, maxLength, min, max, pattern.
-          </p>
-          
-          <h3 style={{ marginTop: '1rem' }}>Custom валидация</h3>
-          <p>
-            Функция validate позволяет создавать сложные правила валидации с кастомными сообщениями.
-          </p>
-          
-          <h3 style={{ marginTop: '1rem' }}>Cross-field валидация</h3>
-          <p>
-            Используйте watch для получения значений других полей и валидируйте на их основе.
-          </p>
-          
-          <h3 style={{ marginTop: '1rem' }}>mode валидации</h3>
-          <p>
-            onChange — валидация при изменении, onBlur — при потере фокуса, onSubmit — при отправке.
-          </p>
-        </div>
-      </section>
+      <TheoryBlock level="2" />
     </div>
   )
 }

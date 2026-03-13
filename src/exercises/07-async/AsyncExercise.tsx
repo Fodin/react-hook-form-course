@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { TheoryBlock } from '../../components/TheoryBlock'
 import { Task7_1_Template, Task7_2_Template, Task7_3_Template, Task7_4_Template } from './Template'
 import { Task7_1_Solution, Task7_2_Solution, Task7_3_Solution, Task7_4_Solution } from './Solution'
 
@@ -90,36 +91,7 @@ export function AsyncExercise() {
 
       {showSolution ? solutions[currentTask] : templates[currentTask]}
 
-      <section style={{
-        marginTop: '3rem',
-        padding: '1.5rem',
-        background: '#f8f9fa',
-        borderRadius: '8px',
-        border: '1px solid #e9ecef'
-      }}>
-        <h2 style={{ marginBottom: '1rem' }}>📚 Теория</h2>
-        <div style={{ lineHeight: 1.8 }}>
-          <h3>Async валидация</h3>
-          <p>
-            Валидация с обращением к серверу. Используйте onBlur для запуска и setError для установки ошибок.
-          </p>
-
-          <h3 style={{ marginTop: '1rem' }}>Загрузка данных</h3>
-          <p>
-            Загрузите данные в useEffect и используйте reset для заполнения формы.
-          </p>
-
-          <h3 style={{ marginTop: '1rem' }}>Submit с loading/error</h3>
-          <p>
-            Управляйте состояниями submitting и error через useState. Блокируйте форму во время отправки.
-          </p>
-
-          <h3 style={{ marginTop: '1rem' }}>Debounce</h3>
-          <p>
-            Используйте setTimeout с очисткой в useEffect для отложенного выполнения действий.
-          </p>
-        </div>
-      </section>
+      <TheoryBlock level="7" />
     </div>
   )
 }

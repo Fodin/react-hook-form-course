@@ -176,6 +176,88 @@ section {
   border: 1px solid #e9ecef;
 }
 
+.theory-content h1 {
+  font-size: 1.75rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: #213547;
+}
+
+.theory-content h2 {
+  font-size: 1.5rem;
+  margin-top: 1.25rem;
+  margin-bottom: 0.75rem;
+  color: #213547;
+}
+
+.theory-content h3 {
+  font-size: 1.25rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: #213547;
+}
+
+.theory-content h4 {
+  font-size: 1rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+  color: #213547;
+}
+
+.theory-content p {
+  margin-bottom: 0.75rem;
+}
+
+.theory-content ul,
+.theory-content ol {
+  margin-bottom: 0.75rem;
+  padding-left: 1.5rem;
+}
+
+.theory-content li {
+  margin-bottom: 0.25rem;
+}
+
+.theory-content pre {
+  margin: 1rem 0;
+  background: #e9ecef;
+  color: #213547;
+  border-radius: 8px;
+  overflow-x: auto;
+  border: 1px solid #dee2e6;
+}
+
+.theory-content pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  font-size: 1em;
+  font-weight: normal;
+}
+
+.theory-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.theory-content th,
+.theory-content td {
+  border: 1px solid #dee2e6;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.theory-content th {
+  background: #e9ecef;
+  font-weight: 600;
+}
+
+.theory-content a {
+  color: #646cff;
+  text-decoration: underline;
+}
+
 /* Утилиты */
 .text-muted {
   color: #6c757d;

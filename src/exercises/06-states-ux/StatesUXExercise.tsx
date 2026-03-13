@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { TheoryBlock } from '../../components/TheoryBlock'
 import { Task6_1_Template, Task6_2_Template, Task6_3_Template, Task6_4_Template, Task6_5_Template } from './Template'
 import { Task6_1_Solution, Task6_2_Solution, Task6_3_Solution, Task6_4_Solution, Task6_5_Solution } from './Solution'
 
@@ -93,41 +94,7 @@ export function StatesUXExercise() {
 
       {showSolution ? solutions[currentTask] : templates[currentTask]}
 
-      <section style={{
-        marginTop: '3rem',
-        padding: '1.5rem',
-        background: '#f8f9fa',
-        borderRadius: '8px',
-        border: '1px solid #e9ecef'
-      }}>
-        <h2 style={{ marginBottom: '1rem' }}>📚 Теория</h2>
-        <div style={{ lineHeight: 1.8 }}>
-          <h3>Dirty / Touched</h3>
-          <p>
-            dirtyFields — поля, которые были изменены. touchedFields — поля, которые были затронуты (blur).
-          </p>
-
-          <h3 style={{ marginTop: '1rem' }}>Reset</h3>
-          <p>
-            Метод reset возвращает форму к начальным значениям. Можно передать новые значения.
-          </p>
-
-          <h3 style={{ marginTop: '1rem' }}>Focus Management</h3>
-          <p>
-            Автоматический фокус на первом поле с ошибкой улучшает UX при валидации.
-          </p>
-
-          <h3 style={{ marginTop: '1rem' }}>Accessibility</h3>
-          <p>
-            ARIA-атрибуты делают формы доступными для людей с ограниченными возможностями.
-          </p>
-
-          <h3 style={{ marginTop: '1rem' }}>Performance</h3>
-          <p>
-            useWatch для отдельных полей вместо watch() для всех полей уменьшает количество ре-рендеров.
-          </p>
-        </div>
-      </section>
+      <TheoryBlock level="6" />
     </div>
   )
 }

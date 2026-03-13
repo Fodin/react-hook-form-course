@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { TheoryBlock } from '../../components/TheoryBlock'
 import { Task5_1_Template, Task5_2_Template, Task5_3_Template, Task5_4_Template } from './Template'
 import { Task5_1_Solution, Task5_2_Solution, Task5_3_Solution, Task5_4_Solution } from './Solution'
 
@@ -90,36 +91,7 @@ export function DynamicFormsExercise() {
 
       {showSolution ? solutions[currentTask] : templates[currentTask]}
 
-      <section style={{
-        marginTop: '3rem',
-        padding: '1.5rem',
-        background: '#f8f9fa',
-        borderRadius: '8px',
-        border: '1px solid #e9ecef'
-      }}>
-        <h2 style={{ marginBottom: '1rem' }}>📚 Теория</h2>
-        <div style={{ lineHeight: 1.8 }}>
-          <h3>useFieldArray</h3>
-          <p>
-            Хук для работы с динамическими массивами полей. Позволяет добавлять, удалять, перемещать поля.
-          </p>
-
-          <h3 style={{ marginTop: '1rem' }}>Условные поля</h3>
-          <p>
-            Используйте watch для отслеживания значения и условный рендеринг для отображения нужных полей.
-          </p>
-
-          <h3 style={{ marginTop: '1rem' }}>Зависимые поля</h3>
-          <p>
-            Поля, значения которых зависят от других полей. При изменении родителя сбрасывайте дочернее поле.
-          </p>
-
-          <h3 style={{ marginTop: '1rem' }}>Wizard (multi-step)</h3>
-          <p>
-            Многошаговые формы с валидацией на каждом шаге. Используйте trigger для проверки перед переходом.
-          </p>
-        </div>
-      </section>
+      <TheoryBlock level="5" />
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Task1_1_Template, Task1_2_Template, Task1_3_Template, Task1_4_Template } from './Template'
 import { Task1_1_Solution, Task1_2_Solution, Task1_3_Solution, Task1_4_Solution } from './Solution'
+import { TheoryBlock } from '../../components/TheoryBlock'
 
 type Task = '1.1' | '1.2' | '1.3' | '1.4'
 
@@ -77,40 +78,7 @@ export function BasicFormExercise() {
 
       {showSolution ? solutions[currentTask] : templates[currentTask]}
 
-      <section style={{ 
-        marginTop: '3rem', 
-        padding: '1.5rem', 
-        background: '#f8f9fa', 
-        borderRadius: '8px' 
-      }}>
-        <h2 style={{ marginBottom: '1rem' }}>📚 Теория</h2>
-        <div style={{ lineHeight: 1.8 }}>
-          <h3>useForm</h3>
-          <p>
-            Главный хук для управления формой. Возвращает методы и состояние для работы с формой.
-          </p>
-          
-          <h3 style={{ marginTop: '1rem' }}>register</h3>
-          <p>
-            Регистрирует поле в форме. Можно передавать опции валидации: required, min, max, pattern.
-          </p>
-          
-          <h3 style={{ marginTop: '1rem' }}>watch</h3>
-          <p>
-            Подписывается на изменения значений полей. Полезно для реактивного обновления UI.
-          </p>
-          
-          <h3 style={{ marginTop: '1rem' }}>setValue / getValues</h3>
-          <p>
-            setValue устанавливает значение поля программно. getValues получает текущие значения.
-          </p>
-          
-          <h3 style={{ marginTop: '1rem' }}>formState</h3>
-          <p>
-            Объект с состоянием формы: errors, isValid, isSubmitting, isDirty, touchedFields.
-          </p>
-        </div>
-      </section>
+      <TheoryBlock level="1" />
     </div>
   )
 }

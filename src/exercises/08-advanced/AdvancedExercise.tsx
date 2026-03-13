@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { TheoryBlock } from '../../components/TheoryBlock'
 import { Task8_1_Template, Task8_2_Template, Task8_3_Template, Task8_4_Template, Task8_5_Template } from './Template'
 import { Task8_1_Solution, Task8_2_Solution, Task8_3_Solution, Task8_4_Solution, Task8_5_Solution } from './Solution'
 
@@ -93,36 +94,7 @@ export function AdvancedExercise() {
 
       {showSolution ? solutions[currentTask] : templates[currentTask]}
 
-      <section style={{
-        marginTop: '3rem',
-        padding: '1.5rem',
-        background: '#f8f9fa',
-        borderRadius: '8px',
-        border: '1px solid #e9ecef'
-      }}>
-        <h2 style={{ marginBottom: '1rem' }}>📚 Теория</h2>
-        <div style={{ lineHeight: 1.8 }}>
-          <h3>Controller</h3>
-          <p>
-            Компонент для интеграции контролируемых компонентов (UI-библиотеки) с react-hook-form.
-          </p>
-
-          <h3 style={{ marginTop: '1rem' }}>Кастомные хуки</h3>
-          <p>
-            Создавайте переиспользуемые хуки для общей логики, например useFormPersist для localStorage.
-          </p>
-
-          <h3 style={{ marginTop: '1rem' }}>FormContext</h3>
-          <p>
-            FormProvider и useFormContext позволяют разделять форму на подкомпоненты без прокидывания props.
-          </p>
-
-          <h3 style={{ marginTop: '1rem' }}>localStorage Persistence</h3>
-          <p>
-            Сохраняйте данные формы в localStorage для восстановления после перезагрузки страницы.
-          </p>
-        </div>
-      </section>
+      <TheoryBlock level="8" />
     </div>
   )
 }

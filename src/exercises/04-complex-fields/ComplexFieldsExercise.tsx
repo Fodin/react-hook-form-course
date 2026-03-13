@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { TheoryBlock } from '../../components/TheoryBlock'
 import { Task4_1_Template, Task4_2_Template, Task4_3_Template, Task4_4_Template, Task4_5_Template } from './Template'
 import { Task4_1_Solution, Task4_2_Solution, Task4_3_Solution, Task4_4_Solution, Task4_5_Solution } from './Solution'
 
@@ -80,35 +81,7 @@ export function ComplexFieldsExercise() {
 
       {showSolution ? solutions[currentTask] : templates[currentTask]}
 
-      <section style={{ 
-        marginTop: '3rem', 
-        padding: '1.5rem', 
-        background: '#f8f9fa', 
-        borderRadius: '8px' 
-      }}>
-        <h2 style={{ marginBottom: '1rem' }}>📚 Теория</h2>
-        <div style={{ lineHeight: 1.8 }}>
-          <h3>Controller</h3>
-          <p>
-            Компонент для интеграции контролируемых компонентов (UI-библиотеки) с react-hook-form.
-          </p>
-          
-          <h3 style={{ marginTop: '1rem' }}>Radio/Select</h3>
-          <p>
-            Используйте register как с обычными input. Для select значение берётся из выбранного option.
-          </p>
-          
-          <h3 style={{ marginTop: '1rem' }}>Checkbox</h3>
-          <p>
-            Одиночный — boolean значение. Множественный — используйте setValue для управления массивом.
-          </p>
-          
-          <h3 style={{ marginTop: '1rem' }}>File Upload</h3>
-          <p>
-            Валидируйте FileList через refine: размер, тип файла. Используйте URL.createObjectURL для предпросмотра.
-          </p>
-        </div>
-      </section>
+      <TheoryBlock level="4" />
     </div>
   )
 }
