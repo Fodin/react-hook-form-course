@@ -58,7 +58,7 @@ export function TaskBlock({ taskNumber, title, children, footer }: TaskBlockProp
           margin: 0,
           fontSize: '1.25rem',
           fontWeight: 600,
-          color: '#213547'
+          color: isDark ? '#e6edf3' : '#213547'
         }}>
           {title}
         </h3>
@@ -72,7 +72,7 @@ export function TaskBlock({ taskNumber, title, children, footer }: TaskBlockProp
         <div style={{
           marginTop: '1.5rem',
           paddingTop: '1rem',
-          borderTop: '1px dashed #e9ecef'
+          borderTop: '1px dashed ' + (isDark ? '#30363d' : '#e9ecef')
         }}>
           {footer}
         </div>

@@ -1,23 +1,30 @@
 import { useState } from 'react'
-import { TheoryBlock } from '../../components/TheoryBlock'
-import { Task3_1_Template, Task3_2_Template, Task3_3_Template, Task3_4_Template, Task3_5_Template } from './Template'
+import { useTheme } from '../../hooks/useTheme'
+import { Task3_1 } from './Task3_1'
+import { Task3_2 } from './Task3_2'
+import { Task3_3 } from './Task3_3'
+import { Task3_4 } from './Task3_4'
+import { Task3_5 } from './Task3_5'
 import { Task3_1_Solution, Task3_2_Solution, Task3_3_Solution, Task3_4_Solution, Task3_5_Solution } from './Solution'
+import { TheoryBlock } from '../../components/TheoryBlock'
 
 type Task = '3.1' | '3.2' | '3.3' | '3.4' | '3.5'
 
 export function SchemaValidationExercise() {
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
   const [currentTask, setCurrentTask] = useState<Task>('3.1')
   const [showSolution, setShowSolution] = useState(false)
 
-  const templates: Record<Task, React.ReactNode> = {
-    '3.1': <Task3_1_Template />,
-    '3.2': <Task3_2_Template />,
-    '3.3': <Task3_3_Template />,
-    '3.4': <Task3_4_Template />,
-    '3.5': <Task3_5_Template />,
+  const tasks = {
+    '3.1': <Task3_1 />,
+    '3.2': <Task3_2 />,
+    '3.3': <Task3_3 />,
+    '3.4': <Task3_4 />,
+    '3.5': <Task3_5 />,
   }
 
-  const solutions: Record<Task, React.ReactNode> = {
+  const solutions = {
     '3.1': <Task3_1_Solution />,
     '3.2': <Task3_2_Solution />,
     '3.3': <Task3_3_Solution />,
@@ -25,13 +32,23 @@ export function SchemaValidationExercise() {
     '3.5': <Task3_5_Solution />,
   }
 
-  const tasks: { id: Task; name: string }[] = [
+  const taskList = [
     { id: '3.1', name: 'Zod базовая' },
     { id: '3.2', name: 'Yup базовая' },
     { id: '3.3', name: 'Сложные схемы' },
     { id: '3.4', name: 'refine' },
     { id: '3.5', name: 'Сравнение' },
   ]
+
+  const placeholderStyle: React.CSSProperties = {
+    marginTop: '2rem',
+    padding: '2rem',
+    background: isDark ? '#1c2128' : '#f0f9ff',
+    borderRadius: '12px',
+    border: `2px dashed ${isDark ? '#30363d' : '#646cff'}`,
+    textAlign: 'center',
+    color: isDark ? '#8b949e' : '#6c757d',
+  }
 
   return (
     <div>
@@ -45,10 +62,10 @@ export function SchemaValidationExercise() {
       </header>
 
       <div style={{ marginBottom: '1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-        {tasks.map((task) => (
+        {taskList.map((task) => (
           <button
             key={task.id}
-            onClick={() => setCurrentTask(task.id)}
+            onClick={() => setCurrentTask(task.id as Task)}
             style={{
               background: currentTask === task.id ? '#646cff' : '#ffffff',
               color: currentTask === task.id ? '#fff' : '#213547',
@@ -56,6 +73,19 @@ export function SchemaValidationExercise() {
               padding: '0.5rem 1rem',
               borderRadius: '4px',
               cursor: 'pointer',
+              fontWeight: currentTask === task.id ? 600 : 400,
+            }}
+            onMouseEnter={(e) => {
+              if (currentTask !== task.id) {
+                e.currentTarget.style.borderColor = '#646cff'
+                e.currentTarget.style.background = '#f0f0ff'
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (currentTask !== task.id) {
+                e.currentTarget.style.borderColor = '#ddd'
+                e.currentTarget.style.background = '#ffffff'
+              }
             }}
           >
             Задание {task.id}
@@ -64,7 +94,7 @@ export function SchemaValidationExercise() {
       </div>
 
       <div style={{ marginBottom: '1.5rem' }}>
-        <button 
+        <button
           onClick={() => setShowSolution(!showSolution)}
           style={{
             background: showSolution ? '#4caf50' : '#646cff',
@@ -79,7 +109,17 @@ export function SchemaValidationExercise() {
         </button>
       </div>
 
-      {showSolution ? solutions[currentTask] : templates[currentTask]}
+      {showSolution ? solutions[currentTask] : tasks[currentTask]}
+
+      <div style={placeholderStyle}>
+        <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✏️</div>
+        <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>
+          Ваша форма появится здесь
+        </div>
+        <div style={{ fontSize: '0.9rem' }}>
+          Откройте файл Task{currentTask.replace('.', '_')}.tsx и выполните задание
+        </div>
+      </div>
 
       <TheoryBlock level="3" />
     </div>

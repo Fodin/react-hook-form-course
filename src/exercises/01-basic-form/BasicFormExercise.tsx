@@ -1,19 +1,26 @@
 import { useState } from 'react'
-import { Task1_1_Template, Task1_2_Template, Task1_3_Template, Task1_4_Template } from './Template'
-import { Task1_1_Solution, Task1_2_Solution, Task1_3_Solution, Task1_4_Solution } from './Solution'
+import { useTheme } from '../../hooks/useTheme'
 import { TheoryBlock } from '../../components/TheoryBlock'
+import { Task1_1 } from './Task1_1'
+import { Task1_2 } from './Task1_2'
+import { Task1_3 } from './Task1_3'
+import { Task1_4 } from './Task1_4'
+import { Task1_1_Solution, Task1_2_Solution, Task1_3_Solution, Task1_4_Solution } from './Solution'
 
 type Task = '1.1' | '1.2' | '1.3' | '1.4'
 
 export function BasicFormExercise() {
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
+  
   const [currentTask, setCurrentTask] = useState<Task>('1.1')
   const [showSolution, setShowSolution] = useState(false)
 
-  const templates = {
-    '1.1': <Task1_1_Template />,
-    '1.2': <Task1_2_Template />,
-    '1.3': <Task1_3_Template />,
-    '1.4': <Task1_4_Template />,
+  const tasks = {
+    '1.1': <Task1_1 />,
+    '1.2': <Task1_2 />,
+    '1.3': <Task1_3 />,
+    '1.4': <Task1_4 />,
   }
 
   const solutions = {
@@ -23,12 +30,22 @@ export function BasicFormExercise() {
     '1.4': <Task1_4_Solution />,
   }
 
-  const tasks: { id: Task; name: string }[] = [
+  const taskList: { id: Task; name: string }[] = [
     { id: '1.1', name: 'Форма регистрации' },
     { id: '1.2', name: 'Watch в реальном времени' },
     { id: '1.3', name: 'setValue и getValues' },
     { id: '1.4', name: 'formState' },
   ]
+
+  const placeholderStyle: React.CSSProperties = {
+    marginTop: '2rem',
+    padding: '2rem',
+    background: isDark ? '#1c2128' : '#f0f9ff',
+    borderRadius: '12px',
+    border: `2px dashed ${isDark ? '#30363d' : '#646cff'}`,
+    textAlign: 'center',
+    color: isDark ? '#8b949e' : '#6c757d',
+  }
 
   return (
     <div>
@@ -36,23 +53,26 @@ export function BasicFormExercise() {
         <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
           Уровень 1: Основы
         </h1>
-        <p style={{ color: '#6c757d' }}>
+        <p style={{ color: isDark ? '#8b949e' : '#6c757d' }}>
           useForm, register, handleSubmit, watch, setValue, getValues, formState
         </p>
       </header>
 
       <div style={{ marginBottom: '1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-        {tasks.map((task) => (
+        {taskList.map((task) => (
           <button
             key={task.id}
-            onClick={() => setCurrentTask(task.id)}
+            onClick={() => setCurrentTask(task.id as Task)}
             style={{
-              background: currentTask === task.id ? '#646cff' : '#ffffff',
-              color: currentTask === task.id ? '#fff' : '#213547',
-              border: '2px solid ' + (currentTask === task.id ? '#646cff' : '#ddd'),
-              padding: '0.5rem 1rem',
-              borderRadius: '4px',
+              textAlign: 'left',
+              padding: '0.75rem 1rem',
+              background: currentTask === task.id ? '#646cff' : isDark ? '#161b22' : '#ffffff',
+              color: currentTask === task.id ? '#fff' : isDark ? '#e6edf3' : '#213547',
+              border: '2px solid ' + (currentTask === task.id ? '#646cff' : '#30363d'),
+              borderRadius: '8px',
               cursor: 'pointer',
+              transition: 'all 0.2s',
+              fontWeight: currentTask === task.id ? 600 : 400,
             }}
           >
             Задание {task.id}
@@ -61,7 +81,7 @@ export function BasicFormExercise() {
       </div>
 
       <div style={{ marginBottom: '1.5rem' }}>
-        <button 
+        <button
           onClick={() => setShowSolution(!showSolution)}
           style={{
             background: showSolution ? '#4caf50' : '#646cff',
@@ -76,7 +96,17 @@ export function BasicFormExercise() {
         </button>
       </div>
 
-      {showSolution ? solutions[currentTask] : templates[currentTask]}
+      {showSolution ? solutions[currentTask] : tasks[currentTask]}
+
+      <div style={placeholderStyle}>
+        <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✏️</div>
+        <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>
+          Ваша форма появится здесь
+        </div>
+        <div style={{ fontSize: '0.9rem' }}>
+          Откройте файл Task{currentTask.replace('.', '_')}.tsx и выполните задание
+        </div>
+      </div>
 
       <TheoryBlock level="1" />
     </div>

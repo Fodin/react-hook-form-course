@@ -1,34 +1,50 @@
 import { useState } from 'react'
-import { TheoryBlock } from '../../components/TheoryBlock'
-import { Task5_1_Template, Task5_2_Template, Task5_3_Template, Task5_4_Template } from './Template'
+import { useTheme } from '../../hooks/useTheme'
+import { Task5_1 } from './Task5_1'
+import { Task5_2 } from './Task5_2'
+import { Task5_3 } from './Task5_3'
+import { Task5_4 } from './Task5_4'
 import { Task5_1_Solution, Task5_2_Solution, Task5_3_Solution, Task5_4_Solution } from './Solution'
+import { TheoryBlock } from '../../components/TheoryBlock'
 
 type Task = '5.1' | '5.2' | '5.3' | '5.4'
 
 export function DynamicFormsExercise() {
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
   const [currentTask, setCurrentTask] = useState<Task>('5.1')
   const [showSolution, setShowSolution] = useState(false)
 
-  const templates: Record<Task, React.ReactNode> = {
-    '5.1': <Task5_1_Template />,
-    '5.2': <Task5_2_Template />,
-    '5.3': <Task5_3_Template />,
-    '5.4': <Task5_4_Template />,
+  const tasks = {
+    '5.1': <Task5_1 />,
+    '5.2': <Task5_2 />,
+    '5.3': <Task5_3 />,
+    '5.4': <Task5_4 />,
   }
 
-  const solutions: Record<Task, React.ReactNode> = {
+  const solutions = {
     '5.1': <Task5_1_Solution />,
     '5.2': <Task5_2_Solution />,
     '5.3': <Task5_3_Solution />,
     '5.4': <Task5_4_Solution />,
   }
 
-  const tasks: { id: Task; name: string }[] = [
+  const taskList = [
     { id: '5.1', name: 'useFieldArray' },
     { id: '5.2', name: 'Условные поля' },
     { id: '5.3', name: 'Зависимые поля' },
     { id: '5.4', name: 'Wizard' },
   ]
+
+  const placeholderStyle: React.CSSProperties = {
+    marginTop: '2rem',
+    padding: '2rem',
+    background: isDark ? '#1c2128' : '#f0f9ff',
+    borderRadius: '12px',
+    border: `2px dashed ${isDark ? '#30363d' : '#646cff'}`,
+    textAlign: 'center',
+    color: isDark ? '#8b949e' : '#6c757d',
+  }
 
   return (
     <div>
@@ -42,10 +58,10 @@ export function DynamicFormsExercise() {
       </header>
 
       <div style={{ marginBottom: '1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-        {tasks.map((task) => (
+        {taskList.map((task) => (
           <button
             key={task.id}
-            onClick={() => setCurrentTask(task.id)}
+            onClick={() => setCurrentTask(task.id as Task)}
             style={{
               background: currentTask === task.id ? '#646cff' : '#ffffff',
               color: currentTask === task.id ? '#fff' : '#213547',
@@ -89,7 +105,17 @@ export function DynamicFormsExercise() {
         </button>
       </div>
 
-      {showSolution ? solutions[currentTask] : templates[currentTask]}
+      {showSolution ? solutions[currentTask] : tasks[currentTask]}
+
+      <div style={placeholderStyle}>
+        <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✏️</div>
+        <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>
+          Ваша форма появится здесь
+        </div>
+        <div style={{ fontSize: '0.9rem' }}>
+          Откройте файл Task{currentTask.replace('.', '_')}.tsx и выполните задание
+        </div>
+      </div>
 
       <TheoryBlock level="5" />
     </div>

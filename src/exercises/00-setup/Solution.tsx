@@ -6,7 +6,7 @@ interface LoginForm {
   password: string
 }
 
-export function Solution() {
+export function Task0_1_Solution() {
   const { register, handleSubmit } = useForm<LoginForm>()
   const [submittedData, setSubmittedData] = useState<LoginForm | null>(null)
 
