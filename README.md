@@ -143,3 +143,151 @@ src/exercises/XX-level/
 ## 📝 Лицензия
 
 MIT
+
+---
+
+# 🎓 React Hook Form: From Beginner to Pro
+
+Interactive course to learn **React Hook Form** using **TypeScript**, **Zod** and **Yup**.
+
+## 📋 About the Course
+
+This project contains step-by-step exercises from simple to complex. Each level includes:
+- 📚 Brief theory
+- 💡 Code examples
+- ✍️ Tasks for independent solving
+- ✅ Tests for verification
+
+## 🚀 Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Start dev server
+npm run dev
+
+# Build the project
+npm run build
+```
+
+## 📚 Course Program
+
+### Level 0: Setup
+- 0.1: Project setup
+- 0.2: First form (Hello World)
+
+### Level 1: Basics
+- 1.1: useForm, register, handleSubmit
+- 1.2: Different field types
+- 1.3: formState (errors, isValid, isSubmitting)
+- 1.4: setValue, getValues, watch
+
+### Level 2: Validation
+- 2.1: Built-in validation (required, minLength, maxLength)
+- 2.2: Patterns (email, phone, password)
+- 2.3: Custom validate functions
+- 2.4: Cross-field validation (confirm password)
+
+### Level 3: Schema Validation
+- 3.1: Zod basics
+- 3.2: Yup basics
+- 3.3: Complex schemas (objects, arrays, enum)
+- 3.4: Custom messages and i18n
+- 3.5: Zod vs Yup comparison
+
+### Level 4: Complex Fields
+- 4.1: Radio and Select
+- 4.2: Checkbox (single and multi)
+- 4.3: Date/Time pickers
+- 4.4: File upload (basic)
+- 4.5: Controller for third-party components
+
+### Level 5: Dynamic Forms
+- 5.1: useFieldArray (add/remove)
+- 5.2: Conditional fields
+- 5.3: Dependent fields
+- 5.4: Wizard (multi-step)
+- 5.5: Nested field arrays
+
+### Level 6: States and UX
+- 6.1: Dirty/Touched states
+- 6.2: Default values and reset
+- 6.3: Focus management on errors
+- 6.4: Accessibility (ARIA)
+- 6.5: Performance optimization
+
+### Level 7: Async
+- 7.1: Async validation (server-side)
+- 7.2: Data loading (edit mode)
+- 7.3: Submit with loading/error
+- 7.4: Debounce for auto-save
+- 7.5: File upload with progress
+
+### Level 8: Advanced Techniques
+- 8.1: Integration with MUI/AntD
+- 8.2: Custom hooks
+- 8.3: FormContext (form separation)
+- 8.4: localStorage persistence
+- 8.5: Testing (RTL)
+- 8.6: Final project
+
+## 📁 Project Structure
+
+```
+src/
+├── exercises/           # Exercises by levels
+│   ├── 00-setup/
+│   ├── 01-basic-form/
+│   ├── 02-validation/
+│   ├── 03-schema-validation/
+│   ├── 04-complex-fields/
+│   ├── 05-dynamic-forms/
+│   ├── 06-states-ux/
+│   ├── 07-async/
+│   └── 08-advanced/
+├── shared/              # Shared components and utilities
+│   ├── components/
+│   └── types/
+├── App.tsx              # Main component
+└── main.tsx             # Entry point
+```
+
+## 🎯 How to Work with Exercises
+
+1. Open the folder of the desired level
+2. Read `README.md` with theory
+3. Study `task.md` file with the task
+4. Open `Template.tsx` and follow TODO comments
+5. Write code independently
+6. Check your solution against **`Cheat.tsx`**
+7. Verify the result in the browser
+
+## 📁 Each Level Structure
+
+```
+src/exercises/XX-level/
+├── README.md         # Detailed theory with examples
+├── task.md           # Task description
+├── Template.tsx      # Template with TODO for independent solving
+├── Solution.tsx      # Solution for integration into the app
+├── Cheat.tsx         # 📋 Sample correct solution (for checking)
+├── index.ts          # Exports
+└── *Exercise.tsx     # Main level component
+```
+
+> 💡 **Tip:** First try to solve the task independently in `Template.tsx`, then check `Cheat.tsx` for verification or if you're stuck.
+
+## 🛠 Technologies
+
+- **React** 18.3
+- **TypeScript** 5.6
+- **React Hook Form** 7.54
+- **Zod** 3.24
+- **Yup** 1.6
+- **Vite** 6.0
+- **Axios** 1.7
+
+## 📝 License
+
+MIT
