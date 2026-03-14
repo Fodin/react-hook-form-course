@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTheme } from '../../hooks/useTheme'
 import { TheoryBlock } from '../../components/TheoryBlock'
 import { FormContainer } from '../../components/FormContainer'
+import { TaskDescription } from '../../components/TaskDescription'
 import { Task4_1 } from './Task4_1'
 import { Task4_2 } from './Task4_2'
 import { Task4_3 } from './Task4_3'
@@ -105,6 +106,8 @@ export function ComplexFieldsExercise() {
           {tasks[currentTask]}
         </FormContainer>
       )}
+
+      <TaskDescription taskNumber={currentTask} level="4" />
 
       <TheoryBlock level="4" />
     </div>

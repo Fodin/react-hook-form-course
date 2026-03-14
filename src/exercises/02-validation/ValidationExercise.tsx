@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTheme } from '../../hooks/useTheme'
 import { TheoryBlock } from '../../components/TheoryBlock'
 import { FormContainer } from '../../components/FormContainer'
+import { TaskDescription } from '../../components/TaskDescription'
 import { Task2_1 } from './Task2_1'
 import { Task2_2 } from './Task2_2'
 import { Task2_3 } from './Task2_3'
@@ -101,6 +102,8 @@ export function ValidationExercise() {
           {tasks[currentTask]}
         </FormContainer>
       )}
+
+      <TaskDescription taskNumber={currentTask} level="2" />
 
       <TheoryBlock level="2" />
     </div>

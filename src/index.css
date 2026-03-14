@@ -474,11 +474,39 @@ section {
 .theory-content ul,
 .theory-content ol {
   margin-bottom: 0.75rem;
-  padding-left: 1.5rem;
+  padding-left: 2rem;
+  list-style-position: outside;
 }
 
-.theory-content li {
+.theory-content ul li,
+.theory-content ol li {
   margin-bottom: 0.25rem;
+  padding-left: 0.25rem;
+}
+
+/* Исправляем нумерацию вложенных списков */
+.theory-content ol {
+  list-style-type: decimal;
+}
+
+.theory-content ol ol {
+  list-style-type: lower-alpha;
+}
+
+.theory-content ol ol ol {
+  list-style-type: lower-roman;
+}
+
+.theory-content ul {
+  list-style-type: disc;
+}
+
+.theory-content ul ul {
+  list-style-type: circle;
+}
+
+.theory-content ul ul ul {
+  list-style-type: square;
 }
 
 .theory-content pre {
@@ -558,4 +586,34 @@ section {
 /* Утилиты */
 .text-muted {
   color: #6c757d;
+}
+
+/* TaskDescription стили */
+.task-description-content ul,
+.task-description-content ol {
+  margin-bottom: 0.75rem;
+  padding-left: 2rem;
+  list-style-position: outside;
+}
+
+.task-description-content ul li,
+.task-description-content ol li {
+  margin-bottom: 0.25rem;
+  padding-left: 0.25rem;
+}
+
+.task-description-content ol {
+  list-style-type: decimal;
+}
+
+.task-description-content ol ol {
+  list-style-type: lower-alpha;
+}
+
+.task-description-content ul {
+  list-style-type: disc;
+}
+
+.task-description-content ul ul {
+  list-style-type: circle;
 }

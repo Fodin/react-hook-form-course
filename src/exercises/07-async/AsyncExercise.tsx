@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTheme } from '../../hooks/useTheme'
 import { TheoryBlock } from '../../components/TheoryBlock'
 import { FormContainer } from '../../components/FormContainer'
+import { TaskDescription } from '../../components/TaskDescription'
 import { Task7_1 } from './Task7_1'
 import { Task7_2 } from './Task7_2'
 import { Task7_3 } from './Task7_3'
@@ -101,6 +102,8 @@ export function AsyncExercise() {
           {tasks[currentTask]}
         </FormContainer>
       )}
+
+      <TaskDescription taskNumber={currentTask} level="7" />
 
       <TheoryBlock level="7" />
     </div>
