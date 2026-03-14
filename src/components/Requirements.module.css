@@ -1,0 +1,32 @@
+.requirements {
+  margin-bottom: 1.25rem;
+}
+
+.requirementsTitle {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.requirementsTitleLight {
+  color: #495057;
+}
+
+.requirementsTitleDark {
+  color: #8b949e;
+}
+
+.requirementsList {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.requirementsListLight {
+  color: #213547;
+}
+
+.requirementsListDark {
+  color: #e6edf3;
+}

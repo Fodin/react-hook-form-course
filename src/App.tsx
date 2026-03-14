@@ -1,8 +1,5 @@
-import { ThemeProvider } from './hooks/useTheme'
-import { ThemeToggle } from './components/ThemeToggle'
-import { useAppLevels } from './hooks/useAppLevels'
-import { LevelSidebar } from './components/LevelSidebar'
-import { ExerciseRenderer } from './components/ExerciseRenderer'
+import { ThemeProvider, useAppLevels } from './hooks'
+import { LevelSidebar, ExerciseRenderer } from './components'
 import styles from './App.module.css'
 
 function AppContent() {

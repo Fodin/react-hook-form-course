@@ -1,0 +1,26 @@
+.tip {
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid;
+}
+
+.tipLight {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border-color: #bae6fd;
+  color: #0c4a6e;
+}
+
+.tipDark {
+  background: linear-gradient(135deg, #1c2128 0%, #161b22 100%);
+  border-color: #30363d;
+  color: #58a6ff;
+}
+
+.tipHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
