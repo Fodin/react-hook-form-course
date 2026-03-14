@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
+import { useLanguage } from './useLanguage'
 
 interface UseMarkdownLoaderOptions {
   fallback?: string
 }
 
 /**
- * Хук для загрузки markdown файлов
+ * Хук для загрузки markdown файлов с поддержкой локализации
  */
 export function useMarkdownLoader(path: string, options: UseMarkdownLoaderOptions = {}) {
   const { fallback = '' } = options
+  const { language } = useLanguage()
   const [content, setContent] = useState<string>('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -19,9 +21,28 @@ export function useMarkdownLoader(path: string, options: UseMarkdownLoaderOption
     const loadMarkdown = async () => {
       try {
         setLoading(true)
-        const response = await fetch(path)
+        
+        // Добавляем .en.md для английского языка
+        const localizedPath = language === 'en' 
+          ? path.replace('.md', '.en.md')
+          : path
+        
+        const response = await fetch(localizedPath)
         
         if (!response.ok) {
+          // Если английская версия не найдена, пробуем русскую
+          if (language === 'en') {
+            const fallbackResponse = await fetch(path)
+            if (fallbackResponse.ok) {
+              const text = await fallbackResponse.text()
+              if (mounted) {
+                setContent(text)
+                setError(null)
+              }
+              setLoading(false)
+              return
+            }
+          }
           throw new Error(`Failed to load markdown: ${response.status}`)
         }
         
@@ -48,7 +69,7 @@ export function useMarkdownLoader(path: string, options: UseMarkdownLoaderOption
     return () => {
       mounted = false
     }
-  }, [path, fallback])
+  }, [path, language, fallback])
 
   return { content, loading, error }
 }
