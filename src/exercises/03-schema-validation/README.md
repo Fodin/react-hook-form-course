@@ -528,6 +528,94 @@ export function RegistrationForm() {
 
 ---
 
+## Частые ошибки новичков
+
+### ❌ Ошибка 1: Не импортировали resolver
+
+```tsx
+// ❌ Неправильно - забыли resolver
+import { z } from 'zod'
+const { register } = useForm({ resolver: zodResolver(schema) }) // zodResolver не импортирован
+
+// ✅ Правильно - импортируем resolver
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+const { register } = useForm({ resolver: zodResolver(schema) })
+```
+
+**Почему это ошибка:** Без `zodResolver` или `yupResolver` схема не будет интегрирована с React Hook Form.
+
+---
+
+### ❌ Ошибка 2: .refine() без path
+
+```tsx
+// ❌ Неправильно - ошибка не привязана к полю
+.refine((data) => data.password === data.confirm, {
+  message: 'Пароли не совпадают'
+})
+
+// ✅ Правильно - указываем path
+.refine((data) => data.password === data.confirm, {
+  message: 'Пароли не совпадают',
+  path: ['confirm']
+})
+```
+
+**Почему это ошибка:** Без `path` ошибка не будет отображена в `errors.confirmPassword`, а будет в `errors.root`.
+
+---
+
+### ❌ Ошибка 3: Неправильный type inference
+
+```tsx
+// ❌ Неправильно - тип не выведен из схемы
+type FormData = {
+  email: string
+  password: string
+}
+const schema = z.object({ email: z.string(), password: z.string() })
+
+// ✅ Правильно - используем z.infer
+const schema = z.object({
+  email: z.string(),
+  password: z.string(),
+})
+type FormData = z.infer<typeof schema>
+```
+
+**Почему это ошибка:** Ручное описание типа может рассинхронизироваться со схемой. `z.infer` гарантирует актуальность.
+
+---
+
+### ❌ Ошибка 4: .optional() вместо .nullable()
+
+```tsx
+// ❌ Неправильно - undefined не то же самое что null
+bio: z.string().optional() // может быть undefined
+
+// ✅ Правильно - если нужно null
+bio: z.string().nullable() // может быть null
+```
+
+**Почему это ошибка:** `optional()` делает поле `string | undefined`, а `nullable()` — `string | null`. Это разные типы.
+
+---
+
+### ❌ Ошибка 5: Минимум 1 элемент в массиве без сообщения
+
+```tsx
+// ❌ Неправильно - непонятная ошибка
+skills: z.array(z.string()).min(1)
+
+// ✅ Правильно - с сообщением
+skills: z.array(z.string()).min(1, 'Выберите хотя бы один навык')
+```
+
+**Почему это ошибка:** Пользователь должен понимать, что именно не так с формой.
+
+---
+
 ## 📝 Задания
 
 Переходите к файлу [`task.md`](./task.md) для выполнения практических заданий.

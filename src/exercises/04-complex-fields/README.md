@@ -592,6 +592,125 @@ export function ProductForm() {
 
 ---
 
+## Частые ошибки новичков
+
+### ❌ Ошибка 1: Controller без control
+
+```tsx
+// ❌ Неправильно - control не передан
+<Controller
+  name="category"
+  render={({ field }) => <Select {...field} />}
+/>
+
+// ✅ Правильно - передаём control
+const { control } = useForm()
+<Controller
+  name="category"
+  control={control}
+  render={({ field }) => <Select {...field} />}
+/>
+```
+
+**Почему это ошибка:** `Controller` требует `control` для связи с формой React Hook Form.
+
+---
+
+### ❌ Ошибка 2: Checkbox без checked
+
+```tsx
+// ❌ Неправильно - checkbox не контролируемый
+<input type="checkbox" {...register('agree')} />
+
+// ✅ Правильно - с checked для Controller
+<Controller
+  name="agree"
+  control={control}
+  render={({ field }) => (
+    <input
+      type="checkbox"
+      checked={field.value}
+      onChange={field.onChange}
+    />
+  )}
+/>
+```
+
+**Почему это ошибка:** Checkbox требует явного указания `checked` для корректной работы в контролируемом режиме.
+
+---
+
+### ❌ Ошибка 3: File без preventDefault
+
+```tsx
+// ❌ Неправильно - форма отправляется при выборе файла
+<input type="file" {...register('avatar')} />
+
+// ✅ Правильно - отменяем стандартное поведение
+<form onSubmit={handleSubmit(onSubmit)}>
+  <input
+    type="file"
+    {...register('avatar')}
+    onChange={(e) => {
+      const file = e.target.files?.[0]
+      // обработка файла
+    }}
+  />
+</form>
+```
+
+**Почему это ошибка:** При загрузке файлов важно не отправлять форму автоматически, а обрабатывать файл отдельно.
+
+---
+
+### ❌ Ошибка 4: Не преобразуют значение в Controller
+
+```tsx
+// ❌ Неправильно - передаётся весь объект
+<Controller
+  name="category"
+  control={control}
+  render={({ field }) => (
+    <Select
+      {...field}
+      options={[{ value: 'el', label: 'Электроника' }]}
+    />
+  )}
+/>
+
+// ✅ Правильно - преобразуем значение
+<Controller
+  name="category"
+  control={control}
+  render={({ field }) => (
+    <Select
+      {...field}
+      onChange={(selected) => field.onChange(selected?.value)}
+      options={[{ value: 'el', label: 'Электроника' }]}
+    />
+  )}
+/>
+```
+
+**Почему это ошибка:** Сторонние компоненты часто возвращают объекты, а не простые значения.
+
+---
+
+### ❌ Ошибка 5: Radio без value
+
+```tsx
+// ❌ Неправильно - нет value
+<input type="radio" {...register('gender')} />
+
+// ✅ Правильно - с value
+<input type="radio" value="male" {...register('gender')} />
+<input type="radio" value="female" {...register('gender')} />
+```
+
+**Почему это ошибка:** Radio кнопки требуют `value` для определения выбранного значения.
+
+---
+
 ## 📝 Задания
 
 Переходите к файлу [`task.md`](./task.md) для выполнения практических заданий.

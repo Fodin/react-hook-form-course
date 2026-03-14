@@ -583,6 +583,89 @@ export function UXForm() {
 
 ---
 
+## Частые ошибки новичков
+
+### ❌ Ошибка 1: Деструктуризация не из formState
+
+```tsx
+// ❌ Неправильно - деструктуризация напрямую из useForm
+const { errors, isDirty, isValid } = useForm()
+
+// ✅ Правильно - из formState
+const { formState: { errors, isDirty, isValid } } = useForm()
+```
+
+**Почему это ошибка:** `formState` — это Proxy-объект, который отслеживает подписки. Прямая деструктуризация ломает эту систему.
+
+---
+
+### ❌ Ошибка 2: reset без defaultValues
+
+```tsx
+// ❌ Неправильно - reset с пустыми значениями
+reset()
+
+// ✅ Правильно - с defaultValues
+const { reset } = useForm({
+  defaultValues: { name: '', email: '' }
+})
+reset({ name: 'John', email: 'john@example.com' })
+```
+
+**Почему это ошибка:** Без `defaultValues` форма может некорректно определять `isDirty` состояние.
+
+---
+
+### ❌ Ошибка 3: Нет focus management
+
+```tsx
+// ❌ Неправильно - ошибки не видны пользователю
+const onSubmit = (data) => { /* ... */ }
+
+// ✅ Правильно - фокус на первой ошибке
+useEffect(() => {
+  const firstError = Object.keys(errors)[0]
+  if (firstError) {
+    document.getElementById(firstError)?.focus()
+  }
+}, [errors])
+```
+
+**Почему это ошибка:** Пользователь может не увидеть ошибки, если фокус не установлен на проблемном поле.
+
+---
+
+### ❌ Ошибка 4: watch() вызывает лишние ре-рендеры
+
+```tsx
+// ❌ Неправильно - watch всех полей
+const values = watch()
+console.log('Render', values)
+
+// ✅ Правильно - useWatch для отдельных полей
+const name = useWatch({ name: 'name' })
+```
+
+**Почему это ошибка:** `watch()` подписывается на все изменения формы, вызывая ре-рендер всего компонента.
+
+---
+
+### ❌ Ошибка 5: Игнорирование touchedFields
+
+```tsx
+// ❌ Неправильно - показывать ошибку сразу
+{errors.email && <span className="error">{errors.email.message}</span>}
+
+// ✅ Правильно - после касания
+{touchedFields.email && errors.email && (
+  <span className="error">{errors.email.message}</span>
+)}
+```
+
+**Почему это ошибка:** Пользователь видит ошибку до того, как закончил ввод, что ухудшает UX.
+
+---
+
 ## 📝 Задания
 
 Переходите к файлу [`task.md`](./task.md) для выполнения практических заданий.

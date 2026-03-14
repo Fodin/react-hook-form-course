@@ -635,6 +635,119 @@ export function AsyncRegistrationForm() {
 
 ---
 
+## Частые ошибки новичков
+
+### ❌ Ошибка 1: Нет обработки loading
+
+```tsx
+// ❌ Неправильно - кнопка активна во время отправки
+<button type="submit">Отправить</button>
+
+// ✅ Правильно - показываем состояние
+const { formState: { isSubmitting } } = useForm()
+<button type="submit" disabled={isSubmitting}>
+  {isSubmitting ? '⏳ Отправка...' : 'Отправить'}
+</button>
+```
+
+**Почему это ошибка:** Пользователь может отправить форму несколько раз, если не видно состояние загрузки.
+
+---
+
+### ❌ Ошибка 2: Debounce без cleanup
+
+```tsx
+// ❌ Неправильно - утечка памяти
+useEffect(() => {
+  const timer = setTimeout(() => {
+    console.log('Search:', values)
+  }, 500)
+  // нет cleanup
+})
+
+// ✅ Правильно - очистка таймера
+useEffect(() => {
+  const timer = setTimeout(() => {
+    console.log('Search:', values)
+  }, 500)
+  return () => clearTimeout(timer) // cleanup
+}, [values])
+```
+
+**Почему это ошибка:** Без очистки таймера возникает утечка памяти и могут быть гонки запросов.
+
+---
+
+### ❌ Ошибка 3: Нет обработки ошибок API
+
+```tsx
+// ❌ Неправильно - ошибка игнорируется
+const onSubmit = async (data) => {
+  await fetch('/api/submit', { body: JSON.stringify(data) })
+}
+
+// ✅ Правильно - try/catch
+const onSubmit = async (data) => {
+  try {
+    await fetch('/api/submit', { body: JSON.stringify(data) })
+  } catch (err) {
+    setError('root', { message: 'Ошибка сети' })
+  }
+}
+```
+
+**Почему это ошибка:** Сеть может отказать, и пользователь должен увидеть понятное сообщение об ошибке.
+
+---
+
+### ❌ Ошибка 4: Async валидация без индикатора
+
+```tsx
+// ❌ Неправильно - пользователь ждёт без обратной связи
+validate: async (value) => {
+  const response = await fetch(`/api/check?username=${value}`)
+  return response.json()
+}
+
+// ✅ Правильно - показываем статус
+const [checking, setChecking] = useState(false)
+validate: async (value) => {
+  setChecking(true)
+  const response = await fetch(`/api/check?username=${value}`)
+  setChecking(false)
+  return response.json()
+}
+{checking && <span>⏳ Проверка...</span>}
+```
+
+**Почему это ошибка:** Пользователь не понимает, что происходит во время проверки.
+
+---
+
+### ❌ Ошибка 5: reset после загрузки без обработки ошибок
+
+```tsx
+// ❌ Неправильно - ошибка загрузки игнорируется
+useEffect(() => {
+  fetch('/api/user/1').then(res => res.json()).then(reset)
+}, [reset])
+
+// ✅ Правильно - обработка ошибок
+useEffect(() => {
+  fetch('/api/user/1')
+    .then(res => {
+      if (!res.ok) throw new Error('Не удалось загрузить')
+      return res.json()
+    })
+    .then(reset)
+    .catch(err => setError(err.message))
+}, [reset])
+```
+
+**Почему это ошибка:** Если загрузка не удастся, форма останется в состоянии загрузки без данных.
+
+---
+
 ## 📝 Задания
 
 Переходите к файлу [`task.md`](./task.md) для выполнения практических заданий.

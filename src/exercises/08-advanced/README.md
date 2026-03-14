@@ -650,6 +650,129 @@ export function RegistrationWizard() {
 
 ---
 
+## Частые ошибки новичков
+
+### ❌ Ошибка 1: Controller без field.onChange
+
+```tsx
+// ❌ Неправильно - значение не обновляется
+<Controller
+  name="category"
+  control={control}
+  render={({ field }) => (
+    <Select {...field} />
+  )}
+/>
+
+// ✅ Правильно - явно указываем onChange
+<Controller
+  name="category"
+  control={control}
+  render={({ field }) => (
+    <Select
+      {...field}
+      onChange={(selected) => field.onChange(selected?.value)}
+    />
+  )}
+/>
+```
+
+**Почему это ошибка:** Сторонние компоненты могут возвращать объекты вместо простых значений.
+
+---
+
+### ❌ Ошибка 2: FormProvider без context
+
+```tsx
+// ❌ Неправильно - useFormContext не работает
+function Child() {
+  const { register } = useFormContext() // ошибка!
+}
+function Parent() {
+  const { register } = useForm()
+  return <Child />
+}
+
+// ✅ Правильно - оборачиваем в FormProvider
+function Parent() {
+  const methods = useForm()
+  return (
+    <FormProvider {...methods}>
+      <Child />
+    </FormProvider>
+  )
+}
+```
+
+**Почему это ошибка:** `useFormContext` работает только внутри `FormProvider`.
+
+---
+
+### ❌ Ошибка 3: localStorage без JSON.parse
+
+```tsx
+// ❌ Неправильно - строка вместо объекта
+const saved = localStorage.getItem('form')
+defaultValues: saved
+
+// ✅ Правильно - парсим JSON
+const saved = localStorage.getItem('form')
+defaultValues: saved ? JSON.parse(saved) : { name: '' }
+```
+
+**Почему это ошибка:** `localStorage` хранит только строки, объекты нужно сериализовать.
+
+---
+
+### ❌ Ошибка 4: Автосохранение без debounce
+
+```tsx
+// ❌ Неправильно - сохранение на каждое изменение
+useEffect(() => {
+  localStorage.setItem('draft', JSON.stringify(values))
+}, [values])
+
+// ✅ Правильно - с debounce
+useEffect(() => {
+  const timer = setTimeout(() => {
+    localStorage.setItem('draft', JSON.stringify(values))
+  }, 1000)
+  return () => clearTimeout(timer)
+}, [values])
+```
+
+**Почему это ошибка:** Частые записи в localStorage могут вызвать проблемы с производительностью.
+
+---
+
+### ❌ Ошибка 5: Кастомный хук без зависимостей
+
+```tsx
+// ❌ Неправильно - нет зависимостей
+function useDebounce(value, delay) {
+  const [debounced, setDebounced] = useState(value)
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay)
+    // нет cleanup и зависимостей
+  })
+  return debounced
+}
+
+// ✅ Правильно - с зависимостями
+function useDebounce(value, delay) {
+  const [debounced, setDebounced] = useState(value)
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay)
+    return () => clearTimeout(timer)
+  }, [value, delay])
+  return debounced
+}
+```
+
+**Почему это ошибка:** Без зависимостей эффект может выполняться некорректно или вызывать утечки.
+
+---
+
 ## 📝 Задания
 
 Переходите к файлу [`task.md`](./task.md) для выполнения практических заданий.

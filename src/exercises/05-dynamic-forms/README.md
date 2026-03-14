@@ -543,6 +543,111 @@ export function OrderWizard() {
 
 ---
 
+## Частые ошибки новичков
+
+### ❌ Ошибка 1: Ключ не field.id
+
+```tsx
+// ❌ Неправильно - индекс может измениться
+{fields.map((field, index) => (
+  <div key={index}>
+    <input {...register(`emails.${index}.value`)} />
+  </div>
+))}
+
+// ✅ Правильно - используем field.id
+{fields.map((field, index) => (
+  <div key={field.id}>
+    <input {...register(`emails.${index}.value`)} />
+  </div>
+))}
+```
+
+**Почему это ошибка:** При удалении/добавлении элементов индекс меняется, что вызывает проблемы с состоянием React.
+
+---
+
+### ❌ Ошибка 2: Нет append/remove
+
+```tsx
+// ❌ Неправильно - массив не изменяется
+const { fields } = useFieldArray({ control, name: 'emails' })
+{fields.map(field => <div key={field.id}>{field.value}</div>)}
+
+// ✅ Правильно - используем методы
+const { fields, append, remove } = useFieldArray({ control, name: 'emails' })
+{fields.map((field, index) => (
+  <div key={field.id}>
+    <input {...register(`emails.${index}.value`)} />
+    <button type="button" onClick={() => remove(index)}>✕</button>
+  </div>
+))}
+<button type="button" onClick={() => append({ value: '' })}>+ Добавить</button>
+```
+
+**Почему это ошибка:** Без `append`/`remove` массив полей остаётся статичным.
+
+---
+
+### ❌ Ошибка 3: Wizard без trigger
+
+```tsx
+// ❌ Неправильно - переход без валидации
+const onNext = () => setStep(step + 1)
+
+// ✅ Правильно - валидируем перед переходом
+const onNext = async () => {
+  const isValid = await trigger(['email', 'password'])
+  if (isValid) setStep(step + 1)
+}
+```
+
+**Почему это ошибка:** Без `trigger` пользователь может перейти на следующий шаг с невалидными данными.
+
+---
+
+### ❌ Ошибка 4: Условные поля без shouldUnregister
+
+```tsx
+// ❌ Неправильно - скрытое поле остаётся в форме
+{showEmail && <input {...register('email', { required: true })} />}
+
+// ✅ Правильно - unregister при скрытии
+const { register } = useForm({ shouldUnregister: true })
+{showEmail && <input {...register('email', { required: true })} />}
+```
+
+**Почему это ошибка:** Скрытые поля могут вызывать ошибки валидации, если не unregister.
+
+---
+
+### ❌ Ошибка 5: Зависимые поля без сброса
+
+```tsx
+// ❌ Неправильно - город остаётся при смене страны
+<select {...register('country')}>
+  <option value="ru">Россия</option>
+  <option value="us">USA</option>
+</select>
+<select {...register('city')}>
+  <option value="moscow">Москва</option>
+  <option value="ny">New York</option>
+</select>
+
+// ✅ Правильно - сбрасываем город
+<select
+  {...register('country')}
+  onChange={(e) => {
+    setValue('country', e.target.value)
+    setValue('city', '') // сброс
+  }}
+>
+```
+
+**Почему это ошибка:** При смене родительского поля зависимое поле должно сбрасываться.
+
+---
+
 ## 📝 Задания
 
 Переходите к файлу [`task.md`](./task.md) для выполнения практических заданий.

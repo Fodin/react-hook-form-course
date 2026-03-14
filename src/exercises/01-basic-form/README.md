@@ -529,6 +529,87 @@ export function RegistrationForm() {
 
 ---
 
+## Частые ошибки новичков
+
+### ❌ Ошибка 1: Неправильное использование valueAsNumber
+
+```tsx
+// ❌ Неправильно - age будет строкой
+<input type="number" {...register('age')} />
+
+// ✅ Правильно - преобразуем в число
+<input type="number" {...register('age', { valueAsNumber: true })} />
+```
+
+**Почему это ошибка:** Без `valueAsNumber: true` числовые поля возвращают строки, что может вызвать проблемы при валидации и отправке данных.
+
+---
+
+### ❌ Ошибка 2: Watch без значения по умолчанию
+
+```tsx
+// ❌ Неправильно - undefined до первого рендера
+const value = watch('field')
+<p>{value.length}</p> // Ошибка!
+
+// ✅ Правильно - с дефолтным значением
+const value = watch('field', '')
+<p>{value.length}</p> // Работает!
+```
+
+**Почему это ошибка:** `watch` возвращает `undefined` пока поле не зарегистрировано. Нужно указывать значение по умолчанию.
+
+---
+
+### ❌ Ошибка 3: setValue без инициализации поля
+
+```tsx
+// ❌ Неправильно - поле не зарегистрировано
+setValue('email', 'test@example.com')
+
+// ✅ Правильно - сначала register, потом setValue
+<input {...register('email')} />
+setValue('email', 'test@example.com')
+```
+
+**Почему это ошибка:** `setValue` работает только с зарегистрированными полями. Поле должно быть зарегистрировано через `register`.
+
+---
+
+### ❌ Ошибка 4: getValues вызывает лишний ре-рендер
+
+```tsx
+// ❌ Неправильно - getValues в теле компонента
+const values = getValues()
+<p>{values.email}</p>
+
+// ✅ Правильно - getValues только в обработчиках
+const onSubmit = () => {
+  const values = getValues()
+  console.log(values)
+}
+```
+
+**Почему это ошибка:** `getValues()` в теле компонента вызывает ре-рендер. Используйте `watch` для реактивного чтения или `getValues` только в обработчиках.
+
+---
+
+### ❌ Ошибка 5: formState не деструктуризируется правильно
+
+```tsx
+// ❌ Неправильно - formState не отслеживает изменения
+const { formState } = useForm()
+<p>{formState.errors.email}</p>
+
+// ✅ Правильно - деструктуризация из formState
+const { formState: { errors, isDirty, isValid } } = useForm()
+<p>{errors.email?.message}</p>
+```
+
+**Почему это ошибка:** `formState` — это Proxy объект. Нужно деструктуризировать конкретные свойства для правильной подписки на изменения.
+
+---
+
 ## 📝 Задания
 
 Переходите к файлу [`task.md`](./task.md) для выполнения практических заданий.
