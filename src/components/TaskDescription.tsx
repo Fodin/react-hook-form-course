@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useTheme } from '../hooks/useTheme'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import rehypeHighlight from 'rehype-highlight'
 
 interface TaskDescriptionProps {
   taskNumber: string
@@ -87,7 +88,10 @@ export function TaskDescription({ taskNumber, level }: TaskDescriptionProps) {
       
       {isOpen && (
         <div style={contentStyle} className="theory-content">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[[rehypeHighlight, { detect: true, ignoreMissing: true }]]}
+          >
             {content}
           </ReactMarkdown>
         </div>

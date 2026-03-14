@@ -49,12 +49,15 @@ export function SetupExercise() {
             style={{
               textAlign: 'left',
               padding: '0.75rem 1rem',
-              background: currentTask === task.id ? '#646cff' : isDark ? '#161b22' : '#ffffff',
+              background: currentTask === task.id
+                ? '#646cff'
+                : (isDark ? '#161b22' : '#ffffff'),
               color: currentTask === task.id ? '#fff' : isDark ? '#e6edf3' : '#213547',
-              border: '2px solid ' + (currentTask === task.id ? '#646cff' : '#30363d'),
+              border: '2px solid ' + (currentTask === task.id
+                ? '#646cff'
+                : '#30363d'),
               borderRadius: '8px',
               cursor: 'pointer',
-              transition: 'all 0.2s',
               fontWeight: currentTask === task.id ? 600 : 400,
             }}
           >
