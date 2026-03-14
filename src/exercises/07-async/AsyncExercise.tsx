@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useTheme } from '../../hooks/useTheme'
+import { useLanguage } from '../../hooks/useLanguage'
 import { TheoryBlock } from '../../components/TheoryBlock'
 import { FormContainer } from '../../components/FormContainer'
 import { TaskDescription } from '../../components/TaskDescription'
@@ -13,6 +14,7 @@ type Task = '7.1' | '7.2' | '7.3' | '7.4'
 
 export function AsyncExercise() {
   const { theme } = useTheme()
+  const { t } = useLanguage()
   const isDark = theme === 'dark'
   const [currentTask, setCurrentTask] = useState<Task>('7.1')
   const [showSolution, setShowSolution] = useState(false)
@@ -42,10 +44,10 @@ export function AsyncExercise() {
     <div>
       <header style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
-          Уровень 7: Асинхронность
+          {t('nav.level')} 7: {t('nav.async')}
         </h1>
-        <p style={{ color: '#6c757d' }}>
-          async validation, API loading, error handling, debounce
+        <p style={{ color: isDark ? '#8b949e' : '#6c757d' }}>
+          {t('level.7.desc')}
         </p>
       </header>
 
@@ -69,7 +71,7 @@ export function AsyncExercise() {
               fontWeight: currentTask === task.id ? 600 : 400,
             }}
           >
-            Задание {task.id}
+            {t('task.title')} {task.id}
           </button>
         ))}
       </div>
@@ -86,7 +88,7 @@ export function AsyncExercise() {
             cursor: 'pointer',
           }}
         >
-          {showSolution ? '🙈 Скрыть решение' : '💡 Показать решение'}
+          {showSolution ? t('solution.hide') : t('solution.show')}
         </button>
       </div>
 

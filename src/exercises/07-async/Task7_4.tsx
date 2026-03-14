@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
+import { useLanguage } from '../../hooks/useLanguage'
 
 // ============================================
 // Задание 7.4: Debounce для Автосохранения
@@ -24,9 +25,11 @@ import { useEffect, useState } from 'react'
 
 
 export function Task7_4() {
+  const { t } = useLanguage()
+
   return (
     <div className="exercise-container">
-      <h2>Задание 7.4: Debounce для Автосохранения</h2>
+      <h2>{t('task.7.4')}</h2>
 
       {/* TODO: Создайте форму ниже */}
       

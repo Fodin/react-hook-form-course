@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
+import { useLanguage } from '../../hooks/useLanguage'
 
 // ============================================
 // Задание 6.2: Reset и Default Values
@@ -24,9 +25,11 @@ import { useState } from 'react'
 
 
 export function Task6_2() {
+  const { t } = useLanguage()
+
   return (
     <div className="exercise-container">
-      <h2>Задание 6.2: Reset и Default Values</h2>
+      <h2>{t('task.6.2')}</h2>
 
       {/* TODO: Создайте форму ниже */}
       

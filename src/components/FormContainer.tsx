@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTheme } from '../hooks'
+import { useLanguage } from '../hooks'
 import styles from './FormContainer.module.css'
 
 interface FormContainerProps {
@@ -13,6 +14,7 @@ interface FormContainerProps {
  */
 export function FormContainer({ children, taskFile }: FormContainerProps) {
   const { theme } = useTheme()
+  const { t } = useLanguage()
   const isDark = theme === 'dark'
   const containerRef = useRef<HTMLDivElement>(null)
   const [hasForm, setHasForm] = useState(false)
@@ -44,10 +46,10 @@ export function FormContainer({ children, taskFile }: FormContainerProps) {
         <div className={`${styles.placeholder} ${isDark ? styles.placeholderDark : styles.placeholderLight}`}>
           <div className={styles.placeholderIcon}>✏️</div>
           <div className={styles.placeholderTitle}>
-            Ваша форма появится здесь
+            {t('task.placeholder')}
           </div>
           <div className={`${styles.placeholderText} ${isDark ? styles.placeholderTextDark : ''}`}>
-            Откройте файл <code>{taskFile}</code> и выполните задание
+            {t('task.openFile')} <code>{taskFile}</code> {t('task.andComplete')}
           </div>
         </div>
       )}

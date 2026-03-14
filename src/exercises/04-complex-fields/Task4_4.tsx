@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { useLanguage } from '../../hooks/useLanguage'
 
 // ============================================
 // Задание 4.4: File Upload
@@ -14,9 +15,11 @@ import { useForm } from 'react-hook-form'
 
 
 export function Task4_4() {
+  const { t } = useLanguage()
+
   return (
     <div className="exercise-container">
-      <h2>Задание 4.4: File Upload</h2>
+      <h2>{t('task.4.4')}</h2>
 
       {/* TODO: Создайте форму ниже */}
       

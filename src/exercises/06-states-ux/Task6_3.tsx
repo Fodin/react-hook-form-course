@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { useEffect, useRef } from 'react'
+import { useLanguage } from '../../hooks/useLanguage'
 
 // ============================================
 // Задание 6.3: Focus Management
@@ -21,9 +22,11 @@ import { useEffect, useRef } from 'react'
 
 
 export function Task6_3() {
+  const { t } = useLanguage()
+
   return (
     <div className="exercise-container">
-      <h2>Задание 6.3: Focus Management</h2>
+      <h2>{t('task.6.3')}</h2>
 
       {/* TODO: Создайте форму ниже */}
       

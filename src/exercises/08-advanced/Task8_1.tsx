@@ -1,4 +1,5 @@
 import { Controller, useForm } from 'react-hook-form'
+import { useLanguage } from '../../hooks/useLanguage'
 
 // ============================================
 // Задание 8.1: Интеграция с UI-библиотекой
@@ -20,9 +21,11 @@ import { Controller, useForm } from 'react-hook-form'
 
 
 export function Task8_1() {
+  const { t } = useLanguage()
+
   return (
     <div className="exercise-container">
-      <h2>Задание 8.1: Интеграция с UI-библиотекой</h2>
+      <h2>{t('task.8.1')}</h2>
 
       {/* TODO: Создайте форму ниже */}
       

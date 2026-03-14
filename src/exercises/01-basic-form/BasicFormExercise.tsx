@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useTheme } from '../../hooks/useTheme'
+import { useLanguage } from '../../hooks/useLanguage'
 import { TheoryBlock } from '../../components/TheoryBlock'
 import { FormContainer } from '../../components/FormContainer'
 import { TaskDescription } from '../../components/TaskDescription'
@@ -13,6 +14,7 @@ type Task = '1.1' | '1.2' | '1.3' | '1.4'
 
 export function BasicFormExercise() {
   const { theme } = useTheme()
+  const { t } = useLanguage()
   const isDark = theme === 'dark'
 
   const [currentTask, setCurrentTask] = useState<Task>('1.1')
@@ -43,10 +45,10 @@ export function BasicFormExercise() {
     <div>
       <header style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
-          Уровень 1: Основы
+          {t('nav.level')} 1: {t('nav.basics')}
         </h1>
         <p style={{ color: isDark ? '#8b949e' : '#6c757d' }}>
-          useForm, register, handleSubmit, watch, setValue, getValues, formState
+          {t('level.1.desc')}
         </p>
       </header>
 
@@ -70,7 +72,7 @@ export function BasicFormExercise() {
               fontWeight: currentTask === task.id ? 600 : 400,
             }}
           >
-            Задание {task.id}
+            {t('task.title')} {task.id}
           </button>
         ))}
       </div>
@@ -87,7 +89,7 @@ export function BasicFormExercise() {
             cursor: 'pointer',
           }}
         >
-          {showSolution ? '🙈 Скрыть решение' : '💡 Показать решение'}
+          {showSolution ? t('solution.hide') : t('solution.show')}
         </button>
       </div>
 

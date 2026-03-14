@@ -1,8 +1,7 @@
-import { useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
-import { useTheme, useMarkdownLoader, useCollapsible } from '../hooks'
+import { useTheme, useLanguage, useMarkdownLoader, useCollapsible } from '../hooks'
 import { ScrollToTop } from './ScrollToTop'
 import styles from './TheoryBlock.module.css'
 
@@ -15,6 +14,7 @@ interface TheoryBlockProps {
  */
 export function TheoryBlock({ level }: TheoryBlockProps) {
   const { theme } = useTheme()
+  const { language, t } = useLanguage()
   const isDark = theme === 'dark'
   const { isOpen, toggle } = useCollapsible({ initialState: true })
 
@@ -32,22 +32,18 @@ export function TheoryBlock({ level }: TheoryBlockProps) {
 
   const { content, loading, error } = useMarkdownLoader(paths[level] || '')
 
-  useEffect(() => {
-    console.log('TheoryBlock:', { level, loading, error, hasContent: !!content })
-  }, [level, loading, error, content])
-
   if (!content || loading) {
     return null
   }
 
   return (
     <section className={`${styles.container} ${isDark ? styles.containerDark : styles.containerLight}`}>
-      <div 
+      <div
         className={`${styles.header} ${isDark ? styles.headerDark : styles.headerLight} ${isOpen ? (isDark ? styles.headerOpenDark : styles.headerOpenLight) : styles.headerClosed}`}
         onClick={toggle}
       >
         <h2 className={`${styles.title} ${isDark ? styles.titleDark : styles.titleLight}`}>
-          📚 Теория
+          {t('theory.title')}
         </h2>
         <span className={styles.icon}>
           {isOpen ? '🔼' : '🔽'}

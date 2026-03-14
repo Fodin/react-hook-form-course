@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { useMemo, useState } from 'react'
+import { useLanguage } from '../../hooks/useLanguage'
 
 // ============================================
 // Задание 6.5: Performance Оптимизация
@@ -21,9 +22,11 @@ import { useMemo, useState } from 'react'
 
 
 export function Task6_5() {
+  const { t } = useLanguage()
+
   return (
     <div className="exercise-container">
-      <h2>Задание 6.5: Performance Оптимизация</h2>
+      <h2>{t('task.6.5')}</h2>
 
       {/* TODO: Создайте форму ниже */}
       

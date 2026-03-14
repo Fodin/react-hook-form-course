@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { useEffect } from 'react'
+import { useLanguage } from '../../hooks/useLanguage'
 
 // ============================================
 // Задание 8.2: Кастомные Хуки
@@ -24,9 +25,11 @@ import { useEffect } from 'react'
 
 
 export function Task8_2() {
+  const { t } = useLanguage()
+
   return (
     <div className="exercise-container">
-      <h2>Задание 8.2: Кастомные Хуки</h2>
+      <h2>{t('task.8.2')}</h2>
 
       {/* TODO: Создайте форму ниже */}
       

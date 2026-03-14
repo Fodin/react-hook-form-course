@@ -354,7 +354,6 @@ textarea {
   border: 1px solid #ddd;
   background-color: #fff;
   color: #213547;
-  width: 100%;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 

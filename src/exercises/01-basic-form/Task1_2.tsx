@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { useLanguage } from '../../hooks/useLanguage'
 
 // ============================================
 // Задание 1.2: Watch для отслеживания
@@ -17,9 +18,11 @@ import { useForm } from 'react-hook-form'
 
 
 export function Task1_2() {
+  const { t } = useLanguage()
+
   return (
     <div className="exercise-container">
-      <h2>Задание 1.2: Watch в реальном времени</h2>
+      <h2>{t('task.1.2')}</h2>
 
       {/* TODO: Создайте форму ниже */}
       

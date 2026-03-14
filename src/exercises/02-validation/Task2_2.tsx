@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { useLanguage } from '../../hooks/useLanguage'
 
 // ============================================
 // Задание 2.2: Pattern валидация
@@ -14,9 +15,11 @@ import { useForm } from 'react-hook-form'
 
 
 export function Task2_2() {
+  const { t } = useLanguage()
+
   return (
     <div className="exercise-container">
-      <h2>Задание 2.2: Pattern валидация</h2>
+      <h2>{t('task.2.2')}</h2>
 
       {/* TODO: Создайте форму ниже */}
       

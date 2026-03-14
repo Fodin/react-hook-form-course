@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useTheme } from '../../hooks/useTheme'
+import { useLanguage } from '../../hooks/useLanguage'
 import { TheoryBlock } from '../../components/TheoryBlock'
 import { FormContainer } from '../../components/FormContainer'
 import { TaskDescription } from '../../components/TaskDescription'
@@ -14,6 +15,7 @@ type Task = '6.1' | '6.2' | '6.3' | '6.4' | '6.5'
 
 export function StatesUXExercise() {
   const { theme } = useTheme()
+  const { t } = useLanguage()
   const isDark = theme === 'dark'
   const [currentTask, setCurrentTask] = useState<Task>('6.1')
   const [showSolution, setShowSolution] = useState(false)
@@ -46,10 +48,10 @@ export function StatesUXExercise() {
     <div>
       <header style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
-          Уровень 6: Состояния и UX
+          {t('nav.level')} 6: {t('nav.ux')}
         </h1>
-        <p style={{ color: '#6c757d' }}>
-          dirty, touched, reset, focus management, accessibility, performance
+        <p style={{ color: isDark ? '#8b949e' : '#6c757d' }}>
+          {t('level.6.desc')}
         </p>
       </header>
 
@@ -73,7 +75,7 @@ export function StatesUXExercise() {
               fontWeight: currentTask === task.id ? 600 : 400,
             }}
           >
-            Задание {task.id}
+            {t('task.title')} {task.id}
           </button>
         ))}
       </div>
@@ -90,7 +92,7 @@ export function StatesUXExercise() {
             cursor: 'pointer',
           }}
         >
-          {showSolution ? '🙈 Скрыть решение' : '💡 Показать решение'}
+          {showSolution ? t('solution.hide') : t('solution.show')}
         </button>
       </div>
 

@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { useLanguage } from '../../hooks/useLanguage'
 
 // ============================================
 // Задание 5.2: Условные поля
@@ -17,9 +18,11 @@ import { useForm } from 'react-hook-form'
 
 
 export function Task5_2() {
+  const { t } = useLanguage()
+
   return (
     <div className="exercise-container">
-      <h2>Задание 5.2: Условные поля</h2>
+      <h2>{t('task.5.2')}</h2>
 
       {/* TODO: Создайте форму ниже */}
       

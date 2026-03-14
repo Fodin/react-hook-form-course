@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { useLanguage } from '../../hooks/useLanguage'
 
 // ============================================
 // Задание 6.4: Accessibility (ARIA)
@@ -14,9 +15,11 @@ import { useForm } from 'react-hook-form'
 
 
 export function Task6_4() {
+  const { t } = useLanguage()
+
   return (
     <div className="exercise-container">
-      <h2>Задание 6.4: Accessibility (ARIA)</h2>
+      <h2>{t('task.6.4')}</h2>
 
       {/* TODO: Создайте форму ниже */}
       

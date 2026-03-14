@@ -17,7 +17,7 @@ export function LanguageToggle() {
       className={`${styles.button} ${isDark ? styles.buttonDark : styles.buttonLight}`}
       title={`Switch to ${language === 'ru' ? 'English' : 'Русский'}`}
     >
-      {language === 'ru' ? '🇷🇺 RU' : '🇬🇧 EN'}
+      {language === 'en' ? '🇷🇺 RU' : '🇬🇧 EN'}
     </button>
   )
 }

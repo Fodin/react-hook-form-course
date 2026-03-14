@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useTheme } from '../../hooks/useTheme'
+import { useLanguage } from '../../hooks/useLanguage'
 import { TheoryBlock } from '../../components/TheoryBlock'
 import { FormContainer } from '../../components/FormContainer'
 import { TaskDescription } from '../../components/TaskDescription'
@@ -13,6 +14,7 @@ type Task = '5.1' | '5.2' | '5.3' | '5.4'
 
 export function DynamicFormsExercise() {
   const { theme } = useTheme()
+  const { t } = useLanguage()
   const isDark = theme === 'dark'
   const [currentTask, setCurrentTask] = useState<Task>('5.1')
   const [showSolution, setShowSolution] = useState(false)
@@ -42,10 +44,10 @@ export function DynamicFormsExercise() {
     <div>
       <header style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
-          Уровень 5: Динамические формы
+          {t('nav.level')} 5: {t('nav.dynamic')}
         </h1>
-        <p style={{ color: '#6c757d' }}>
-          useFieldArray, conditional fields, dependent fields, wizard
+        <p style={{ color: isDark ? '#8b949e' : '#6c757d' }}>
+          {t('level.5.desc')}
         </p>
       </header>
 
@@ -69,7 +71,7 @@ export function DynamicFormsExercise() {
               fontWeight: currentTask === task.id ? 600 : 400,
             }}
           >
-            Задание {task.id}
+            {t('task.title')} {task.id}
           </button>
         ))}
       </div>
@@ -86,7 +88,7 @@ export function DynamicFormsExercise() {
             cursor: 'pointer',
           }}
         >
-          {showSolution ? '🙈 Скрыть решение' : '💡 Показать решение'}
+          {showSolution ? t('solution.hide') : t('solution.show')}
         </button>
       </div>
 

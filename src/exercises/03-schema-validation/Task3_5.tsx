@@ -1,3 +1,5 @@
+import { useLanguage } from '../../hooks/useLanguage'
+
 // ============================================
 // Задание 3.5: Сравнение Zod vs Yup
 // ============================================
@@ -10,9 +12,11 @@
 // 5. Какая библиотека имеет лучшую типизацию?
 
 export function Task3_5() {
+  const { t } = useLanguage()
+
   return (
     <div className="exercise-container">
-      <h2>Задание 3.5: Сравнение Zod vs Yup</h2>
+      <h2>{t('task.3.5')}</h2>
 
       {/* TODO: Напишите ваши ответы ниже */}
       

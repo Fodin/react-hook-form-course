@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
+import { useLanguage } from '../../hooks/useLanguage'
 
 // ============================================
 // Задание 7.1: Async Валидация
@@ -24,9 +25,11 @@ import { useState } from 'react'
 
 
 export function Task7_1() {
+  const { t } = useLanguage()
+
   return (
     <div className="exercise-container">
-      <h2>Задание 7.1: Async Валидация</h2>
+      <h2>{t('task.7.1')}</h2>
 
       {/* TODO: Создайте форму ниже */}
       

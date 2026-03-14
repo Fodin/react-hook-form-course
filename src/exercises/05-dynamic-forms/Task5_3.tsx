@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { useLanguage } from '../../hooks/useLanguage'
 
 // ============================================
 // Задание 5.3: Зависимые поля
@@ -20,9 +21,11 @@ import { useForm } from 'react-hook-form'
 
 
 export function Task5_3() {
+  const { t } = useLanguage()
+
   return (
     <div className="exercise-container">
-      <h2>Задание 5.3: Зависимые поля</h2>
+      <h2>{t('task.5.3')}</h2>
 
       {/* TODO: Создайте форму ниже */}
       

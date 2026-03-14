@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useTheme } from '../../hooks/useTheme'
+import { useLanguage } from '../../hooks/useLanguage'
 import { TheoryBlock } from '../../components/TheoryBlock'
 import { FormContainer } from '../../components/FormContainer'
 import { TaskDescription } from '../../components/TaskDescription'
@@ -14,6 +15,7 @@ type Task = '3.1' | '3.2' | '3.3' | '3.4' | '3.5'
 
 export function SchemaValidationExercise() {
   const { theme } = useTheme()
+  const { t } = useLanguage()
   const isDark = theme === 'dark'
   const [currentTask, setCurrentTask] = useState<Task>('3.1')
   const [showSolution, setShowSolution] = useState(false)
@@ -46,10 +48,10 @@ export function SchemaValidationExercise() {
     <div>
       <header style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
-          Уровень 3: Валидация по схемам
+          {t('nav.level')} 3: {t('nav.schemas')}
         </h1>
-        <p style={{ color: '#6c757d' }}>
-          Zod, Yup, @hookform/resolvers, сложные схемы, refine
+        <p style={{ color: isDark ? '#8b949e' : '#6c757d' }}>
+          {t('level.3.desc')}
         </p>
       </header>
 
@@ -73,7 +75,7 @@ export function SchemaValidationExercise() {
               fontWeight: currentTask === task.id ? 600 : 400,
             }}
           >
-            Задание {task.id}
+            {t('task.title')} {task.id}
           </button>
         ))}
       </div>
@@ -90,7 +92,7 @@ export function SchemaValidationExercise() {
             cursor: 'pointer',
           }}
         >
-          {showSolution ? '🙈 Скрыть решение' : '💡 Показать решение'}
+          {showSolution ? t('solution.hide') : t('solution.show')}
         </button>
       </div>
 

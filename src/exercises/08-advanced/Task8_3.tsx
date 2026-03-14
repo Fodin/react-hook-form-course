@@ -1,5 +1,6 @@
 import { useForm, FormProvider, useFormContext } from 'react-hook-form'
 import { useState } from 'react'
+import { useLanguage } from '../../hooks/useLanguage'
 
 // ============================================
 // Задание 8.3: FormContext
@@ -24,9 +25,11 @@ import { useState } from 'react'
 
 
 export function Task8_3() {
+  const { t } = useLanguage()
+
   return (
     <div className="exercise-container">
-      <h2>Задание 8.3: FormContext</h2>
+      <h2>{t('task.8.3')}</h2>
 
       {/* TODO: Оберните форму в FormProvider */}
       

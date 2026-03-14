@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useLanguage } from '../../hooks/useLanguage'
 
 // ============================================
 // Задание 3.4: refine и кастомные сообщения
@@ -19,9 +20,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 
 export function Task3_4() {
+  const { t } = useLanguage()
+
   return (
     <div className="exercise-container">
-      <h2>Задание 3.4: refine и кастомные сообщения</h2>
+      <h2>{t('task.3.4')}</h2>
 
       {/* TODO: Создайте форму ниже */}
       

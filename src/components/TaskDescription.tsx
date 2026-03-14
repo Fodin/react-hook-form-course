@@ -1,8 +1,7 @@
-import { useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
-import { useTheme, useMarkdownLoader, useCollapsible } from '../hooks'
+import { useTheme, useLanguage, useMarkdownLoader, useCollapsible } from '../hooks'
 import styles from './TaskDescription.module.css'
 
 interface TaskDescriptionProps {
@@ -15,6 +14,7 @@ interface TaskDescriptionProps {
  */
 export function TaskDescription({ taskNumber, level }: TaskDescriptionProps) {
   const { theme } = useTheme()
+  const { t } = useLanguage()
   const isDark = theme === 'dark'
   const { isOpen, toggle } = useCollapsible({ initialState: true })
 
@@ -33,10 +33,6 @@ export function TaskDescription({ taskNumber, level }: TaskDescriptionProps) {
   const path = paths[level]?.[taskNumber]
   const { content, loading, error } = useMarkdownLoader(path || '')
 
-  useEffect(() => {
-    console.log('TaskDescription:', { level, taskNumber, path, loading, error, hasContent: !!content })
-  }, [level, taskNumber, path, loading, error, content])
-
   if (!content || loading) {
     return null
   }
@@ -48,7 +44,7 @@ export function TaskDescription({ taskNumber, level }: TaskDescriptionProps) {
         onClick={toggle}
       >
         <span className={`${styles.title} ${isDark ? styles.titleDark : styles.titleLight}`}>
-          📋 Описание задания {taskNumber}
+          {t('task.description')} {taskNumber}
         </span>
         <span className={styles.icon}>
           {isOpen ? '🔼' : '🔽'}
