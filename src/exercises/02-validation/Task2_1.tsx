@@ -3,16 +3,20 @@ import { useLanguage } from '../../hooks/useLanguage'
 
 // ============================================
 // Задание 2.1: Built-in валидация
+// Task 2.1: Built-in Validation
 // ============================================
 
 // TODO: Определите интерфейс RegistrationForm
-
+// TODO: Define RegistrationForm interface
+// interface RegistrationForm { ... }
 
 // TODO: Инициализируйте useForm<RegistrationForm>
+// TODO: Initialize useForm<RegistrationForm>
+// const { register, handleSubmit } = useForm<RegistrationForm>()
 
-
-// TODO: Создайте onSubmit функцию
-
+// TODO: Создайте функцию onSubmit
+// TODO: Create onSubmit function
+// const onSubmit = (data: RegistrationForm) => { ... }
 
 export function Task2_1() {
   const { t } = useLanguage()
@@ -22,7 +26,8 @@ export function Task2_1() {
       <h2>{t('task.2.1')}</h2>
 
       {/* TODO: Создайте форму ниже */}
-      
+      {/* TODO: Create form below */}
+
     </div>
   )
 }

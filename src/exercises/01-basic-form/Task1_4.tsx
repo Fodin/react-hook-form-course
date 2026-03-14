@@ -3,16 +3,20 @@ import { useLanguage } from '../../hooks/useLanguage'
 
 // ============================================
 // Задание 1.4: formState
+// Task 1.4: formState
 // ============================================
 
 // TODO: Определите интерфейс LoginForm
-
+// TODO: Define LoginForm interface
+// interface LoginForm { ... }
 
 // TODO: Инициализируйте useForm<LoginForm>
+// TODO: Initialize useForm<LoginForm>
+// const { register, handleSubmit, formState } = useForm<LoginForm>()
 
-
-// TODO: Создайте onSubmit функцию
-
+// TODO: Создайте функцию onSubmit
+// TODO: Create onSubmit function
+// const onSubmit = (data: LoginForm) => { ... }
 
 export function Task1_4() {
   const { t } = useLanguage()
@@ -22,7 +26,8 @@ export function Task1_4() {
       <h2>{t('task.1.4')}</h2>
 
       {/* TODO: Создайте форму ниже */}
-      
+      {/* TODO: Create form below */}
+
     </div>
   )
 }
