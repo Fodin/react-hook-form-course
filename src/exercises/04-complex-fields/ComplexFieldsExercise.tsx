@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { useTheme } from '../../hooks/useTheme'
+import { TheoryBlock } from '../../components/TheoryBlock'
+import { FormContainer } from '../../components/FormContainer'
 import { Task4_1 } from './Task4_1'
 import { Task4_2 } from './Task4_2'
 import { Task4_3 } from './Task4_3'
 import { Task4_4 } from './Task4_4'
 import { Task4_5 } from './Task4_5'
 import { Task4_1_Solution, Task4_2_Solution, Task4_3_Solution, Task4_4_Solution, Task4_5_Solution } from './Solution'
-import { TheoryBlock } from '../../components/TheoryBlock'
 
 type Task = '4.1' | '4.2' | '4.3' | '4.4' | '4.5'
 
@@ -39,16 +40,6 @@ export function ComplexFieldsExercise() {
     { id: '4.4', name: 'File Upload' },
     { id: '4.5', name: 'Дата/Время' },
   ]
-
-  const placeholderStyle: React.CSSProperties = {
-    marginTop: '2rem',
-    padding: '2rem',
-    background: isDark ? '#1c2128' : '#f0f9ff',
-    borderRadius: '12px',
-    border: `2px dashed ${isDark ? '#30363d' : '#646cff'}`,
-    textAlign: 'center',
-    color: isDark ? '#8b949e' : '#6c757d',
-  }
 
   return (
     <div>
@@ -109,17 +100,11 @@ export function ComplexFieldsExercise() {
         </button>
       </div>
 
-      {showSolution ? solutions[currentTask] : tasks[currentTask]}
-
-      <div style={placeholderStyle}>
-        <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✏️</div>
-        <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>
-          Ваша форма появится здесь
-        </div>
-        <div style={{ fontSize: '0.9rem' }}>
-          Откройте файл Task{currentTask.replace('.', '_')}.tsx и выполните задание
-        </div>
-      </div>
+      {showSolution ? solutions[currentTask] : (
+        <FormContainer>
+          {tasks[currentTask]}
+        </FormContainer>
+      )}
 
       <TheoryBlock level="4" />
     </div>

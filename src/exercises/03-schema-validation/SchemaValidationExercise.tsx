@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { useTheme } from '../../hooks/useTheme'
+import { TheoryBlock } from '../../components/TheoryBlock'
+import { FormContainer } from '../../components/FormContainer'
 import { Task3_1 } from './Task3_1'
 import { Task3_2 } from './Task3_2'
 import { Task3_3 } from './Task3_3'
 import { Task3_4 } from './Task3_4'
 import { Task3_5 } from './Task3_5'
 import { Task3_1_Solution, Task3_2_Solution, Task3_3_Solution, Task3_4_Solution, Task3_5_Solution } from './Solution'
-import { TheoryBlock } from '../../components/TheoryBlock'
 
 type Task = '3.1' | '3.2' | '3.3' | '3.4' | '3.5'
 
@@ -39,16 +40,6 @@ export function SchemaValidationExercise() {
     { id: '3.4', name: 'refine' },
     { id: '3.5', name: 'Сравнение' },
   ]
-
-  const placeholderStyle: React.CSSProperties = {
-    marginTop: '2rem',
-    padding: '2rem',
-    background: isDark ? '#1c2128' : '#f0f9ff',
-    borderRadius: '12px',
-    border: `2px dashed ${isDark ? '#30363d' : '#646cff'}`,
-    textAlign: 'center',
-    color: isDark ? '#8b949e' : '#6c757d',
-  }
 
   return (
     <div>
@@ -109,17 +100,11 @@ export function SchemaValidationExercise() {
         </button>
       </div>
 
-      {showSolution ? solutions[currentTask] : tasks[currentTask]}
-
-      <div style={placeholderStyle}>
-        <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✏️</div>
-        <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>
-          Ваша форма появится здесь
-        </div>
-        <div style={{ fontSize: '0.9rem' }}>
-          Откройте файл Task{currentTask.replace('.', '_')}.tsx и выполните задание
-        </div>
-      </div>
+      {showSolution ? solutions[currentTask] : (
+        <FormContainer>
+          {tasks[currentTask]}
+        </FormContainer>
+      )}
 
       <TheoryBlock level="3" />
     </div>

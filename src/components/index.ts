@@ -11,3 +11,5 @@ export { CodeHighlight } from './CodeHighlight'
 export { TheoryBlock } from './TheoryBlock'
 
 export { ThemeToggle } from './ThemeToggle'
+
+export { FormContainer } from './FormContainer'

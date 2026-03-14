@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useTheme } from '../../hooks/useTheme'
 import { TheoryBlock } from '../../components/TheoryBlock'
+import { FormContainer } from '../../components/FormContainer'
 import { Task1_1 } from './Task1_1'
 import { Task1_2 } from './Task1_2'
 import { Task1_3 } from './Task1_3'
@@ -12,7 +13,7 @@ type Task = '1.1' | '1.2' | '1.3' | '1.4'
 export function BasicFormExercise() {
   const { theme } = useTheme()
   const isDark = theme === 'dark'
-  
+
   const [currentTask, setCurrentTask] = useState<Task>('1.1')
   const [showSolution, setShowSolution] = useState(false)
 
@@ -36,16 +37,6 @@ export function BasicFormExercise() {
     { id: '1.3', name: 'setValue и getValues' },
     { id: '1.4', name: 'formState' },
   ]
-
-  const placeholderStyle: React.CSSProperties = {
-    marginTop: '2rem',
-    padding: '2rem',
-    background: isDark ? '#1c2128' : '#f0f9ff',
-    borderRadius: '12px',
-    border: `2px dashed ${isDark ? '#30363d' : '#646cff'}`,
-    textAlign: 'center',
-    color: isDark ? '#8b949e' : '#6c757d',
-  }
 
   return (
     <div>
@@ -96,17 +87,11 @@ export function BasicFormExercise() {
         </button>
       </div>
 
-      {showSolution ? solutions[currentTask] : tasks[currentTask]}
-
-      <div style={placeholderStyle}>
-        <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✏️</div>
-        <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>
-          Ваша форма появится здесь
-        </div>
-        <div style={{ fontSize: '0.9rem' }}>
-          Откройте файл Task{currentTask.replace('.', '_')}.tsx и выполните задание
-        </div>
-      </div>
+      {showSolution ? solutions[currentTask] : (
+        <FormContainer>
+          {tasks[currentTask]}
+        </FormContainer>
+      )}
 
       <TheoryBlock level="1" />
     </div>

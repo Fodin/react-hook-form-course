@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { useTheme } from '../../hooks/useTheme'
+import { TheoryBlock } from '../../components/TheoryBlock'
+import { FormContainer } from '../../components/FormContainer'
 import { Task8_1 } from './Task8_1'
 import { Task8_2 } from './Task8_2'
 import { Task8_3 } from './Task8_3'
 import { Task8_4 } from './Task8_4'
 import { Task8_5 } from './Task8_5'
 import { Task8_1_Solution, Task8_2_Solution, Task8_3_Solution, Task8_4_Solution, Task8_5_Solution } from './Solution'
-import { TheoryBlock } from '../../components/TheoryBlock'
 
 type Task = '8.1' | '8.2' | '8.3' | '8.4' | '8.5'
 
@@ -39,16 +40,6 @@ export function AdvancedExercise() {
     { id: '8.4', name: 'localStorage' },
     { id: '8.5', name: 'Финальный' },
   ]
-
-  const placeholderStyle: React.CSSProperties = {
-    marginTop: '2rem',
-    padding: '2rem',
-    background: isDark ? '#1c2128' : '#f0f9ff',
-    borderRadius: '12px',
-    border: `2px dashed ${isDark ? '#30363d' : '#646cff'}`,
-    textAlign: 'center',
-    color: isDark ? '#8b949e' : '#6c757d',
-  }
 
   return (
     <div>
@@ -109,17 +100,11 @@ export function AdvancedExercise() {
         </button>
       </div>
 
-      {showSolution ? solutions[currentTask] : tasks[currentTask]}
-
-      <div style={placeholderStyle}>
-        <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✏️</div>
-        <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>
-          Ваша форма появится здесь
-        </div>
-        <div style={{ fontSize: '0.9rem' }}>
-          Откройте файл Task{currentTask.replace('.', '_')}.tsx и выполните задание
-        </div>
-      </div>
+      {showSolution ? solutions[currentTask] : (
+        <FormContainer>
+          {tasks[currentTask]}
+        </FormContainer>
+      )}
 
       <TheoryBlock level="8" />
     </div>

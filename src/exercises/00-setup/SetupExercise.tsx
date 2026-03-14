@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { useTheme } from '../../hooks/useTheme'
+import { TheoryBlock } from '../../components/TheoryBlock'
+import { FormContainer } from '../../components/FormContainer'
 import { Task0_1 } from './Task0_1'
 import { Task0_1_Solution } from './Solution'
-import { TheoryBlock } from '../../components/TheoryBlock'
 
 type Task = '0.1'
 
@@ -23,16 +24,6 @@ export function SetupExercise() {
   const taskList = [
     { id: '0.1', name: 'Первая форма' },
   ]
-
-  const placeholderStyle: React.CSSProperties = {
-    marginTop: '2rem',
-    padding: '2rem',
-    background: isDark ? '#1c2128' : '#f0f9ff',
-    borderRadius: '12px',
-    border: `2px dashed ${isDark ? '#30363d' : '#646cff'}`,
-    textAlign: 'center',
-    color: isDark ? '#8b949e' : '#6c757d',
-  }
 
   return (
     <div>
@@ -93,17 +84,11 @@ export function SetupExercise() {
         </button>
       </div>
 
-      {showSolution ? solutions[currentTask] : tasks[currentTask]}
-
-      <div style={placeholderStyle}>
-        <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✏️</div>
-        <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>
-          Ваша форма появится здесь
-        </div>
-        <div style={{ fontSize: '0.9rem' }}>
-          Откройте файл Task{currentTask.replace('.', '_')}.tsx и выполните задание
-        </div>
-      </div>
+      {showSolution ? solutions[currentTask] : (
+        <FormContainer>
+          {tasks[currentTask]}
+        </FormContainer>
+      )}
 
       <TheoryBlock level="0" />
     </div>

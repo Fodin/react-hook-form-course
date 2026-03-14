@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { useTheme } from '../../hooks/useTheme'
+import { TheoryBlock } from '../../components/TheoryBlock'
+import { FormContainer } from '../../components/FormContainer'
 import { Task6_1 } from './Task6_1'
 import { Task6_2 } from './Task6_2'
 import { Task6_3 } from './Task6_3'
 import { Task6_4 } from './Task6_4'
 import { Task6_5 } from './Task6_5'
 import { Task6_1_Solution, Task6_2_Solution, Task6_3_Solution, Task6_4_Solution, Task6_5_Solution } from './Solution'
-import { TheoryBlock } from '../../components/TheoryBlock'
 
 type Task = '6.1' | '6.2' | '6.3' | '6.4' | '6.5'
 
@@ -39,16 +40,6 @@ export function StatesUXExercise() {
     { id: '6.4', name: 'A11y' },
     { id: '6.5', name: 'Performance' },
   ]
-
-  const placeholderStyle: React.CSSProperties = {
-    marginTop: '2rem',
-    padding: '2rem',
-    background: isDark ? '#1c2128' : '#f0f9ff',
-    borderRadius: '12px',
-    border: `2px dashed ${isDark ? '#30363d' : '#646cff'}`,
-    textAlign: 'center',
-    color: isDark ? '#8b949e' : '#6c757d',
-  }
 
   return (
     <div>
@@ -109,17 +100,11 @@ export function StatesUXExercise() {
         </button>
       </div>
 
-      {showSolution ? solutions[currentTask] : tasks[currentTask]}
-
-      <div style={placeholderStyle}>
-        <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✏️</div>
-        <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>
-          Ваша форма появится здесь
-        </div>
-        <div style={{ fontSize: '0.9rem' }}>
-          Откройте файл Task{currentTask.replace('.', '_')}.tsx и выполните задание
-        </div>
-      </div>
+      {showSolution ? solutions[currentTask] : (
+        <FormContainer>
+          {tasks[currentTask]}
+        </FormContainer>
+      )}
 
       <TheoryBlock level="6" />
     </div>
