@@ -4,9 +4,10 @@ import { TheoryBlock } from '../../components/TheoryBlock'
 import { FormContainer } from '../../components/FormContainer'
 import { TaskDescription } from '../../components/TaskDescription'
 import { Task0_1 } from './Task0_1'
-import { Task0_1_Solution } from './Solution'
+import { Task0_2 } from './Task0_2'
+import { Task0_1_Solution, Task0_2_Solution } from './Solution'
 
-type Task = '0.1'
+type Task = '0.1' | '0.2'
 
 export function SetupExercise() {
   const { theme } = useTheme()
@@ -16,14 +17,17 @@ export function SetupExercise() {
 
   const tasks = {
     '0.1': <Task0_1 />,
+    '0.2': <Task0_2 />,
   }
 
   const solutions = {
     '0.1': <Task0_1_Solution />,
+    '0.2': <Task0_2_Solution />,
   }
 
   const taskList = [
     { id: '0.1', name: 'Первая форма' },
+    { id: '0.2', name: 'Вывод данных на страницу' },
   ]
 
   return (
@@ -43,25 +47,15 @@ export function SetupExercise() {
             key={task.id}
             onClick={() => setCurrentTask(task.id as Task)}
             style={{
-              background: currentTask === task.id ? '#646cff' : '#ffffff',
-              color: currentTask === task.id ? '#fff' : '#213547',
-              border: '2px solid ' + (currentTask === task.id ? '#646cff' : '#ddd'),
-              padding: '0.5rem 1rem',
-              borderRadius: '4px',
+              textAlign: 'left',
+              padding: '0.75rem 1rem',
+              background: currentTask === task.id ? '#646cff' : isDark ? '#161b22' : '#ffffff',
+              color: currentTask === task.id ? '#fff' : isDark ? '#e6edf3' : '#213547',
+              border: '2px solid ' + (currentTask === task.id ? '#646cff' : '#30363d'),
+              borderRadius: '8px',
               cursor: 'pointer',
+              transition: 'all 0.2s',
               fontWeight: currentTask === task.id ? 600 : 400,
-            }}
-            onMouseEnter={(e) => {
-              if (currentTask !== task.id) {
-                e.currentTarget.style.borderColor = '#646cff'
-                e.currentTarget.style.background = '#f0f0ff'
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (currentTask !== task.id) {
-                e.currentTarget.style.borderColor = '#ddd'
-                e.currentTarget.style.background = '#ffffff'
-              }
             }}
           >
             Задание {task.id}

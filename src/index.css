@@ -589,31 +589,3 @@ section {
 }
 
 /* TaskDescription стили */
-.task-description-content ul,
-.task-description-content ol {
-  margin-bottom: 0.75rem;
-  padding-left: 2rem;
-  list-style-position: outside;
-}
-
-.task-description-content ul li,
-.task-description-content ol li {
-  margin-bottom: 0.25rem;
-  padding-left: 0.25rem;
-}
-
-.task-description-content ol {
-  list-style-type: decimal;
-}
-
-.task-description-content ol ol {
-  list-style-type: lower-alpha;
-}
-
-.task-description-content ul {
-  list-style-type: disc;
-}
-
-.task-description-content ul ul {
-  list-style-type: circle;
-}

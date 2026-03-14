@@ -16,11 +16,8 @@ export function TaskDescription({ taskNumber, level }: TaskDescriptionProps) {
 
   useEffect(() => {
     // Динамически импортируем markdown файл
-    const levelNum = level.padStart(2, '0')
-    
-    // Маппинг путей для каждого уровня
     const paths: Record<string, Record<string, string>> = {
-      '0': { '0.1': '/src/exercises/00-setup/task-0.1.md' },
+      '0': { '0.1': '/src/exercises/00-setup/task-0.1.md', '0.2': '/src/exercises/00-setup/task-0.2.md' },
       '1': { '1.1': '/src/exercises/01-basic-form/task-1.1.md', '1.2': '/src/exercises/01-basic-form/task-1.2.md', '1.3': '/src/exercises/01-basic-form/task-1.3.md', '1.4': '/src/exercises/01-basic-form/task-1.4.md' },
       '2': { '2.1': '/src/exercises/02-validation/task-2.1.md', '2.2': '/src/exercises/02-validation/task-2.2.md', '2.3': '/src/exercises/02-validation/task-2.3.md', '2.4': '/src/exercises/02-validation/task-2.4.md' },
       '3': { '3.1': '/src/exercises/03-schema-validation/task-3.1.md', '3.2': '/src/exercises/03-schema-validation/task-3.2.md', '3.3': '/src/exercises/03-schema-validation/task-3.3.md', '3.4': '/src/exercises/03-schema-validation/task-3.4.md', '3.5': '/src/exercises/03-schema-validation/task-3.5.md' },
@@ -89,7 +86,7 @@ export function TaskDescription({ taskNumber, level }: TaskDescriptionProps) {
       </div>
       
       {isOpen && (
-        <div style={contentStyle} className="task-description-content">
+        <div style={contentStyle} className="theory-content">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {content}
           </ReactMarkdown>
