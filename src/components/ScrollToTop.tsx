@@ -1,42 +1,15 @@
-import { useTheme } from '../hooks/useTheme'
+import { useTheme, useScrollToTop } from '../hooks'
+import styles from './ScrollToTop.module.css'
 
-interface ScrollToTopProps {
-  onClick?: () => void
-}
-
-export function ScrollToTop({ onClick }: ScrollToTopProps) {
+export function ScrollToTop() {
   const { theme } = useTheme()
   const isDark = theme === 'dark'
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-    onClick?.()
-  }
+  const scrollToTop = useScrollToTop()
 
   return (
     <button
       onClick={scrollToTop}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '0.5rem',
-        padding: '0.5rem 1rem',
-        background: isDark ? '#21262d' : '#f6f8fa',
-        border: `1px solid ${isDark ? '#30363d' : '#d0d7de'}`,
-        borderRadius: '8px',
-        cursor: 'pointer',
-        color: isDark ? '#e6edf3' : '#24292e',
-        fontWeight: 500,
-        fontSize: '0.9rem',
-        marginTop: '1rem',
-        transition: 'all 0.2s',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.background = isDark ? '#30363d' : '#eaeef2'
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.background = isDark ? '#21262d' : '#f6f8fa'
-      }}
+      className={`${styles.button} ${isDark ? styles.buttonDark : styles.buttonLight}`}
     >
       <span>↑</span>
       <span>Наверх</span>

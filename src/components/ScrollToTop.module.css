@@ -1,0 +1,32 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  transition: all 0.2s;
+}
+
+.buttonLight {
+  background: #f6f8fa;
+  border: 1px solid #d0d7de;
+  color: #24292e;
+}
+
+.buttonDark {
+  background: #21262d;
+  border: 1px solid #30363d;
+  color: #e6edf3;
+}
+
+.buttonLight:hover {
+  background: #eaeef2;
+}
+
+.buttonDark:hover {
+  background: #30363d;
+}

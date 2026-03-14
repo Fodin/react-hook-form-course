@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
-import { theoryContent } from '../data/theory'
-import { useTheme } from '../hooks/useTheme'
+import { useTheme, useMarkdownLoader, useCollapsible } from '../hooks'
 import { ScrollToTop } from './ScrollToTop'
+import styles from './TheoryBlock.module.css'
 
 interface TheoryBlockProps {
   level: string
@@ -16,80 +16,46 @@ interface TheoryBlockProps {
 export function TheoryBlock({ level }: TheoryBlockProps) {
   const { theme } = useTheme()
   const isDark = theme === 'dark'
-  const [content, setContent] = useState<string>('')
-  const [isOpen, setIsOpen] = useState(true)
+  const { isOpen, toggle } = useCollapsible({ initialState: true })
+
+  const paths: Record<string, string> = {
+    '0': '/src/exercises/00-setup/README.md',
+    '1': '/src/exercises/01-basic-form/README.md',
+    '2': '/src/exercises/02-validation/README.md',
+    '3': '/src/exercises/03-schema-validation/README.md',
+    '4': '/src/exercises/04-complex-fields/README.md',
+    '5': '/src/exercises/05-dynamic-forms/README.md',
+    '6': '/src/exercises/06-states-ux/README.md',
+    '7': '/src/exercises/07-async/README.md',
+    '8': '/src/exercises/08-advanced/README.md',
+  }
+
+  const { content, loading, error } = useMarkdownLoader(paths[level] || '')
 
   useEffect(() => {
-    // Динамически импортируем README.md для уровня
-    const paths: Record<string, string> = {
-      '0': '/src/exercises/00-setup/README.md',
-      '1': '/src/exercises/01-basic-form/README.md',
-      '2': '/src/exercises/02-validation/README.md',
-      '3': '/src/exercises/03-schema-validation/README.md',
-      '4': '/src/exercises/04-complex-fields/README.md',
-      '5': '/src/exercises/05-dynamic-forms/README.md',
-      '6': '/src/exercises/06-states-ux/README.md',
-      '7': '/src/exercises/07-async/README.md',
-      '8': '/src/exercises/08-advanced/README.md',
-    }
+    console.log('TheoryBlock:', { level, loading, error, hasContent: !!content })
+  }, [level, loading, error, content])
 
-    const path = paths[level]
-    
-    if (path) {
-      fetch(path)
-        .then(res => res.text())
-        .then(setContent)
-        .catch(() => {
-          setContent(theoryContent[level] || '')
-        })
-    } else {
-      setContent(theoryContent[level] || '')
-    }
-  }, [level])
-
-  const containerStyle: React.CSSProperties = {
-    marginTop: '2rem',
-    borderRadius: '8px',
-    border: `1px solid ${isDark ? '#30363d' : '#d0d7de'}`,
-  }
-
-  const headerStyle: React.CSSProperties = {
-    padding: '0.75rem 1rem',
-    background: isDark ? '#21262d' : '#f6f8fa',
-    border: 'none',
-    borderBottom: isOpen ? `1px solid ${isDark ? '#30363d' : '#d0d7de'}` : 'none',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    userSelect: 'none',
-  }
-
-  const contentStyle: React.CSSProperties = {
-    padding: isOpen ? '1.5rem' : '0',
-    background: isDark ? '#0d1117' : '#ffffff',
-  }
-
-  if (!content) {
+  if (!content || loading) {
     return null
   }
 
   return (
-    <section style={containerStyle}>
+    <section className={`${styles.container} ${isDark ? styles.containerDark : styles.containerLight}`}>
       <div 
-        style={headerStyle}
-        onClick={() => setIsOpen(!isOpen)}
+        className={`${styles.header} ${isDark ? styles.headerDark : styles.headerLight} ${isOpen ? (isDark ? styles.headerOpenDark : styles.headerOpenLight) : styles.headerClosed}`}
+        onClick={toggle}
       >
-        <h2 style={{ margin: 0, fontSize: '1.25rem', color: isDark ? '#e6edf3' : '#24292e' }}>
+        <h2 className={`${styles.title} ${isDark ? styles.titleDark : styles.titleLight}`}>
           📚 Теория
         </h2>
-        <span style={{ fontSize: '1.25rem', transition: 'transform 0.3s' }}>
+        <span className={styles.icon}>
           {isOpen ? '🔼' : '🔽'}
         </span>
       </div>
       
       {isOpen && (
-        <div style={contentStyle} className="theory-content">
+        <div className={`${styles.content} ${isDark ? styles.contentDark : styles.contentLight} theory-content`}>
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[[rehypeHighlight, { detect: true, ignoreMissing: true }]]}

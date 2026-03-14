@@ -1,0 +1,40 @@
+/* CodeHighlight styles */
+.codeContainer {
+  margin: 1rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.codeContainer :global(pre) {
+  margin: 0;
+  padding: 1rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.codeContainerLight {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+}
+
+.codeContainerDark {
+  background: #161b22;
+  border: 1px solid #30363d;
+}
+
+.inlineCode {
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.inlineCodeLight {
+  background: #f5f5f5;
+  color: #d63384;
+}
+
+.inlineCodeDark {
+  background: #21262d;
+  color: #e6edf3;
+}

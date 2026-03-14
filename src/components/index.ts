@@ -1,19 +1,7 @@
-export {
-  TaskBlock,
-  Requirements,
-  Tip,
-  CodeExample,
-  InterfaceDef
-} from './TaskBlock'
-
+export { TaskBlock, Requirements, Tip, CodeExample, InterfaceDef } from './TaskBlock'
 export { CodeHighlight } from './CodeHighlight'
-
 export { TheoryBlock } from './TheoryBlock'
-
 export { ThemeToggle } from './ThemeToggle'
-
 export { FormContainer } from './FormContainer'
-
 export { TaskDescription } from './TaskDescription'
-
 export { ScrollToTop } from './ScrollToTop'
