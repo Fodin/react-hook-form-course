@@ -73,7 +73,12 @@ function AppContent() {
     }}>
       <aside style={{
         width: window.innerWidth < 768 ? '100%' : '280px',
-        flexShrink: 0
+        flexShrink: 0,
+        position: 'sticky',
+        top: '2rem',
+        alignSelf: 'flex-start',
+        maxHeight: 'calc(100vh - 4rem)',
+        overflow: 'auto',
       }}>
         <div style={{ 
           display: 'flex', 

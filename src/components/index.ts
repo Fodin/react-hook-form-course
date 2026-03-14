@@ -15,3 +15,5 @@ export { ThemeToggle } from './ThemeToggle'
 export { FormContainer } from './FormContainer'
 
 export { TaskDescription } from './TaskDescription'
+
+export { ScrollToTop } from './ScrollToTop'

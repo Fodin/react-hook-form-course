@@ -45,7 +45,6 @@ export function TaskDescription({ taskNumber, level }: TaskDescriptionProps) {
     marginTop: '1rem',
     borderRadius: '8px',
     border: `1px solid ${isDark ? '#30363d' : '#d0d7de'}`,
-    overflow: 'hidden',
   }
 
   const headerStyle: React.CSSProperties = {
@@ -63,9 +62,6 @@ export function TaskDescription({ taskNumber, level }: TaskDescriptionProps) {
   const contentStyle: React.CSSProperties = {
     padding: isOpen ? '1rem' : '0',
     background: isDark ? '#0d1117' : '#ffffff',
-    maxHeight: isOpen ? '1000px' : '0',
-    overflow: 'auto',
-    transition: 'all 0.3s ease',
   }
 
   const markdownStyles: React.CSSProperties = {

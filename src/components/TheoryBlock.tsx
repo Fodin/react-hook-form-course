@@ -4,6 +4,7 @@ import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
 import { theoryContent } from '../data/theory'
 import { useTheme } from '../hooks/useTheme'
+import { ScrollToTop } from './ScrollToTop'
 
 interface TheoryBlockProps {
   level: string
@@ -50,7 +51,6 @@ export function TheoryBlock({ level }: TheoryBlockProps) {
     marginTop: '2rem',
     borderRadius: '8px',
     border: `1px solid ${isDark ? '#30363d' : '#d0d7de'}`,
-    overflow: 'hidden',
   }
 
   const headerStyle: React.CSSProperties = {
@@ -68,9 +68,6 @@ export function TheoryBlock({ level }: TheoryBlockProps) {
   const contentStyle: React.CSSProperties = {
     padding: isOpen ? '1.5rem' : '0',
     background: isDark ? '#0d1117' : '#ffffff',
-    maxHeight: isOpen ? '10000px' : '0',
-    overflow: 'auto',
-    transition: 'all 0.3s ease',
   }
 
   if (!content) {
@@ -99,6 +96,7 @@ export function TheoryBlock({ level }: TheoryBlockProps) {
           >
             {content}
           </ReactMarkdown>
+          <ScrollToTop />
         </div>
       )}
     </section>
