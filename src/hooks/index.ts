@@ -1,4 +1,5 @@
 export { useTheme, ThemeProvider } from './useTheme'
+export { useLanguage, LanguageProvider } from './useLanguage'
 export { useMarkdownLoader } from './useMarkdownLoader'
 export { useCollapsible } from './useCollapsible'
 export { useScrollToTop } from './useScrollToTop'

@@ -1,11 +1,13 @@
-import { useTheme } from '../hooks'
+import { useLanguage } from '../hooks/useLanguage'
+import { useTheme } from '../hooks/useTheme'
 import { ThemeToggle } from './ThemeToggle'
+import { LanguageToggle } from './LanguageToggle'
 import styles from './LevelSidebar.module.css'
 
-interface LevelInfo {
+export interface LevelInfo {
   id: string
   name: string
-  description: string
+  descriptionKey: string
 }
 
 interface LevelSidebarProps {
@@ -16,14 +18,11 @@ interface LevelSidebarProps {
 
 export function LevelSidebar({ levels, currentLevel, onLevelSelect }: LevelSidebarProps) {
   const { theme } = useTheme()
+  const { language, t } = useLanguage()
   const isDark = theme === 'dark'
 
   return (
-    <aside className={`${styles.sidebar} ${isDark ? styles.sidebarDark : styles.sidebarLight}`}>
-      <div className={styles.header}>
-        <h2 className={styles.title}>📚 Уровни</h2>
-        <ThemeToggle />
-      </div>
+    <div>
       <nav className={styles.nav}>
         {levels.map((level) => (
           <button
@@ -31,20 +30,25 @@ export function LevelSidebar({ levels, currentLevel, onLevelSelect }: LevelSideb
             onClick={() => onLevelSelect(level.id)}
             className={`
               ${styles.button}
-              ${currentLevel === level.id 
-                ? (isDark ? styles.buttonActiveDark : styles.buttonActiveLight) 
+              ${currentLevel === level.id
+                ? (isDark ? styles.buttonActiveDark : styles.buttonActiveLight)
                 : (isDark ? styles.buttonInactiveDark : styles.buttonInactiveLight)}
             `}
           >
             <div className={styles.buttonTitle}>
-              Уровень {level.id}: {level.name}
+              {t(`nav.level`)} {level.id}: {t(`nav.${level.name.toLowerCase()}` as any) || level.name}
             </div>
             <div className={styles.buttonDescription}>
-              {level.description}
+              {t(`level.${level.id}.desc` as any)}
             </div>
           </button>
         ))}
       </nav>
-    </aside>
+      
+      <div className={`${styles.toggles} ${isDark ? styles.togglesDark : styles.togglesLight}`}>
+        <ThemeToggle />
+        <LanguageToggle />
+      </div>
+    </div>
   )
 }

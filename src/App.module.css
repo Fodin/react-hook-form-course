@@ -13,6 +13,33 @@
   }
 }
 
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 2rem;
+  align-self: flex-start;
+  max-height: calc(100vh - 4rem);
+  overflow: auto;
+}
+
+.sidebarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.sidebarTitle {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.toggles {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .main {
   flex: 1;
   min-width: 0;

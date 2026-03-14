@@ -1,23 +1,24 @@
 import { useState, useCallback } from 'react'
+import { useLanguage } from '../hooks/useLanguage'
 
 type Level = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8'
 
 interface LevelInfo {
   id: Level
   name: string
-  description: string
+  descriptionKey: string
 }
 
 const LEVELS: LevelInfo[] = [
-  { id: '0', name: 'Setup', description: 'Настройка и первая форма' },
-  { id: '1', name: 'Основы', description: 'useForm, register, handleSubmit' },
-  { id: '2', name: 'Валидация', description: 'Built-in и custom валидация' },
-  { id: '3', name: 'Схемы', description: 'Zod и Yup валидация' },
-  { id: '4', name: 'Сложные поля', description: 'Controller, file upload' },
-  { id: '5', name: 'Динамические', description: 'useFieldArray, wizard' },
-  { id: '6', name: 'UX', description: 'Dirty, reset, a11y, performance' },
-  { id: '7', name: 'Асинхронность', description: 'Async validation, API' },
-  { id: '8', name: 'Продвинутые', description: 'Интеграции и финальный проект' },
+  { id: '0', name: 'setup', descriptionKey: 'level.0.desc' },
+  { id: '1', name: 'basics', descriptionKey: 'level.1.desc' },
+  { id: '2', name: 'validation', descriptionKey: 'level.2.desc' },
+  { id: '3', name: 'schemas', descriptionKey: 'level.3.desc' },
+  { id: '4', name: 'complex', descriptionKey: 'level.4.desc' },
+  { id: '5', name: 'dynamic', descriptionKey: 'level.5.desc' },
+  { id: '6', name: 'ux', descriptionKey: 'level.6.desc' },
+  { id: '7', name: 'async', descriptionKey: 'level.7.desc' },
+  { id: '8', name: 'advanced', descriptionKey: 'level.8.desc' },
 ]
 
 interface UseAppLevelsReturn {

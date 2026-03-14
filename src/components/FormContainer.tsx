@@ -37,35 +37,26 @@ export function FormContainer({ children, taskFile }: FormContainerProps) {
   }, [children])
 
   return (
-    <div>
-      <div className={`${styles.header} ${isDark ? styles.headerDark : styles.headerLight}`}>
-        <span>📝</span>
-        <span className={`${styles.fileName} ${isDark ? styles.fileNameDark : styles.fileNameLight}`}>
-          Файл задания: <code>{taskFile}</code>
-        </span>
-      </div>
+    <div ref={containerRef}>
+      {children}
 
-      <div ref={containerRef}>
-        {children}
-
-        {!hasForm && (
-          <div className={`${styles.placeholder} ${isDark ? styles.placeholderDark : styles.placeholderLight}`}>
-            <div className={styles.placeholderIcon}>✏️</div>
-            <div className={styles.placeholderTitle}>
-              Ваша форма появится здесь
-            </div>
-            <div className={`${styles.placeholderText} ${isDark ? styles.placeholderTextDark : ''}`}>
-              Откройте файл <code>{taskFile}</code> и выполните задание
-            </div>
+      {!hasForm && (
+        <div className={`${styles.placeholder} ${isDark ? styles.placeholderDark : styles.placeholderLight}`}>
+          <div className={styles.placeholderIcon}>✏️</div>
+          <div className={styles.placeholderTitle}>
+            Ваша форма появится здесь
           </div>
-        )}
-
-        {hasForm && (
-          <div className={`${styles.successMessage} ${isDark ? styles.successMessageDark : styles.successMessageLight}`}>
-            <span>✅</span> Форма реализована!
+          <div className={`${styles.placeholderText} ${isDark ? styles.placeholderTextDark : ''}`}>
+            Откройте файл <code>{taskFile}</code> и выполните задание
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {hasForm && (
+        <div className={`${styles.successMessage} ${isDark ? styles.successMessageDark : styles.successMessageLight}`}>
+          <span>✅</span> Форма реализована!
+        </div>
+      )}
     </div>
   )
 }

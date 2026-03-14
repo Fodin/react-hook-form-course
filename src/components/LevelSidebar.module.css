@@ -88,3 +88,20 @@
   font-size: 0.85rem;
   opacity: 0.7;
 }
+
+.toggles {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid;
+  justify-content: center;
+}
+
+.togglesLight {
+  border-top-color: #e9ecef;
+}
+
+.togglesDark {
+  border-top-color: #30363d;
+}

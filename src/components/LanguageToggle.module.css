@@ -1,24 +1,26 @@
 .button {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  padding: 0;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 1.25rem;
-  transition: all 0.2s ease;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  border: 1px solid;
 }
 
 .buttonLight {
   background: #f6f8fa;
-  border: 1px solid #d0d7de;
+  border-color: #d0d7de;
+  color: #24292e;
 }
 
 .buttonDark {
-  background: #2d333b;
-  border: 1px solid #30363d;
+  background: #21262d;
+  border-color: #30363d;
+  color: #e6edf3;
 }
 
 .buttonLight:hover {
@@ -27,6 +29,6 @@
 }
 
 .buttonDark:hover {
-  background: #3d444d;
+  background: #30363d;
   color: #e6edf3;
 }
