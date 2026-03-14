@@ -1,1 +1,1 @@
-export { DynamicFormsExercise } from './DynamicFormsExercise'
+export { DynamicFormsExercise } from './_internal/DynamicFormsExercise'

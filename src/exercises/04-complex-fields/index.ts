@@ -1,1 +1,1 @@
-export { ComplexFieldsExercise } from './ComplexFieldsExercise'
+export { ComplexFieldsExercise } from './_internal/ComplexFieldsExercise'

@@ -1,1 +1,1 @@
-export { SchemaValidationExercise } from './SchemaValidationExercise'
+export { SchemaValidationExercise } from './_internal/SchemaValidationExercise'

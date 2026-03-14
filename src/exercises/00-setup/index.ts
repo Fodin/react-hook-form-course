@@ -1,1 +1,1 @@
-export { SetupExercise } from './SetupExercise'
+export { SetupExercise } from './_internal/SetupExercise'

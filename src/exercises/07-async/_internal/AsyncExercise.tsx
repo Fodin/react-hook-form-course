@@ -1,57 +1,53 @@
 import { useState } from 'react'
-import { useTheme } from '../../hooks/useTheme'
-import { useLanguage } from '../../hooks/useLanguage'
-import { TheoryBlock } from '../../components/TheoryBlock'
-import { FormContainer } from '../../components/FormContainer'
-import { TaskDescription } from '../../components/TaskDescription'
-import { Task4_1 } from './Task4_1'
-import { Task4_2 } from './Task4_2'
-import { Task4_3 } from './Task4_3'
-import { Task4_4 } from './Task4_4'
-import { Task4_5 } from './Task4_5'
-import { Task4_1_Solution, Task4_2_Solution, Task4_3_Solution, Task4_4_Solution, Task4_5_Solution } from './Solution'
+import { useTheme } from '../../../hooks/useTheme'
+import { useLanguage } from '../../../hooks/useLanguage'
+import { TheoryBlock } from '../../../components/TheoryBlock'
+import { FormContainer } from '../../../components/FormContainer'
+import { TaskDescription } from '../../../components/TaskDescription'
+import { Task7_1 } from '../Task7_1'
+import { Task7_2 } from '../Task7_2'
+import { Task7_3 } from '../Task7_3'
+import { Task7_4 } from '../Task7_4'
+import { Task7_1_Solution, Task7_2_Solution, Task7_3_Solution, Task7_4_Solution } from './Solution'
 
-type Task = '4.1' | '4.2' | '4.3' | '4.4' | '4.5'
+type Task = '7.1' | '7.2' | '7.3' | '7.4'
 
-export function ComplexFieldsExercise() {
+export function AsyncExercise() {
   const { theme } = useTheme()
   const { t } = useLanguage()
   const isDark = theme === 'dark'
-  const [currentTask, setCurrentTask] = useState<Task>('4.1')
+  const [currentTask, setCurrentTask] = useState<Task>('7.1')
   const [showSolution, setShowSolution] = useState(false)
 
   const tasks = {
-    '4.1': <Task4_1 />,
-    '4.2': <Task4_2 />,
-    '4.3': <Task4_3 />,
-    '4.4': <Task4_4 />,
-    '4.5': <Task4_5 />,
+    '7.1': <Task7_1 />,
+    '7.2': <Task7_2 />,
+    '7.3': <Task7_3 />,
+    '7.4': <Task7_4 />,
   }
 
   const solutions = {
-    '4.1': <Task4_1_Solution />,
-    '4.2': <Task4_2_Solution />,
-    '4.3': <Task4_3_Solution />,
-    '4.4': <Task4_4_Solution />,
-    '4.5': <Task4_5_Solution />,
+    '7.1': <Task7_1_Solution />,
+    '7.2': <Task7_2_Solution />,
+    '7.3': <Task7_3_Solution />,
+    '7.4': <Task7_4_Solution />,
   }
 
   const taskList = [
-    { id: '4.1', name: 'Controller' },
-    { id: '4.2', name: 'Radio/Select' },
-    { id: '4.3', name: 'Checkbox' },
-    { id: '4.4', name: 'File Upload' },
-    { id: '4.5', name: 'Дата/Время' },
+    { id: '7.1', name: 'Async валидация' },
+    { id: '7.2', name: 'Загрузка данных' },
+    { id: '7.3', name: 'Submit loading/error' },
+    { id: '7.4', name: 'Debounce' },
   ]
 
   return (
     <div>
       <header style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
-          {t('nav.level')} 4: {t('nav.complex')}
+          {t('nav.level')} 7: {t('nav.async')}
         </h1>
         <p style={{ color: isDark ? '#8b949e' : '#6c757d' }}>
-          {t('level.4.desc')}
+          {t('level.7.desc')}
         </p>
       </header>
 
@@ -84,7 +80,7 @@ export function ComplexFieldsExercise() {
         <button
           onClick={() => setShowSolution(!showSolution)}
           style={{
-            background: showSolution ? '#4caf50' : '#646cff',
+            background: showSolution ? '#28a745' : '#646cff',
             color: '#fff',
             border: 'none',
             padding: '0.5rem 1rem',
@@ -102,9 +98,9 @@ export function ComplexFieldsExercise() {
         </FormContainer>
       )}
 
-      <TaskDescription taskNumber={currentTask} level="4" />
+      <TaskDescription taskNumber={currentTask} level="7" />
 
-      <TheoryBlock level="4" />
+      <TheoryBlock level="7" />
     </div>
   )
 }

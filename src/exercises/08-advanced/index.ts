@@ -1,1 +1,1 @@
-export { AdvancedExercise } from './AdvancedExercise'
+export { AdvancedExercise } from './_internal/AdvancedExercise'

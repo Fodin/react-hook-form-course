@@ -1,1 +1,1 @@
-export { AsyncExercise } from './AsyncExercise'
+export { AsyncExercise } from './_internal/AsyncExercise'

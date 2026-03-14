@@ -1,1 +1,1 @@
-export { ValidationExercise } from './ValidationExercise'
+export { ValidationExercise } from './_internal/ValidationExercise'

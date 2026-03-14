@@ -1,53 +1,57 @@
 import { useState } from 'react'
-import { useTheme } from '../../hooks/useTheme'
-import { useLanguage } from '../../hooks/useLanguage'
-import { TheoryBlock } from '../../components/TheoryBlock'
-import { FormContainer } from '../../components/FormContainer'
-import { TaskDescription } from '../../components/TaskDescription'
-import { Task5_1 } from './Task5_1'
-import { Task5_2 } from './Task5_2'
-import { Task5_3 } from './Task5_3'
-import { Task5_4 } from './Task5_4'
-import { Task5_1_Solution, Task5_2_Solution, Task5_3_Solution, Task5_4_Solution } from './Solution'
+import { useTheme } from '../../../hooks/useTheme'
+import { useLanguage } from '../../../hooks/useLanguage'
+import { TheoryBlock } from '../../../components/TheoryBlock'
+import { FormContainer } from '../../../components/FormContainer'
+import { TaskDescription } from '../../../components/TaskDescription'
+import { Task6_1 } from '../Task6_1'
+import { Task6_2 } from '../Task6_2'
+import { Task6_3 } from '../Task6_3'
+import { Task6_4 } from '../Task6_4'
+import { Task6_5 } from '../Task6_5'
+import { Task6_1_Solution, Task6_2_Solution, Task6_3_Solution, Task6_4_Solution, Task6_5_Solution } from './Solution'
 
-type Task = '5.1' | '5.2' | '5.3' | '5.4'
+type Task = '6.1' | '6.2' | '6.3' | '6.4' | '6.5'
 
-export function DynamicFormsExercise() {
+export function StatesUXExercise() {
   const { theme } = useTheme()
   const { t } = useLanguage()
   const isDark = theme === 'dark'
-  const [currentTask, setCurrentTask] = useState<Task>('5.1')
+  const [currentTask, setCurrentTask] = useState<Task>('6.1')
   const [showSolution, setShowSolution] = useState(false)
 
   const tasks = {
-    '5.1': <Task5_1 />,
-    '5.2': <Task5_2 />,
-    '5.3': <Task5_3 />,
-    '5.4': <Task5_4 />,
+    '6.1': <Task6_1 />,
+    '6.2': <Task6_2 />,
+    '6.3': <Task6_3 />,
+    '6.4': <Task6_4 />,
+    '6.5': <Task6_5 />,
   }
 
   const solutions = {
-    '5.1': <Task5_1_Solution />,
-    '5.2': <Task5_2_Solution />,
-    '5.3': <Task5_3_Solution />,
-    '5.4': <Task5_4_Solution />,
+    '6.1': <Task6_1_Solution />,
+    '6.2': <Task6_2_Solution />,
+    '6.3': <Task6_3_Solution />,
+    '6.4': <Task6_4_Solution />,
+    '6.5': <Task6_5_Solution />,
   }
 
   const taskList = [
-    { id: '5.1', name: 'useFieldArray' },
-    { id: '5.2', name: 'Условные поля' },
-    { id: '5.3', name: 'Зависимые поля' },
-    { id: '5.4', name: 'Wizard' },
+    { id: '6.1', name: 'Dirty/Touched' },
+    { id: '6.2', name: 'Reset' },
+    { id: '6.3', name: 'Focus' },
+    { id: '6.4', name: 'A11y' },
+    { id: '6.5', name: 'Performance' },
   ]
 
   return (
     <div>
       <header style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
-          {t('nav.level')} 5: {t('nav.dynamic')}
+          {t('nav.level')} 6: {t('nav.ux')}
         </h1>
         <p style={{ color: isDark ? '#8b949e' : '#6c757d' }}>
-          {t('level.5.desc')}
+          {t('level.6.desc')}
         </p>
       </header>
 
@@ -98,9 +102,9 @@ export function DynamicFormsExercise() {
         </FormContainer>
       )}
 
-      <TaskDescription taskNumber={currentTask} level="5" />
+      <TaskDescription taskNumber={currentTask} level="6" />
 
-      <TheoryBlock level="5" />
+      <TheoryBlock level="6" />
     </div>
   )
 }

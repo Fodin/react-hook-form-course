@@ -1,14 +1,12 @@
-import {
-  SetupExercise,
-  BasicFormExercise,
-  ValidationExercise,
-  SchemaValidationExercise,
-  ComplexFieldsExercise,
-  DynamicFormsExercise,
-  StatesUXExercise,
-  AsyncExercise,
-  AdvancedExercise
-} from '../exercises'
+import { SetupExercise } from '../exercises/00-setup/_internal/SetupExercise'
+import { BasicFormExercise } from '../exercises/01-basic-form/_internal/BasicFormExercise'
+import { ValidationExercise } from '../exercises/02-validation/_internal/ValidationExercise'
+import { SchemaValidationExercise } from '../exercises/03-schema-validation/_internal/SchemaValidationExercise'
+import { ComplexFieldsExercise } from '../exercises/04-complex-fields/_internal/ComplexFieldsExercise'
+import { DynamicFormsExercise } from '../exercises/05-dynamic-forms/_internal/DynamicFormsExercise'
+import { StatesUXExercise } from '../exercises/06-states-ux/_internal/StatesUXExercise'
+import { AsyncExercise } from '../exercises/07-async/_internal/AsyncExercise'
+import { AdvancedExercise } from '../exercises/08-advanced/_internal/AdvancedExercise'
 
 interface ExerciseRendererProps {
   level: string

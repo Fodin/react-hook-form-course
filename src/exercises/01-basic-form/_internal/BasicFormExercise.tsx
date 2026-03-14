@@ -1,57 +1,54 @@
 import { useState } from 'react'
-import { useTheme } from '../../hooks/useTheme'
-import { useLanguage } from '../../hooks/useLanguage'
-import { TheoryBlock } from '../../components/TheoryBlock'
-import { FormContainer } from '../../components/FormContainer'
-import { TaskDescription } from '../../components/TaskDescription'
-import { Task3_1 } from './Task3_1'
-import { Task3_2 } from './Task3_2'
-import { Task3_3 } from './Task3_3'
-import { Task3_4 } from './Task3_4'
-import { Task3_5 } from './Task3_5'
-import { Task3_1_Solution, Task3_2_Solution, Task3_3_Solution, Task3_4_Solution, Task3_5_Solution } from './Solution'
+import { useTheme } from '../../../hooks/useTheme'
+import { useLanguage } from '../../../hooks/useLanguage'
+import { TheoryBlock } from '../../../components/TheoryBlock'
+import { FormContainer } from '../../../components/FormContainer'
+import { TaskDescription } from '../../../components/TaskDescription'
+import { Task1_1 } from '../Task1_1'
+import { Task1_2 } from '../Task1_2'
+import { Task1_3 } from '../Task1_3'
+import { Task1_4 } from '../Task1_4'
+import { Task1_1_Solution, Task1_2_Solution, Task1_3_Solution, Task1_4_Solution } from './Solution'
 
-type Task = '3.1' | '3.2' | '3.3' | '3.4' | '3.5'
+type Task = '1.1' | '1.2' | '1.3' | '1.4'
 
-export function SchemaValidationExercise() {
+export function BasicFormExercise() {
   const { theme } = useTheme()
   const { t } = useLanguage()
   const isDark = theme === 'dark'
-  const [currentTask, setCurrentTask] = useState<Task>('3.1')
+
+  const [currentTask, setCurrentTask] = useState<Task>('1.1')
   const [showSolution, setShowSolution] = useState(false)
 
   const tasks = {
-    '3.1': <Task3_1 />,
-    '3.2': <Task3_2 />,
-    '3.3': <Task3_3 />,
-    '3.4': <Task3_4 />,
-    '3.5': <Task3_5 />,
+    '1.1': <Task1_1 />,
+    '1.2': <Task1_2 />,
+    '1.3': <Task1_3 />,
+    '1.4': <Task1_4 />,
   }
 
   const solutions = {
-    '3.1': <Task3_1_Solution />,
-    '3.2': <Task3_2_Solution />,
-    '3.3': <Task3_3_Solution />,
-    '3.4': <Task3_4_Solution />,
-    '3.5': <Task3_5_Solution />,
+    '1.1': <Task1_1_Solution />,
+    '1.2': <Task1_2_Solution />,
+    '1.3': <Task1_3_Solution />,
+    '1.4': <Task1_4_Solution />,
   }
 
-  const taskList = [
-    { id: '3.1', name: 'Zod базовая' },
-    { id: '3.2', name: 'Yup базовая' },
-    { id: '3.3', name: 'Сложные схемы' },
-    { id: '3.4', name: 'refine' },
-    { id: '3.5', name: 'Сравнение' },
+  const taskList: { id: Task; name: string }[] = [
+    { id: '1.1', name: 'Форма регистрации' },
+    { id: '1.2', name: 'Watch в реальном времени' },
+    { id: '1.3', name: 'setValue и getValues' },
+    { id: '1.4', name: 'formState' },
   ]
 
   return (
     <div>
       <header style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
-          {t('nav.level')} 3: {t('nav.schemas')}
+          {t('nav.level')} 1: {t('nav.basics')}
         </h1>
         <p style={{ color: isDark ? '#8b949e' : '#6c757d' }}>
-          {t('level.3.desc')}
+          {t('level.1.desc')}
         </p>
       </header>
 
@@ -102,9 +99,9 @@ export function SchemaValidationExercise() {
         </FormContainer>
       )}
 
-      <TaskDescription taskNumber={currentTask} level="3" />
+      <TaskDescription taskNumber={currentTask} level="1" />
 
-      <TheoryBlock level="3" />
+      <TheoryBlock level="1" />
     </div>
   )
 }

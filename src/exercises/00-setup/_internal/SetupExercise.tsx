@@ -1,54 +1,45 @@
 import { useState } from 'react'
-import { useTheme } from '../../hooks/useTheme'
-import { useLanguage } from '../../hooks/useLanguage'
-import { TheoryBlock } from '../../components/TheoryBlock'
-import { FormContainer } from '../../components/FormContainer'
-import { TaskDescription } from '../../components/TaskDescription'
-import { Task1_1 } from './Task1_1'
-import { Task1_2 } from './Task1_2'
-import { Task1_3 } from './Task1_3'
-import { Task1_4 } from './Task1_4'
-import { Task1_1_Solution, Task1_2_Solution, Task1_3_Solution, Task1_4_Solution } from './Solution'
+import { useTheme } from '../../../hooks/useTheme'
+import { useLanguage } from '../../../hooks/useLanguage'
+import { TheoryBlock } from '../../../components/TheoryBlock'
+import { FormContainer } from '../../../components/FormContainer'
+import { TaskDescription } from '../../../components/TaskDescription'
+import { Task0_1 } from '../Task0_1'
+import { Task0_2 } from '../Task0_2'
+import { Task0_1_Solution, Task0_2_Solution } from './Solution'
 
-type Task = '1.1' | '1.2' | '1.3' | '1.4'
+type Task = '0.1' | '0.2'
 
-export function BasicFormExercise() {
+export function SetupExercise() {
   const { theme } = useTheme()
   const { t } = useLanguage()
   const isDark = theme === 'dark'
-
-  const [currentTask, setCurrentTask] = useState<Task>('1.1')
+  const [currentTask, setCurrentTask] = useState<Task>('0.1')
   const [showSolution, setShowSolution] = useState(false)
 
   const tasks = {
-    '1.1': <Task1_1 />,
-    '1.2': <Task1_2 />,
-    '1.3': <Task1_3 />,
-    '1.4': <Task1_4 />,
+    '0.1': <Task0_1 />,
+    '0.2': <Task0_2 />,
   }
 
   const solutions = {
-    '1.1': <Task1_1_Solution />,
-    '1.2': <Task1_2_Solution />,
-    '1.3': <Task1_3_Solution />,
-    '1.4': <Task1_4_Solution />,
+    '0.1': <Task0_1_Solution />,
+    '0.2': <Task0_2_Solution />,
   }
 
-  const taskList: { id: Task; name: string }[] = [
-    { id: '1.1', name: 'Форма регистрации' },
-    { id: '1.2', name: 'Watch в реальном времени' },
-    { id: '1.3', name: 'setValue и getValues' },
-    { id: '1.4', name: 'formState' },
+  const taskList = [
+    { id: '0.1', name: t('task.0.1') || 'Первая форма' },
+    { id: '0.2', name: t('task.0.2') || 'Вывод данных' },
   ]
 
   return (
     <div>
       <header style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
-          {t('nav.level')} 1: {t('nav.basics')}
+          {t('nav.level')} 0: {t('nav.setup')}
         </h1>
-        <p style={{ color: isDark ? '#8b949e' : '#6c757d' }}>
-          {t('level.1.desc')}
+        <p style={{ color: 'var(--text-muted)' }}>
+          {t('level.0.desc')}
         </p>
       </header>
 
@@ -69,6 +60,7 @@ export function BasicFormExercise() {
                 : '#30363d'),
               borderRadius: '8px',
               cursor: 'pointer',
+              transition: 'all 0.2s',
               fontWeight: currentTask === task.id ? 600 : 400,
             }}
           >
@@ -99,9 +91,9 @@ export function BasicFormExercise() {
         </FormContainer>
       )}
 
-      <TaskDescription taskNumber={currentTask} level="1" />
+      <TaskDescription taskNumber={currentTask} level="0" />
 
-      <TheoryBlock level="1" />
+      <TheoryBlock level="0" />
     </div>
   )
 }

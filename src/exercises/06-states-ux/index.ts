@@ -1,1 +1,1 @@
-export { StatesUXExercise } from './StatesUXExercise'
+export { StatesUXExercise } from './_internal/StatesUXExercise'

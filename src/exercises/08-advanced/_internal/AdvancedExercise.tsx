@@ -1,45 +1,57 @@
 import { useState } from 'react'
-import { useTheme } from '../../hooks/useTheme'
-import { useLanguage } from '../../hooks/useLanguage'
-import { TheoryBlock } from '../../components/TheoryBlock'
-import { FormContainer } from '../../components/FormContainer'
-import { TaskDescription } from '../../components/TaskDescription'
-import { Task0_1 } from './Task0_1'
-import { Task0_2 } from './Task0_2'
-import { Task0_1_Solution, Task0_2_Solution } from './Solution'
+import { useTheme } from '../../../hooks/useTheme'
+import { useLanguage } from '../../../hooks/useLanguage'
+import { TheoryBlock } from '../../../components/TheoryBlock'
+import { FormContainer } from '../../../components/FormContainer'
+import { TaskDescription } from '../../../components/TaskDescription'
+import { Task8_1 } from '../Task8_1'
+import { Task8_2 } from '../Task8_2'
+import { Task8_3 } from '../Task8_3'
+import { Task8_4 } from '../Task8_4'
+import { Task8_5 } from '../Task8_5'
+import { Task8_1_Solution, Task8_2_Solution, Task8_3_Solution, Task8_4_Solution, Task8_5_Solution } from './Solution'
 
-type Task = '0.1' | '0.2'
+type Task = '8.1' | '8.2' | '8.3' | '8.4' | '8.5'
 
-export function SetupExercise() {
+export function AdvancedExercise() {
   const { theme } = useTheme()
   const { t } = useLanguage()
   const isDark = theme === 'dark'
-  const [currentTask, setCurrentTask] = useState<Task>('0.1')
+  const [currentTask, setCurrentTask] = useState<Task>('8.1')
   const [showSolution, setShowSolution] = useState(false)
 
   const tasks = {
-    '0.1': <Task0_1 />,
-    '0.2': <Task0_2 />,
+    '8.1': <Task8_1 />,
+    '8.2': <Task8_2 />,
+    '8.3': <Task8_3 />,
+    '8.4': <Task8_4 />,
+    '8.5': <Task8_5 />,
   }
 
   const solutions = {
-    '0.1': <Task0_1_Solution />,
-    '0.2': <Task0_2_Solution />,
+    '8.1': <Task8_1_Solution />,
+    '8.2': <Task8_2_Solution />,
+    '8.3': <Task8_3_Solution />,
+    '8.4': <Task8_4_Solution />,
+    '8.5': <Task8_5_Solution />,
   }
 
   const taskList = [
-    { id: '0.1', name: t('task.0.1') || 'Первая форма' },
-    { id: '0.2', name: t('task.0.2') || 'Вывод данных' },
+    { id: '8.1', name: 'UI-библиотека' },
+    { id: '8.2', name: 'Кастомный хук' },
+    { id: '8.3', name: 'FormContext' },
+    { id: '8.4', name: 'localStorage' },
+    { id: '8.5', name: 'Финальный' },
   ]
 
   return (
     <div>
       <header style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
-          {t('nav.level')} 0: {t('nav.setup')}
+          {t('nav.level')} 8: {t('nav.advanced')}
         </h1>
-        <p style={{ color: 'var(--text-muted)' }}>
-          {t('level.0.desc')}
+        <p style={{ color: isDark ? '#8b949e' : '#6c757d' }}>
+          {t('level.8.desc')}
         </p>
       </header>
 
@@ -60,7 +72,6 @@ export function SetupExercise() {
                 : '#30363d'),
               borderRadius: '8px',
               cursor: 'pointer',
-              transition: 'all 0.2s',
               fontWeight: currentTask === task.id ? 600 : 400,
             }}
           >
@@ -73,7 +84,7 @@ export function SetupExercise() {
         <button
           onClick={() => setShowSolution(!showSolution)}
           style={{
-            background: showSolution ? '#4caf50' : '#646cff',
+            background: showSolution ? '#28a745' : '#646cff',
             color: '#fff',
             border: 'none',
             padding: '0.5rem 1rem',
@@ -91,9 +102,9 @@ export function SetupExercise() {
         </FormContainer>
       )}
 
-      <TaskDescription taskNumber={currentTask} level="0" />
+      <TaskDescription taskNumber={currentTask} level="8" />
 
-      <TheoryBlock level="0" />
+      <TheoryBlock level="8" />
     </div>
   )
 }

@@ -1,1 +1,1 @@
-export { BasicFormExercise } from './BasicFormExercise'
+export { BasicFormExercise } from './_internal/BasicFormExercise'

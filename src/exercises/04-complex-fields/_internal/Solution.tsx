@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useTheme } from '../../hooks/useTheme'
+import { useTheme } from '../../../hooks/useTheme'
 
 // ============================================
 // Задание 4.1: Controller — Решение

@@ -19,15 +19,15 @@ export function TheoryBlock({ level }: TheoryBlockProps) {
   const { isOpen, toggle } = useCollapsible({ initialState: true })
 
   const paths: Record<string, string> = {
-    '0': '/src/exercises/00-setup/README.md',
-    '1': '/src/exercises/01-basic-form/README.md',
-    '2': '/src/exercises/02-validation/README.md',
-    '3': '/src/exercises/03-schema-validation/README.md',
-    '4': '/src/exercises/04-complex-fields/README.md',
-    '5': '/src/exercises/05-dynamic-forms/README.md',
-    '6': '/src/exercises/06-states-ux/README.md',
-    '7': '/src/exercises/07-async/README.md',
-    '8': '/src/exercises/08-advanced/README.md',
+    '0': '/src/exercises/00-setup/_internal/README.md',
+    '1': '/src/exercises/01-basic-form/_internal/README.md',
+    '2': '/src/exercises/02-validation/_internal/README.md',
+    '3': '/src/exercises/03-schema-validation/_internal/README.md',
+    '4': '/src/exercises/04-complex-fields/_internal/README.md',
+    '5': '/src/exercises/05-dynamic-forms/_internal/README.md',
+    '6': '/src/exercises/06-states-ux/_internal/README.md',
+    '7': '/src/exercises/07-async/_internal/README.md',
+    '8': '/src/exercises/08-advanced/_internal/README.md',
   }
 
   const { content, loading, error } = useMarkdownLoader(paths[level] || '')

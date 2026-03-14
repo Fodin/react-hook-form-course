@@ -1,57 +1,53 @@
 import { useState } from 'react'
-import { useTheme } from '../../hooks/useTheme'
-import { useLanguage } from '../../hooks/useLanguage'
-import { TheoryBlock } from '../../components/TheoryBlock'
-import { FormContainer } from '../../components/FormContainer'
-import { TaskDescription } from '../../components/TaskDescription'
-import { Task6_1 } from './Task6_1'
-import { Task6_2 } from './Task6_2'
-import { Task6_3 } from './Task6_3'
-import { Task6_4 } from './Task6_4'
-import { Task6_5 } from './Task6_5'
-import { Task6_1_Solution, Task6_2_Solution, Task6_3_Solution, Task6_4_Solution, Task6_5_Solution } from './Solution'
+import { useTheme } from '../../../hooks/useTheme'
+import { useLanguage } from '../../../hooks/useLanguage'
+import { TheoryBlock } from '../../../components/TheoryBlock'
+import { FormContainer } from '../../../components/FormContainer'
+import { TaskDescription } from '../../../components/TaskDescription'
+import { Task2_1 } from '../Task2_1'
+import { Task2_2 } from '../Task2_2'
+import { Task2_3 } from '../Task2_3'
+import { Task2_4 } from '../Task2_4'
+import { Task2_1_Solution, Task2_2_Solution, Task2_3_Solution, Task2_4_Solution } from './Solution'
 
-type Task = '6.1' | '6.2' | '6.3' | '6.4' | '6.5'
+type Task = '2.1' | '2.2' | '2.3' | '2.4'
 
-export function StatesUXExercise() {
+export function ValidationExercise() {
   const { theme } = useTheme()
   const { t } = useLanguage()
   const isDark = theme === 'dark'
-  const [currentTask, setCurrentTask] = useState<Task>('6.1')
+  const [currentTask, setCurrentTask] = useState<Task>('2.1')
   const [showSolution, setShowSolution] = useState(false)
 
   const tasks = {
-    '6.1': <Task6_1 />,
-    '6.2': <Task6_2 />,
-    '6.3': <Task6_3 />,
-    '6.4': <Task6_4 />,
-    '6.5': <Task6_5 />,
+    '2.1': <Task2_1 />,
+    '2.2': <Task2_2 />,
+    '2.3': <Task2_3 />,
+    '2.4': <Task2_4 />,
   }
 
   const solutions = {
-    '6.1': <Task6_1_Solution />,
-    '6.2': <Task6_2_Solution />,
-    '6.3': <Task6_3_Solution />,
-    '6.4': <Task6_4_Solution />,
-    '6.5': <Task6_5_Solution />,
+    '2.1': <Task2_1_Solution />,
+    '2.2': <Task2_2_Solution />,
+    '2.3': <Task2_3_Solution />,
+    '2.4': <Task2_4_Solution />,
   }
 
   const taskList = [
-    { id: '6.1', name: 'Dirty/Touched' },
-    { id: '6.2', name: 'Reset' },
-    { id: '6.3', name: 'Focus' },
-    { id: '6.4', name: 'A11y' },
-    { id: '6.5', name: 'Performance' },
+    { id: '2.1', name: 'Built-in валидация' },
+    { id: '2.2', name: 'Pattern валидация' },
+    { id: '2.3', name: 'Custom валидация' },
+    { id: '2.4', name: 'Cross-field валидация' },
   ]
 
   return (
     <div>
       <header style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
-          {t('nav.level')} 6: {t('nav.ux')}
+          {t('nav.level')} 2: {t('nav.validation')}
         </h1>
         <p style={{ color: isDark ? '#8b949e' : '#6c757d' }}>
-          {t('level.6.desc')}
+          {t('level.2.desc')}
         </p>
       </header>
 
@@ -84,7 +80,7 @@ export function StatesUXExercise() {
         <button
           onClick={() => setShowSolution(!showSolution)}
           style={{
-            background: showSolution ? '#28a745' : '#646cff',
+            background: showSolution ? '#4caf50' : '#646cff',
             color: '#fff',
             border: 'none',
             padding: '0.5rem 1rem',
@@ -102,9 +98,9 @@ export function StatesUXExercise() {
         </FormContainer>
       )}
 
-      <TaskDescription taskNumber={currentTask} level="6" />
+      <TaskDescription taskNumber={currentTask} level="2" />
 
-      <TheoryBlock level="6" />
+      <TheoryBlock level="2" />
     </div>
   )
 }

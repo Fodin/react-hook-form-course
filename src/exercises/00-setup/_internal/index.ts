@@ -1,0 +1,1 @@
+export { SetupExercise } from './SetupExercise'
