@@ -3,13 +3,14 @@ import { useTheme } from '../hooks/useTheme'
 
 interface FormContainerProps {
   children: ReactNode
+  taskFile: string
 }
 
 /**
  * Контейнер для формы ученика.
  * Автоматически обнаруживает форму и показывает/скрывает плейсхолдер.
  */
-export function FormContainer({ children }: FormContainerProps) {
+export function FormContainer({ children, taskFile }: FormContainerProps) {
   const { theme } = useTheme()
   const isDark = theme === 'dark'
   const containerRef = useRef<HTMLDivElement>(null)
@@ -60,7 +61,12 @@ export function FormContainer({ children }: FormContainerProps) {
               Ваша форма появится здесь
             </div>
             <div style={{ fontSize: '0.9rem' }}>
-              Откройте файл задания и выполните задание
+              Откройте файл <code style={{ 
+                background: isDark ? '#30363d' : '#eaeef2', 
+                padding: '0.2rem 0.5rem', 
+                borderRadius: '4px',
+                fontWeight: 600
+              }}>{taskFile}</code> и выполните задание
             </div>
           </div>
         )}

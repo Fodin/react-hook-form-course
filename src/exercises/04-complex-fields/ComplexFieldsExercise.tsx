@@ -92,7 +92,7 @@ export function ComplexFieldsExercise() {
       </div>
 
       {showSolution ? solutions[currentTask] : (
-        <FormContainer>
+        <FormContainer taskFile={`Task${currentTask.replace('.', '_')}.tsx`}>
           {tasks[currentTask]}
         </FormContainer>
       )}
