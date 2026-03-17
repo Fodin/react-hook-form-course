@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react'
+
 import { translations, Language, TranslationKey } from '../translations'
 
 interface LanguageContextType {
@@ -30,9 +31,12 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
     setLanguageState(lang)
   }, [])
 
-  const t = useCallback((key: TranslationKey): string => {
-    return translations[language][key] || translations.en[key] || key
-  }, [language])
+  const t = useCallback(
+    (key: TranslationKey): string => {
+      return translations[language][key] || translations.en[key] || key
+    },
+    [language]
+  )
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>
@@ -41,6 +45,7 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useLanguage() {
   const context = useContext(LanguageContext)
   if (context === undefined) {

@@ -1,1 +1,5 @@
-export { BasicFormExercise } from './_internal/BasicFormExercise'
+export { BasicFormExercise } from '../../src/exercises/01-basic-form/BasicFormExercise';
+export * from './Task1_1';
+export * from './Task1_2';
+export * from './Task1_3';
+export * from './Task1_4';

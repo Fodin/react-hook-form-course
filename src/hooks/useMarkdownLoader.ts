@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+
 import { useLanguage } from './useLanguage'
 
 interface UseMarkdownLoaderOptions {
@@ -21,14 +22,12 @@ export function useMarkdownLoader(path: string, options: UseMarkdownLoaderOption
     const loadMarkdown = async () => {
       try {
         setLoading(true)
-        
+
         // Добавляем .en.md для английского языка
-        const localizedPath = language === 'en' 
-          ? path.replace('.md', '.en.md')
-          : path
-        
+        const localizedPath = language === 'en' ? path.replace('.md', '.en.md') : path
+
         const response = await fetch(localizedPath)
-        
+
         if (!response.ok) {
           // Если английская версия не найдена, пробуем русскую
           if (language === 'en') {
@@ -45,9 +44,9 @@ export function useMarkdownLoader(path: string, options: UseMarkdownLoaderOption
           }
           throw new Error(`Failed to load markdown: ${response.status}`)
         }
-        
+
         const text = await response.text()
-        
+
         if (mounted) {
           setContent(text)
           setError(null)

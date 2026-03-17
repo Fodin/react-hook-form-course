@@ -1,4 +1,5 @@
 import { useTheme } from '../hooks'
+
 import styles from './ThemeToggle.module.css'
 
 export function ThemeToggle() {

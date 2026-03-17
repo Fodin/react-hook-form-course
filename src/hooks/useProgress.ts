@@ -34,66 +34,84 @@ export function useProgress() {
   }, [])
 
   // Отметить задание как выполненное
-  const markTaskComplete = useCallback((levelId: string, taskId: string) => {
-    setProgress(prev => {
-      const newProgress = {
-        ...prev,
-        [levelId]: {
-          ...(prev[levelId] || {}),
-          [taskId]: true
+  const markTaskComplete = useCallback(
+    (levelId: string, taskId: string) => {
+      setProgress(prev => {
+        const newProgress = {
+          ...prev,
+          [levelId]: {
+            ...(prev[levelId] || {}),
+            [taskId]: true,
+          },
         }
-      }
-      saveProgress(newProgress)
-      return newProgress
-    })
-  }, [saveProgress])
+        saveProgress(newProgress)
+        return newProgress
+      })
+    },
+    [saveProgress]
+  )
 
   // Снять отметку с задания
-  const markTaskIncomplete = useCallback((levelId: string, taskId: string) => {
-    setProgress(prev => {
-      const newProgress = {
-        ...prev,
-        [levelId]: {
-          ...(prev[levelId] || {}),
-          [taskId]: false
+  const markTaskIncomplete = useCallback(
+    (levelId: string, taskId: string) => {
+      setProgress(prev => {
+        const newProgress = {
+          ...prev,
+          [levelId]: {
+            ...(prev[levelId] || {}),
+            [taskId]: false,
+          },
         }
-      }
-      saveProgress(newProgress)
-      return newProgress
-    })
-  }, [saveProgress])
+        saveProgress(newProgress)
+        return newProgress
+      })
+    },
+    [saveProgress]
+  )
 
   // Переключить статус задания
-  const toggleTask = useCallback((levelId: string, taskId: string) => {
-    const isComplete = progress[levelId]?.[taskId] || false
-    if (isComplete) {
-      markTaskIncomplete(levelId, taskId)
-    } else {
-      markTaskComplete(levelId, taskId)
-    }
-  }, [progress, markTaskComplete, markTaskIncomplete])
+  const toggleTask = useCallback(
+    (levelId: string, taskId: string) => {
+      const isComplete = progress[levelId]?.[taskId] || false
+      if (isComplete) {
+        markTaskIncomplete(levelId, taskId)
+      } else {
+        markTaskComplete(levelId, taskId)
+      }
+    },
+    [progress, markTaskComplete, markTaskIncomplete]
+  )
 
   // Проверить, выполнено ли задание
-  const isTaskComplete = useCallback((levelId: string, taskId: string) => {
-    return progress[levelId]?.[taskId] || false
-  }, [progress])
+  const isTaskComplete = useCallback(
+    (levelId: string, taskId: string) => {
+      return progress[levelId]?.[taskId] || false
+    },
+    [progress]
+  )
 
   // Получить процент выполнения уровня
-  const getLevelProgress = useCallback((levelId: string, totalTasks: number) => {
-    const levelData = progress[levelId] || {}
-    const completedCount = Object.values(levelData).filter(Boolean).length
-    return totalTasks > 0 ? Math.round((completedCount / totalTasks) * 100) : 0
-  }, [progress])
+  const getLevelProgress = useCallback(
+    (levelId: string, totalTasks: number) => {
+      const levelData = progress[levelId] || {}
+      const completedCount = Object.values(levelData).filter(Boolean).length
+      return totalTasks > 0 ? Math.round((completedCount / totalTasks) * 100) : 0
+    },
+    [progress]
+  )
 
   // Получить общий процент выполнения курса
-  const getTotalProgress = useCallback((levels: { id: string; tasks: number }[]) => {
-    const totalTasks = levels.reduce((sum, level) => sum + level.tasks, 0)
-    const completedTasks = levels.reduce((sum, level) => {
-      const levelData = progress[level.id] || {}
-      return sum + Object.values(levelData).filter(Boolean).length
-    }, 0)
-    return totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0
-  }, [progress])
+  const getTotalProgress = useCallback(
+    (levels: { id: string; tasks: number }[]) => {
+      const totalTasks = levels.reduce((sum, level) => sum + level.tasks, 0)
+      const completedTasks = levels.reduce((sum, level) => {
+        const levelData = progress[level.id] || {}
+        return sum + Object.values(levelData).filter(Boolean).length
+      }, 0)
+      return totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0
+    },
+    [progress]
+  )
 
   // Сбросить весь прогресс
   const resetProgress = useCallback(() => {
@@ -109,6 +127,6 @@ export function useProgress() {
     isTaskComplete,
     getLevelProgress,
     getTotalProgress,
-    resetProgress
+    resetProgress,
   }
 }

@@ -16,12 +16,18 @@ type AsyncForm = z.infer<typeof asyncSchema>
 
 // Имитация проверки на сервере
 const checkUsername = async (username: string): Promise<boolean> => {
-  await new Promise((r) => setTimeout(r, 500))
+  await new Promise(r => setTimeout(r, 500))
   return !['admin', 'user', 'test'].includes(username.toLowerCase())
 }
 
 export function Task7_1_Solution() {
-  const { register, handleSubmit, formState: { errors }, setError, clearErrors } = useForm<AsyncForm>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+    clearErrors,
+  } = useForm<AsyncForm>({
     resolver: zodResolver(asyncSchema),
     mode: 'onChange',
   })
@@ -29,19 +35,22 @@ export function Task7_1_Solution() {
   const [checking, setChecking] = useState(false)
   const [available, setAvailable] = useState<boolean | null>(null)
 
-  const validateUsername = useCallback(async (value: string) => {
-    if (!value || value.length < 3) return true
-    setChecking(true)
-    const isAvailable = await checkUsername(value)
-    setAvailable(isAvailable)
-    setChecking(false)
-    if (!isAvailable) {
-      setError('username', { type: 'manual', message: 'Имя занято' })
-      return false
-    }
-    clearErrors('username')
-    return true
-  }, [setError, clearErrors])
+  const validateUsername = useCallback(
+    async (value: string) => {
+      if (!value || value.length < 3) return true
+      setChecking(true)
+      const isAvailable = await checkUsername(value)
+      setAvailable(isAvailable)
+      setChecking(false)
+      if (!isAvailable) {
+        setError('username', { type: 'manual', message: 'Имя занято' })
+        return false
+      }
+      clearErrors('username')
+      return true
+    },
+    [setError, clearErrors]
+  )
 
   const onSubmit = (data: AsyncForm) => {
     console.log('Submitted:', data)
@@ -55,7 +64,7 @@ export function Task7_1_Solution() {
           <label>Username *</label>
           <input
             {...register('username')}
-            onBlur={(e) => validateUsername(e.target.value)}
+            onBlur={e => validateUsername(e.target.value)}
             placeholder="Введите username"
           />
           {checking && (
@@ -99,18 +108,24 @@ const userEditSchema = z.object({
 type UserEditForm = z.infer<typeof userEditSchema>
 
 const mockFetchUser = async (id: number): Promise<UserEditForm> => {
-  await new Promise((r) => setTimeout(r, 800))
+  await new Promise(r => setTimeout(r, 800))
   return { name: 'John Doe', email: 'john@example.com', bio: 'Developer' }
 }
 
 export function Task7_2_Solution() {
   const [loading, setLoading] = useState(true)
-  const { register, handleSubmit, reset, watch, formState: { isDirty } } = useForm<UserEditForm>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { isDirty },
+  } = useForm<UserEditForm>({
     resolver: zodResolver(userEditSchema),
   })
 
   useEffect(() => {
-    mockFetchUser(1).then((data) => {
+    mockFetchUser(1).then(data => {
       reset(data)
       setLoading(false)
     })
@@ -179,7 +194,12 @@ export function Task7_3_Solution() {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<ContactForm>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ContactForm>({
     resolver: zodResolver(contactSchema),
   })
 
@@ -212,25 +232,29 @@ export function Task7_3_Solution() {
       <h2>✅ Задание 7.3: Submit с Loading/Error</h2>
       <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: '400px' }}>
         {success && (
-          <div style={{
-            padding: '1rem',
-            background: '#d1e7dd',
-            borderRadius: '4px',
-            marginBottom: '1rem',
-            color: '#0f5132'
-          }}>
+          <div
+            style={{
+              padding: '1rem',
+              background: '#d1e7dd',
+              borderRadius: '4px',
+              marginBottom: '1rem',
+              color: '#0f5132',
+            }}
+          >
             ✅ Отправлено успешно!
           </div>
         )}
 
         {error && (
-          <div style={{
-            padding: '1rem',
-            background: '#f8d7da',
-            borderRadius: '4px',
-            marginBottom: '1rem',
-            color: '#842029'
-          }}>
+          <div
+            style={{
+              padding: '1rem',
+              background: '#f8d7da',
+              borderRadius: '4px',
+              marginBottom: '1rem',
+              color: '#842029',
+            }}
+          >
             ❌ {error}
           </div>
         )}

@@ -1,4 +1,5 @@
 import { useTheme, useLanguage, useScrollToTop } from '../hooks'
+
 import styles from './ScrollToTop.module.css'
 
 export function ScrollToTop() {

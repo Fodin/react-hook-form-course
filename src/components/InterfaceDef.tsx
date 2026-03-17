@@ -1,5 +1,6 @@
 import { useTheme } from '../hooks'
 import { CodeHighlight } from './CodeHighlight'
+
 import styles from './InterfaceDef.module.css'
 
 interface InterfaceDefProps {
@@ -16,7 +17,9 @@ export function InterfaceDef({ name, code }: InterfaceDefProps) {
 
   return (
     <div className={styles.interfaceDef}>
-      <h4 className={`${styles.interfaceDefTitle} ${isDark ? styles.interfaceDefTitleDark : styles.interfaceDefTitleLight}`}>
+      <h4
+        className={`${styles.interfaceDefTitle} ${isDark ? styles.interfaceDefTitleDark : styles.interfaceDefTitleLight}`}
+      >
         Интерфейс: <code>{name}</code>
       </h4>
       <CodeHighlight code={code} />

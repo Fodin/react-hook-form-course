@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom'
-import { ThemeProvider, LanguageProvider, useLanguage } from './hooks'
-import { ThemeToggle } from './components/ThemeToggle'
-import { LanguageToggle } from './components/LanguageToggle'
-import { useAppLevels } from './hooks/useAppLevels'
-import { LevelSidebar } from './components/LevelSidebar'
+
 import { ExerciseRenderer } from './components/ExerciseRenderer'
+import { LevelSidebar } from './components/LevelSidebar'
+import { ThemeProvider, LanguageProvider, useLanguage } from './hooks'
+import { useAppLevels } from './hooks/useAppLevels'
+
 import styles from './App.module.css'
 
 function LevelPage() {
@@ -30,10 +30,7 @@ function LevelPage() {
         <div className={styles.sidebarHeader}>
           <h2 className={styles.sidebarTitle}>{t('nav.title')}</h2>
         </div>
-        <LevelSidebar
-          levels={levels}
-          currentLevel={levelId || '0'}
-        />
+        <LevelSidebar levels={levels} currentLevel={levelId || '0'} />
       </aside>
       <main className={styles.main}>
         <ExerciseRenderer level={levelId || '0'} taskId={taskId} />

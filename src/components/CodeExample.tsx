@@ -1,5 +1,6 @@
 import { useTheme } from '../hooks'
 import { CodeHighlight } from './CodeHighlight'
+
 import styles from './CodeExample.module.css'
 
 interface CodeExampleProps {
@@ -17,7 +18,9 @@ export function CodeExample({ code, label }: CodeExampleProps) {
   return (
     <div className={styles.codeExample}>
       {label && (
-        <div className={`${styles.codeExampleLabel} ${isDark ? styles.codeExampleLabelDark : styles.codeExampleLabelLight}`}>
+        <div
+          className={`${styles.codeExampleLabel} ${isDark ? styles.codeExampleLabelDark : styles.codeExampleLabelLight}`}
+        >
           {label}
         </div>
       )}

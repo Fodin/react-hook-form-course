@@ -13,13 +13,13 @@ interface UseExerciseNavigationOptions {
 export function useExerciseNavigation({
   levelId,
   defaultTask,
-  validTasks
+  validTasks,
 }: UseExerciseNavigationOptions) {
   const navigate = useNavigate()
   const { taskId } = useParams<{ taskId: string }>()
 
   const [currentTask, setCurrentTask] = useState<string>(
-    (taskId && validTasks.includes(taskId)) ? taskId : defaultTask
+    taskId && validTasks.includes(taskId) ? taskId : defaultTask
   )
 
   // Синхронизация с URL
@@ -33,15 +33,18 @@ export function useExerciseNavigation({
   }, [taskId, validTasks, defaultTask, levelId, navigate])
 
   // Функция для изменения задания с обновлением URL
-  const changeTask = useCallback((task: string) => {
-    if (validTasks.includes(task)) {
-      setCurrentTask(task)
-      navigate(`/level/${levelId}/${task}`)
-    }
-  }, [levelId, validTasks, navigate])
+  const changeTask = useCallback(
+    (task: string) => {
+      if (validTasks.includes(task)) {
+        setCurrentTask(task)
+        navigate(`/level/${levelId}/${task}`)
+      }
+    },
+    [levelId, validTasks, navigate]
+  )
 
   return {
     currentTask,
-    changeTask
+    changeTask,
   }
 }

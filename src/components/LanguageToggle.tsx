@@ -1,15 +1,15 @@
-import { useLanguage } from '../hooks/useLanguage'
-import { useTheme } from '../hooks/useTheme'
-import styles from './LanguageToggle.module.css'
+import { useLanguage, useTheme } from 'src/hooks';
+
+import styles from './LanguageToggle.module.css';
 
 export function LanguageToggle() {
-  const { language, setLanguage } = useLanguage()
-  const { theme } = useTheme()
-  const isDark = theme === 'dark'
+  const { language, setLanguage } = useLanguage();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   const toggleLanguage = () => {
-    setLanguage(language === 'ru' ? 'en' : 'ru')
-  }
+    setLanguage(language === 'ru' ? 'en' : 'ru');
+  };
 
   return (
     <button
@@ -19,5 +19,5 @@ export function LanguageToggle() {
     >
       {language === 'en' ? '🇷🇺 RU' : '🇬🇧 EN'}
     </button>
-  )
+  );
 }

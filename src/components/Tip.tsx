@@ -1,5 +1,7 @@
 import { ReactNode } from 'react'
+
 import { useTheme } from '../hooks'
+
 import styles from './Tip.module.css'
 
 interface TipProps {

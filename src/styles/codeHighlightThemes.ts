@@ -4,8 +4,9 @@ import { CSSProperties } from 'react'
  * Светлая тема в стиле GitHub
  */
 export const githubLightStyle: { [key: string]: CSSProperties } = {
-  'hljs': {
+  hljs: {
     display: 'block',
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     overflowX: 'auto' as any,
     padding: '1rem',
     color: '#24292e',
@@ -100,8 +101,9 @@ export const githubLightStyle: { [key: string]: CSSProperties } = {
  * Темная тема в стиле GitHub Dark
  */
 export const githubDarkStyle: { [key: string]: CSSProperties } = {
-  'hljs': {
+  hljs: {
     display: 'block',
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     overflowX: 'auto' as any,
     padding: '1rem',
     color: '#e6edf3',
