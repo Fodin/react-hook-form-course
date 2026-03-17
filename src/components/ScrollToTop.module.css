@@ -24,9 +24,17 @@
 }
 
 .buttonLight:hover {
-  background: #eaeef2;
+  background: #646cff;
+  color: #fff;
+  border-color: #646cff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.3);
 }
 
 .buttonDark:hover {
-  background: #30363d;
+  background: #646cff;
+  color: #fff;
+  border-color: #646cff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.4);
 }

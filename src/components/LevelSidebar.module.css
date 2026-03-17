@@ -47,6 +47,7 @@
 }
 
 .button {
+  display: block;
   text-align: left;
   padding: 0.75rem 1rem;
   border-radius: 8px;
@@ -54,6 +55,7 @@
   transition: all 0.2s;
   font-weight: 400;
   border: 2px solid transparent;
+  text-decoration: none;
 }
 
 .buttonActiveLight {
@@ -62,10 +64,26 @@
   border-color: #646cff;
 }
 
+.buttonActiveLight:hover {
+  background: #535bf2;
+  border-color: #535bf2;
+  color: #fff;
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.3);
+}
+
 .buttonActiveDark {
   background: #646cff;
   color: #fff;
   border-color: #646cff;
+}
+
+.buttonActiveDark:hover {
+  background: #747bff;
+  border-color: #747bff;
+  color: #fff;
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.4);
 }
 
 .buttonInactiveLight {
@@ -74,10 +92,26 @@
   border-color: #30363d;
 }
 
+.buttonInactiveLight:hover {
+  background: #f6f8fa;
+  border-color: #646cff;
+  color: #646cff;
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
 .buttonInactiveDark {
   background: #161b22;
   color: #e6edf3;
   border-color: #30363d;
+}
+
+.buttonInactiveDark:hover {
+  background: #21262d;
+  border-color: #646cff;
+  color: #646cff;
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(100, 108, 255, 0.2);
 }
 
 .buttonTitle {

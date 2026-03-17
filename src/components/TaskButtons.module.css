@@ -1,0 +1,100 @@
+.container {
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.taskWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.button {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+/* Active buttons - Light theme */
+.buttonActiveLight {
+  background: #646cff;
+  color: #fff;
+  border-color: #646cff;
+  font-weight: 600;
+}
+
+.buttonActiveLight:hover {
+  background: #535bf2;
+  border-color: #535bf2;
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.3);
+}
+
+/* Active buttons - Dark theme */
+.buttonActiveDark {
+  background: #646cff;
+  color: #fff;
+  border-color: #646cff;
+  font-weight: 600;
+}
+
+.buttonActiveDark:hover {
+  background: #747bff;
+  border-color: #747bff;
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.4);
+}
+
+/* Inactive buttons - Light theme */
+.buttonInactiveLight {
+  background: #ffffff;
+  color: #213547;
+  border-color: #30363d;
+  font-weight: 400;
+}
+
+.buttonInactiveLight:hover {
+  background: #f6f8fa;
+  border-color: #646cff;
+  color: #646cff;
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Inactive buttons - Dark theme */
+.buttonInactiveDark {
+  background: #161b22;
+  color: #e6edf3;
+  border-color: #30363d;
+  font-weight: 400;
+}
+
+.buttonInactiveDark:hover {
+  background: #21262d;
+  border-color: #646cff;
+  color: #646cff;
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(100, 108, 255, 0.2);
+}
+
+/* Completed task styling */
+.buttonCompleted {
+  opacity: 0.7;
+  text-decoration: line-through;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #646cff;
+}

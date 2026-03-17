@@ -82,7 +82,14 @@ export const translations = {
     'task.placeholder': 'Ваша форма появится здесь',
     'task.openFile': 'Откройте файл',
     'task.andComplete': 'и выполните задание',
-    'task.formReady': '✅ Форма реализована!',
+    'task.formReady': 'Форма реализована!',
+    'task.stats.fields': 'Количество полей',
+    'task.stats.field': 'поле',
+    'task.stats.buttons': 'кнопок',
+    'task.stats.button': 'кнопка',
+    'task.stats.submitButton': 'Кнопка отправки',
+    'task.stats.validation': 'Валидация',
+    'task.stats.hasValidation': 'Форма имеет валидацию',
     
     // Теория
     'theory.title': '📚 Теория',
@@ -198,7 +205,14 @@ export const translations = {
     'task.placeholder': 'Your form will appear here',
     'task.openFile': 'Open file',
     'task.andComplete': 'and complete the task',
-    'task.formReady': '✅ Form implemented!',
+    'task.formReady': 'Form implemented!',
+    'task.stats.fields': 'Number of fields',
+    'task.stats.field': 'field',
+    'task.stats.buttons': 'buttons',
+    'task.stats.button': 'button',
+    'task.stats.submitButton': 'Submit button',
+    'task.stats.validation': 'Validation',
+    'task.stats.hasValidation': 'Form has validation',
     
     // Theory
     'theory.title': '📚 Theory',

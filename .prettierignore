@@ -1,0 +1,34 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+dist-ssr
+build
+.vite
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+
+# Temporary files
+*.tmp
+*.temp
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Coverage
+coverage

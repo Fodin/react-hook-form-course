@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { useLanguage } from '../hooks/useLanguage'
 import { useTheme } from '../hooks/useTheme'
 import { ThemeToggle } from './ThemeToggle'
@@ -13,10 +14,9 @@ export interface LevelInfo {
 interface LevelSidebarProps {
   levels: LevelInfo[]
   currentLevel: string
-  onLevelSelect: (level: string) => void
 }
 
-export function LevelSidebar({ levels, currentLevel, onLevelSelect }: LevelSidebarProps) {
+export function LevelSidebar({ levels, currentLevel }: LevelSidebarProps) {
   const { theme } = useTheme()
   const { language, t } = useLanguage()
   const isDark = theme === 'dark'
@@ -25,9 +25,9 @@ export function LevelSidebar({ levels, currentLevel, onLevelSelect }: LevelSideb
     <div>
       <nav className={styles.nav}>
         {levels.map((level) => (
-          <button
+          <Link
             key={level.id}
-            onClick={() => onLevelSelect(level.id)}
+            to={`/level/${level.id}`}
             className={`
               ${styles.button}
               ${currentLevel === level.id
@@ -41,7 +41,7 @@ export function LevelSidebar({ levels, currentLevel, onLevelSelect }: LevelSideb
             <div className={styles.buttonDescription}>
               {t(`level.${level.id}.desc` as any)}
             </div>
-          </button>
+          </Link>
         ))}
       </nav>
       
