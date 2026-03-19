@@ -11,7 +11,6 @@ export default defineConfig({
       { find: 'src/hooks', replacement: path.resolve(__dirname, './src/hooks') },
       { find: 'src/components', replacement: path.resolve(__dirname, './src/components') },
       { find: 'src', replacement: path.resolve(__dirname, './src') },
-      { find: /^exercises$/, replacement: path.resolve(__dirname, './src/exercises/index.tsx') },
     ],
   },
 })
