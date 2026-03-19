@@ -107,7 +107,7 @@ const userEditSchema = z.object({
 
 type UserEditForm = z.infer<typeof userEditSchema>
 
-const mockFetchUser = async (id: number): Promise<UserEditForm> => {
+const mockFetchUser = async (_id: number): Promise<UserEditForm> => {
   await new Promise(r => setTimeout(r, 800))
   return { name: 'John Doe', email: 'john@example.com', bio: 'Developer' }
 }
@@ -118,7 +118,6 @@ export function Task7_2_Solution() {
     register,
     handleSubmit,
     reset,
-    watch,
     formState: { isDirty },
   } = useForm<UserEditForm>({
     resolver: zodResolver(userEditSchema),

@@ -95,8 +95,6 @@ export function Task5_1_Solution() {
 // Задание 5.2: Условные поля — Решение
 // ============================================
 
-type ContactMethod = 'email' | 'phone' | 'telegram'
-
 const conditionalSchema = z
   .object({
     contactMethod: z.enum(['email', 'phone', 'telegram']),

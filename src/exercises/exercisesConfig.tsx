@@ -58,20 +58,8 @@ import {
   Task8_6_Solution,
 } from 'exercises/08-advanced'
 
-import { useLanguage } from '../hooks'
 import type { TranslationKey } from '../translations'
-
-function TaskStub({ id }: { id: string }) {
-  const { t } = useLanguage()
-  return (
-    <div className="exercise-container">
-      <h2>
-        {t('task.title')} {id}
-      </h2>
-      <p>{t('task.placeholder')}</p>
-    </div>
-  )
-}
+import { TaskStub } from './TaskStub'
 
 export interface TaskEntry {
   id: string

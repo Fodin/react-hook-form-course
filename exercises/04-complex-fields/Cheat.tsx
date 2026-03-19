@@ -158,7 +158,7 @@ export function Task4_2_Solution() {
 // ============================================
 
 const skillsSchema = z.object({
-  agree: z.boolean().refine(v => v === true, 'Необходимо согласие'),
+  agree: z.boolean().refine(v => v, 'Необходимо согласие'),
   skills: z.array(z.string()).min(1, 'Выберите хотя бы один навык'),
 })
 
@@ -268,13 +268,11 @@ export function Task4_4_Solution() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<FileForm>({
     resolver: zodResolver(fileSchema),
   })
 
-  const avatarFile = watch('avatar')
   const [preview, setPreview] = useState<string | null>(null)
 
   const onSubmit = (data: FileForm) => {

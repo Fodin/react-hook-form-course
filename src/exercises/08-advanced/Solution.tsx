@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, createContext } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   useForm,
   useFormState,
@@ -191,8 +191,6 @@ export function Task8_2_Solution() {
 // ============================================
 // Задание 8.3: FormContext — Решение
 // ============================================
-
-const FormContext = createContext<any>(null)
 
 function PersonalStep() {
   const { register } = useFormContext()
