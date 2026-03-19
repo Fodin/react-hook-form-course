@@ -18,17 +18,14 @@ Use `useState` to store submitted data:
 const [submittedData, setSubmittedData] = useState<LoginForm | null>(null)
 ```
 
----
-
-## ✅ Checklist
+## Checklist
 
 - [ ] State for submitted data is created
 - [ ] Data is displayed after submission
 - [ ] Clear button resets displayed data
 
----
+## How to verify
 
-## 📚 Additional Resources
-
-- [Official React Hook Form Documentation](https://react-hook-form.com/)
-- [useState Documentation](https://react.dev/reference/react/useState)
+1. Fill out the form and click "Login"
+2. Verify the data appears below the form
+3. Click "Clear" — the data should disappear

@@ -29,24 +29,16 @@ interface LoginForm {
 }
 ```
 
-## Подсказка
+## Чеклист
 
-```typescript
-import { useFormState } from 'react-hook-form'
-import type { Control } from 'react-hook-form'
+- [ ] Форма содержит поля email и password
+- [ ] `SubmitButton` вынесен в отдельный компонент
+- [ ] Счётчик ререндеров показывает что `SubmitButton` не ререндерится при вводе текста
+- [ ] `SubmitButton` ререндерится только при изменении `isValid` или `isSubmitting`
+- [ ] (Опционально) Тесты проходят
 
-function SubmitButton({ control }: { control: Control<LoginForm> }) {
-  const { isSubmitting, isValid } = useFormState({ control })
-  const renderCount = useRef(0)
-  renderCount.current++
+## Как проверить себя
 
-  return (
-    <div>
-      <button type="submit" disabled={!isValid || isSubmitting}>
-        {isSubmitting ? 'Отправка...' : 'Войти'}
-      </button>
-      <small>SubmitButton renders: {renderCount.current}</small>
-    </div>
-  )
-}
-```
+1. Введите текст в поле email — счётчик ререндеров основной формы должен увеличиться, а счётчик `SubmitButton` — нет
+2. Заполните оба поля валидными данными — `SubmitButton` должен ререндериться при смене `isValid`
+3. Отправьте форму — `SubmitButton` должен ререндериться при смене `isSubmitting`

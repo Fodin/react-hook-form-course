@@ -20,17 +20,7 @@ Create a simple form with two fields: email and password.
 
 5. Log form data to console on submission
 
-## Expected Result
-
-```tsx
-// When entering email: "test@example.com", password: "123456"
-// Console should show:
-// { email: "test@example.com", password: "123456" }
-```
-
----
-
-## ✅ Checklist
+## Checklist
 
 - [ ] Interface `LoginForm` is defined
 - [ ] `useForm<LoginForm>` is initialized
@@ -38,9 +28,9 @@ Create a simple form with two fields: email and password.
 - [ ] Submit button works
 - [ ] Data is logged to console
 
----
+## How to verify
 
-## 📚 Additional Resources
-
-- [Official React Hook Form Documentation](https://react-hook-form.com/)
-- [useForm Hook](https://react-hook-form.com/docs/useform)
+1. Enter email: `test@example.com`, password: `123456`
+2. Click the "Login" button
+3. Open DevTools (F12) → Console
+4. Verify the console shows `{ email: "test@example.com", password: "123456" }`

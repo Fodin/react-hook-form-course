@@ -12,12 +12,16 @@ Learn to use `watch` for reactive UI updates.
    - Password "strength" (weak/medium/strong based on length)
 3. Use `watch` to track changes
 
-## Example UI
+## Checklist
 
-```
-Username: [john_doe]
-Length: 8 characters
+- [ ] `username` and `password` fields are registered
+- [ ] Username length updates on input
+- [ ] Password strength changes based on length
+- [ ] UI updates in real time without form submission
 
-Password: [******]
-Password Strength: Strong ✓
-```
+## How to verify
+
+1. Type a username — the length should display below the field
+2. Enter a short password (1-5 characters) — should show "Weak"
+3. Enter a medium password (6-9 characters) — should show "Medium"
+4. Enter a long password (10+ characters) — should show "Strong"

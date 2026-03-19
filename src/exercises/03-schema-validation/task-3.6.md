@@ -10,9 +10,9 @@
 
 1. Поле `contactMethod` — radio: `'email'` | `'phone'` | `'telegram'`
 2. В зависимости от выбора показывать:
-   - email → поле `email` (валидация email)
-   - phone → поле `phone` (минимум 10 цифр)
-   - telegram → поле `telegram` (начинается с @)
+   - email — поле `email` (валидация email)
+   - phone — поле `phone` (минимум 10 цифр)
+   - telegram — поле `telegram` (начинается с @)
 3. Поле `message` — textarea (обязательное, минимум 20 символов)
 4. Поле `rating` — number (1-5, обязательное)
 5. Используйте `discriminatedUnion` для условных полей
@@ -33,23 +33,20 @@ interface FeedbackForm {
 }
 ```
 
-## Подсказка
+## Чеклист
 
-```typescript
-import { z } from 'zod'
+- [ ] `discriminatedUnion` используется для условных полей контакта
+- [ ] `superRefine` проверяет зависимость длины message от rating
+- [ ] При выборе email показывается только поле email
+- [ ] При выборе phone показывается только поле phone
+- [ ] При выборе telegram показывается только поле telegram
+- [ ] При rating < 3 message требует минимум 50 символов
 
-const contactSchema = z.discriminatedUnion('contactMethod', [
-  z.object({
-    contactMethod: z.literal('email'),
-    email: z.string().email('Неверный email'),
-  }),
-  z.object({
-    contactMethod: z.literal('phone'),
-    phone: z.string().regex(/^\d{10,}$/, 'Минимум 10 цифр'),
-  }),
-  z.object({
-    contactMethod: z.literal('telegram'),
-    telegram: z.string().startsWith('@', 'Должен начинаться с @'),
-  }),
-])
-```
+## Как проверить себя
+
+1. Выберите email — появится поле email, поля phone/telegram скрыты
+2. Введите невалидный email — ошибка
+3. Переключите на phone — поле email исчезнет, появится phone
+4. Введите rating = 2 и message из 25 символов — ошибка (нужно 50)
+5. Введите rating = 4 и message из 25 символов — ок
+6. Заполните все корректно — форма отправляется
