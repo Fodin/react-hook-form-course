@@ -1,9 +1,11 @@
 # Exercise 1.2: Tracking Values with watch
 
 ## Goal
+
 Learn to use `watch` for reactive UI updates.
 
 ## Requirements
+
 1. Create a form with `username` and `password` fields
 2. Display in real time:
    - Username length

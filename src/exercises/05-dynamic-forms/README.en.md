@@ -38,7 +38,9 @@ function DynamicForm() {
       {fields.map((field, index) => (
         <div key={field.id}>
           <input {...register(`emails.${index}.value`)} placeholder="Email" />
-          <button type="button" onClick={() => remove(index)}>✕</button>
+          <button type="button" onClick={() => remove(index)}>
+            ✕
+          </button>
         </div>
       ))}
 
@@ -56,15 +58,15 @@ function DynamicForm() {
 
 ```tsx
 const {
-  fields,      // Array of fields { id, ...value }
-  append,      // Add to end
-  prepend,     // Add to beginning
-  insert,      // Insert at index
-  remove,      // Remove at index
-  swap,        // Swap positions
-  move,        // Move
-  replace,     // Replace entire array
-  update,      // Update specific field
+  fields, // Array of fields { id, ...value }
+  append, // Add to end
+  prepend, // Add to beginning
+  insert, // Insert at index
+  remove, // Remove at index
+  swap, // Swap positions
+  move, // Move
+  replace, // Replace entire array
+  update, // Update specific field
 } = useFieldArray({ control, name: 'items' })
 ```
 
@@ -107,13 +109,22 @@ update(0, { value: 'updated' })
 import { z } from 'zod'
 
 const schema = z.object({
-  emails: z.array(z.object({
-    value: z.string().email('Invalid email'),
-  })).min(1, 'At least one email'),
+  emails: z
+    .array(
+      z.object({
+        value: z.string().email('Invalid email'),
+      })
+    )
+    .min(1, 'At least one email'),
 })
 
 // Usage
-const { control, register, handleSubmit, formState: { errors } } = useForm({
+const {
+  control,
+  register,
+  handleSubmit,
+  formState: { errors },
+} = useForm({
   resolver: zodResolver(schema),
   defaultValues: { emails: [{ value: '' }] },
 })
@@ -121,15 +132,19 @@ const { control, register, handleSubmit, formState: { errors } } = useForm({
 const { fields, append, remove } = useFieldArray({ control, name: 'emails' })
 
 // Display errors
-{fields.map((field, index) => (
-  <div key={field.id}>
-    <input {...register(`emails.${index}.value` as const)} />
-    {errors.emails?.[index]?.value && (
-      <span className="error">{errors.emails[index]?.value?.message}</span>
-    )}
-    <button type="button" onClick={() => remove(index)}>✕</button>
-  </div>
-))}
+{
+  fields.map((field, index) => (
+    <div key={field.id}>
+      <input {...register(`emails.${index}.value` as const)} />
+      {errors.emails?.[index]?.value && (
+        <span className="error">{errors.emails[index]?.value?.message}</span>
+      )}
+      <button type="button" onClick={() => remove(index)}>
+        ✕
+      </button>
+    </div>
+  ))
+}
 ```
 
 ---
@@ -152,17 +167,11 @@ function ConditionalForm() {
         <option value="telegram">Telegram</option>
       </select>
 
-      {contactMethod === 'email' && (
-        <input {...register('email')} placeholder="Email" />
-      )}
+      {contactMethod === 'email' && <input {...register('email')} placeholder="Email" />}
 
-      {contactMethod === 'phone' && (
-        <input {...register('phone')} placeholder="Phone" />
-      )}
+      {contactMethod === 'phone' && <input {...register('phone')} placeholder="Phone" />}
 
-      {contactMethod === 'telegram' && (
-        <input {...register('telegram')} placeholder="@username" />
-      )}
+      {contactMethod === 'telegram' && <input {...register('telegram')} placeholder="@username" />}
 
       <button type="submit">Submit</button>
     </form>
@@ -185,16 +194,21 @@ const { register } = useForm({ shouldUnregister: true })
 **Solution 2:** Custom validation
 
 ```tsx
-const schema = z.object({
-  contactMethod: z.enum(['email', 'phone', 'telegram']),
-  email: z.string().email().optional(),
-  phone: z.string().optional(),
-  telegram: z.string().optional(),
-}).refine((data) => {
-  if (data.contactMethod === 'email') return !!data.email
-  if (data.contactMethod === 'phone') return !!data.phone
-  return !!data.telegram
-}, { message: 'Fill in contact info', path: ['email'] })
+const schema = z
+  .object({
+    contactMethod: z.enum(['email', 'phone', 'telegram']),
+    email: z.string().email().optional(),
+    phone: z.string().optional(),
+    telegram: z.string().optional(),
+  })
+  .refine(
+    data => {
+      if (data.contactMethod === 'email') return !!data.email
+      if (data.contactMethod === 'phone') return !!data.phone
+      return !!data.telegram
+    },
+    { message: 'Fill in contact info', path: ['email'] }
+  )
 ```
 
 ---
@@ -228,7 +242,9 @@ function DependentFields() {
       <select {...register('city')} disabled={!country}>
         <option value="">Select a city</option>
         {cities.map(city => (
-          <option key={city} value={city}>{city}</option>
+          <option key={city} value={city}>
+            {city}
+          </option>
         ))}
       </select>
 
@@ -281,8 +297,14 @@ function WizardForm() {
         <>
           <h2>Step 1: Account</h2>
           <input {...register('email', { required: true })} placeholder="Email" />
-          <input {...register('password', { required: true })} type="password" placeholder="Password" />
-          <button type="button" onClick={onNext}>Next →</button>
+          <input
+            {...register('password', { required: true })}
+            type="password"
+            placeholder="Password"
+          />
+          <button type="button" onClick={onNext}>
+            Next →
+          </button>
         </>
       )}
 
@@ -292,8 +314,12 @@ function WizardForm() {
           <input {...register('firstName', { required: true })} placeholder="First Name" />
           <input {...register('lastName', { required: true })} placeholder="Last Name" />
           <div>
-            <button type="button" onClick={onPrev}>← Back</button>
-            <button type="button" onClick={onNext}>Next →</button>
+            <button type="button" onClick={onPrev}>
+              ← Back
+            </button>
+            <button type="button" onClick={onNext}>
+              Next →
+            </button>
           </div>
         </>
       )}
@@ -303,7 +329,9 @@ function WizardForm() {
           <h2>Step 3: Confirmation</h2>
           <textarea {...register('comments')} placeholder="Comment" />
           <div>
-            <button type="button" onClick={onPrev}>← Back</button>
+            <button type="button" onClick={onPrev}>
+              ← Back
+            </button>
             <button type="submit">Submit</button>
           </div>
         </>
@@ -366,11 +394,15 @@ const schema = z.object({
   phone: z.string().optional(),
 
   // Step 2: Items
-  items: z.array(z.object({
-    name: z.string().min(1),
-    quantity: z.number().min(1),
-    price: z.number().positive(),
-  })).min(1, 'Add at least one item'),
+  items: z
+    .array(
+      z.object({
+        name: z.string().min(1),
+        quantity: z.number().min(1),
+        price: z.number().positive(),
+      })
+    )
+    .min(1, 'Add at least one item'),
 
   // Step 3: Shipping
   address: z.object({
@@ -462,7 +494,9 @@ export function OrderWizard() {
             </div>
           )}
 
-          <button type="button" onClick={onNext}>Next →</button>
+          <button type="button" onClick={onNext}>
+            Next →
+          </button>
         </div>
       )}
 
@@ -473,10 +507,7 @@ export function OrderWizard() {
 
           {fields.map((field, index) => (
             <div key={field.id} style={{ marginBottom: '1rem' }}>
-              <input
-                {...register(`items.${index}.name` as const)}
-                placeholder="Name"
-              />
+              <input {...register(`items.${index}.name` as const)} placeholder="Name" />
               <input
                 type="number"
                 {...register(`items.${index}.quantity` as const, { valueAsNumber: true })}
@@ -487,7 +518,9 @@ export function OrderWizard() {
                 {...register(`items.${index}.price` as const, { valueAsNumber: true })}
                 placeholder="Price"
               />
-              <button type="button" onClick={() => remove(index)}>✕</button>
+              <button type="button" onClick={() => remove(index)}>
+                ✕
+              </button>
             </div>
           ))}
 
@@ -496,8 +529,12 @@ export function OrderWizard() {
           </button>
 
           <div>
-            <button type="button" onClick={() => setStep(1)}>← Back</button>
-            <button type="button" onClick={onNext}>Next →</button>
+            <button type="button" onClick={() => setStep(1)}>
+              ← Back
+            </button>
+            <button type="button" onClick={onNext}>
+              Next →
+            </button>
           </div>
         </div>
       )}
@@ -517,8 +554,12 @@ export function OrderWizard() {
           {errors.address?.zip && <span className="error">{errors.address.zip.message}</span>}
 
           <div>
-            <button type="button" onClick={() => setStep(2)}>← Back</button>
-            <button type="button" onClick={onNext}>Next →</button>
+            <button type="button" onClick={() => setStep(2)}>
+              ← Back
+            </button>
+            <button type="button" onClick={onNext}>
+              Next →
+            </button>
           </div>
         </div>
       )}
@@ -531,7 +572,9 @@ export function OrderWizard() {
           <textarea {...register('comments')} placeholder="Order comment" />
 
           <div>
-            <button type="button" onClick={() => setStep(3)}>← Back</button>
+            <button type="button" onClick={() => setStep(3)}>
+              ← Back
+            </button>
             <button type="submit">Place Order</button>
           </div>
         </div>
@@ -549,18 +592,22 @@ export function OrderWizard() {
 
 ```tsx
 // ❌ Wrong - index can change
-{fields.map((field, index) => (
-  <div key={index}>
-    <input {...register(`emails.${index}.value`)} />
-  </div>
-))}
+{
+  fields.map((field, index) => (
+    <div key={index}>
+      <input {...register(`emails.${index}.value`)} />
+    </div>
+  ))
+}
 
 // ✅ Correct - use field.id
-{fields.map((field, index) => (
-  <div key={field.id}>
-    <input {...register(`emails.${index}.value`)} />
-  </div>
-))}
+{
+  fields.map((field, index) => (
+    <div key={field.id}>
+      <input {...register(`emails.${index}.value`)} />
+    </div>
+  ))
+}
 ```
 
 **Why this is a mistake:** When adding/removing elements, the index changes, causing React state issues.
@@ -572,17 +619,25 @@ export function OrderWizard() {
 ```tsx
 // ❌ Wrong - array doesn't change
 const { fields } = useFieldArray({ control, name: 'emails' })
-{fields.map(field => <div key={field.id}>{field.value}</div>)}
+{
+  fields.map(field => <div key={field.id}>{field.value}</div>)
+}
 
 // ✅ Correct - use methods
 const { fields, append, remove } = useFieldArray({ control, name: 'emails' })
-{fields.map((field, index) => (
-  <div key={field.id}>
-    <input {...register(`emails.${index}.value`)} />
-    <button type="button" onClick={() => remove(index)}>✕</button>
-  </div>
-))}
-<button type="button" onClick={() => append({ value: '' })}>+ Add</button>
+{
+  fields.map((field, index) => (
+    <div key={field.id}>
+      <input {...register(`emails.${index}.value`)} />
+      <button type="button" onClick={() => remove(index)}>
+        ✕
+      </button>
+    </div>
+  ))
+}
+;<button type="button" onClick={() => append({ value: '' })}>
+  + Add
+</button>
 ```
 
 **Why this is a mistake:** Without `append`/`remove`, the field array remains static.
@@ -610,11 +665,15 @@ const onNext = async () => {
 
 ```tsx
 // ❌ Wrong - hidden field stays in form
-{showEmail && <input {...register('email', { required: true })} />}
+{
+  showEmail && <input {...register('email', { required: true })} />
+}
 
 // ✅ Correct - unregister when hidden
 const { register } = useForm({ shouldUnregister: true })
-{showEmail && <input {...register('email', { required: true })} />}
+{
+  showEmail && <input {...register('email', { required: true })} />
+}
 ```
 
 **Why this is a mistake:** Hidden fields can cause validation errors if not unregistered.

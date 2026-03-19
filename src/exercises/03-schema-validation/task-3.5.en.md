@@ -1,9 +1,11 @@
 # Exercise 3.5: Zod vs Yup Comparison
 
 ## Goal
+
 Understand the differences and choose the right library.
 
 ## Requirements
+
 Write a short analysis (as a code comment):
 
 1. What did you like more about Zod?

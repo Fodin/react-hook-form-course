@@ -1,9 +1,11 @@
 # Exercise 1.4: formState — Errors and Validity
 
 ## Goal
+
 Learn to display form state.
 
 ## Requirements
+
 1. Create a form with `email` and `password` fields
 2. Display:
    - Form validity indicator (green/red)
@@ -15,5 +17,7 @@ Learn to display form state.
 ## Hint
 
 ```typescript
-const { formState: { errors, isValid, isSubmitting, isDirty } } = useForm()
+const {
+  formState: { errors, isValid, isSubmitting, isDirty },
+} = useForm()
 ```

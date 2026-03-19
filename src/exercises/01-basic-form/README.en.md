@@ -24,16 +24,16 @@ interface FormData {
 
 function MyForm() {
   const {
-    register,           // For field registration
-    handleSubmit,       // For submit handling
-    watch,              // For tracking values
-    formState,          // Form state object
-    setValue,           // For setting field value
-    getValues,          // For getting values
-    reset,              // For form reset
-    trigger,            // For manual validation
-    setError,           // For setting error
-    clearErrors,        // For clearing errors
+    register, // For field registration
+    handleSubmit, // For submit handling
+    watch, // For tracking values
+    formState, // Form state object
+    setValue, // For setting field value
+    getValues, // For getting values
+    reset, // For form reset
+    trigger, // For manual validation
+    setError, // For setting error
+    clearErrors, // For clearing errors
   } = useForm<FormData>()
 
   return <form>...</form>
@@ -44,25 +44,26 @@ function MyForm() {
 
 ```tsx
 useForm<FormData>({
-  mode: 'onChange',        // When to trigger validation
+  mode: 'onChange', // When to trigger validation
   reValidateMode: 'onChange', // When to revalidate
-  defaultValues: {         // Default values
+  defaultValues: {
+    // Default values
     firstName: '',
     lastName: '',
   },
-  shouldFocusError: true,  // Focus on first error field
+  shouldFocusError: true, // Focus on first error field
   criteriaMode: 'firstError', // Show first or all errors
 })
 ```
 
 **Validation modes:**
 
-| mode | Description |
-|------|----------|
+| mode         | Description                         |
+| ------------ | ----------------------------------- |
 | `'onSubmit'` | Validation only on submit (default) |
-| `'onChange'` | Validation on every change |
-| `'onBlur'` | Validation on blur |
-| `'all'` | Validation on change and blur |
+| `'onChange'` | Validation on every change          |
+| `'onBlur'`   | Validation on blur                  |
+| `'all'`      | Validation on change and blur       |
 
 ---
 
@@ -82,7 +83,7 @@ useForm<FormData>({
     required: 'Age is required',
     min: { value: 18, message: 'Minimum 18 years' },
     max: { value: 100, message: 'Maximum 100 years' },
-    valueAsNumber: true,  // Convert to number
+    valueAsNumber: true, // Convert to number
   })}
 />
 ```
@@ -92,13 +93,13 @@ useForm<FormData>({
 ```tsx
 <input
   {...register('email', {
-    onChange: (e) => {
+    onChange: e => {
       console.log('Change:', e.target.value)
     },
-    onBlur: (e) => {
+    onBlur: e => {
       console.log('Blur:', e.target.value)
     },
-    setValueAs: (value) => value.trim(),  // Processing before setting
+    setValueAs: value => value.trim(), // Processing before setting
   })}
 />
 ```
@@ -147,11 +148,7 @@ useForm<FormData>({
 ### Textarea
 
 ```tsx
-<textarea
-  {...register('bio')}
-  rows={4}
-  cols={50}
-/>
+<textarea {...register('bio')} rows={4} cols={50} />
 ```
 
 ### Select
@@ -211,16 +208,18 @@ const skills = watch('skills') || []
 ### Getting State
 
 ```tsx
-const { formState: {
-  errors,           // Validation errors object
-  isDirty,          // Form is dirty
-  dirtyFields,      // Which fields are dirty
-  touchedFields,    // Which fields are touched
-  isSubmitting,     // Submit in progress
-  isValid,          // Form is valid
-  isValidating,     // Validation in progress
-  submitCount,      // Submit count
-} } = useForm()
+const {
+  formState: {
+    errors, // Validation errors object
+    isDirty, // Form is dirty
+    dirtyFields, // Which fields are dirty
+    touchedFields, // Which fields are touched
+    isSubmitting, // Submit in progress
+    isValid, // Form is valid
+    isValidating, // Validation in progress
+    submitCount, // Submit count
+  },
+} = useForm()
 ```
 
 ### Usage Example
@@ -230,7 +229,7 @@ function MyForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isValid }
+    formState: { errors, isSubmitting, isValid },
   } = useForm<FormData>({ mode: 'onChange' })
 
   return (
@@ -294,9 +293,7 @@ function PasswordForm() {
   return (
     <div>
       <input type="password" {...register('password')} />
-      <div style={{ color: strength.color }}>
-        Password strength: {strength.label}
-      </div>
+      <div style={{ color: strength.color }}>Password strength: {strength.label}</div>
     </div>
   )
 }
@@ -316,9 +313,9 @@ setValue('firstName', 'John')
 
 // With options
 setValue('firstName', 'John', {
-  shouldValidate: true,  // Trigger validation
-  shouldDirty: true,     // Mark as dirty
-  shouldTouch: true,     // Mark as touched
+  shouldValidate: true, // Trigger validation
+  shouldDirty: true, // Mark as dirty
+  shouldTouch: true, // Mark as touched
 })
 ```
 
@@ -456,9 +453,7 @@ export function RegistrationForm() {
       <div style={{ marginBottom: '1rem', padding: '0.5rem', background: '#f0f0f0' }}>
         <span>Dirty: {isDirty ? '✅' : '❌'}</span>
         <span style={{ marginLeft: '1rem' }}>Valid: {isValid ? '✅' : '❌'}</span>
-        <span style={{ marginLeft: '1rem' }}>
-          Submitting: {isSubmitting ? '⏳' : '✓'}
-        </span>
+        <span style={{ marginLeft: '1rem' }}>Submitting: {isSubmitting ? '⏳' : '✓'}</span>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>

@@ -10,11 +10,11 @@ Good form UX is not just about validation. It's about understanding form state, 
 
 ### What are Dirty and Touched?
 
-| State | Description | When it Changes |
-|-----------|----------|----------------|
-| `dirty` | Field was changed | When value changes |
-| `touched` | Field was touched | On blur |
-| `isDirty` | Form was changed | When any field changes |
+| State     | Description       | When it Changes        |
+| --------- | ----------------- | ---------------------- |
+| `dirty`   | Field was changed | When value changes     |
+| `touched` | Field was touched | On blur                |
+| `isDirty` | Form was changed  | When any field changes |
 
 ### Getting State
 
@@ -23,10 +23,10 @@ function MyForm() {
   const {
     register,
     formState: {
-      dirtyFields,      // Which fields are dirty
-      touchedFields,    // Which fields are touched
-      isDirty,          // Form is dirty
-      isSubmitted,      // Form was submitted
+      dirtyFields, // Which fields are dirty
+      touchedFields, // Which fields are touched
+      isDirty, // Form is dirty
+      isSubmitted, // Form was submitted
     },
   } = useForm()
 
@@ -34,15 +34,9 @@ function MyForm() {
     <form>
       <input {...register('name')} />
 
-      <div>
-        Dirty: {dirtyFields.name ? '✅' : '❌'}
-      </div>
-      <div>
-        Touched: {touchedFields.name ? '✅' : '❌'}
-      </div>
-      <div>
-        Form is dirty: {isDirty ? 'Yes' : 'No'}
-      </div>
+      <div>Dirty: {dirtyFields.name ? '✅' : '❌'}</div>
+      <div>Touched: {touchedFields.name ? '✅' : '❌'}</div>
+      <div>Form is dirty: {isDirty ? 'Yes' : 'No'}</div>
     </form>
   )
 }
@@ -52,15 +46,15 @@ function MyForm() {
 
 ```tsx
 // Show error only after field was touched
-<input {...register('email', { required: 'Required' })} />
-{touchedFields.email && errors.email && (
-  <span className="error">{errors.email.message}</span>
-)}
+;<input {...register('email', { required: 'Required' })} />
+{
+  touchedFields.email && errors.email && <span className="error">{errors.email.message}</span>
+}
 
 // Or show only if field is dirty and invalid
-{dirtyFields.email && errors.email && (
-  <span className="error">{errors.email.message}</span>
-)}
+{
+  dirtyFields.email && errors.email && <span className="error">{errors.email.message}</span>
+}
 ```
 
 ### Visual Indication
@@ -69,9 +63,7 @@ function MyForm() {
 <input
   {...register('name')}
   style={{
-    borderColor: dirtyFields.name
-      ? errors.name ? '#dc3545' : '#28a745'
-      : '#ddd',
+    borderColor: dirtyFields.name ? (errors.name ? '#dc3545' : '#28a745') : '#ddd',
   }}
 />
 ```
@@ -118,9 +110,9 @@ reset({
 
 // With options
 reset(values, {
-  keepErrors: false,      // Keep errors
-  keepDirty: false,       // Keep dirty state
-  keepValues: false,      // Keep values
+  keepErrors: false, // Keep errors
+  keepDirty: false, // Keep dirty state
+  keepValues: false, // Keep values
   keepDefaultValues: false,
   keepIsSubmitted: false,
   keepTouched: false,
@@ -162,7 +154,11 @@ On validation error, the user should immediately understand where the problem is
 import { useEffect } from 'react'
 
 function MyForm() {
-  const { register, handleSubmit, formState: { errors } } = useForm()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm()
 
   useEffect(() => {
     const firstError = Object.keys(errors)[0]
@@ -216,7 +212,9 @@ function useFocusOnError(errors: any) {
 
 // Usage
 function MyForm() {
-  const { formState: { errors } } = useForm()
+  const {
+    formState: { errors },
+  } = useForm()
   useFocusOnError(errors)
   // ...
 }
@@ -237,18 +235,10 @@ function AccessibleForm() {
   } = useForm()
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      aria-label="Registration form"
-      noValidate
-    >
+    <form onSubmit={handleSubmit(onSubmit)} aria-label="Registration form" noValidate>
       {/* General error message */}
       {isSubmitted && Object.keys(errors).length > 0 && (
-        <div
-          role="alert"
-          aria-live="assertive"
-          style={{ color: '#dc3545' }}
-        >
+        <div role="alert" aria-live="assertive" style={{ color: '#dc3545' }}>
           Please fix the errors in the form
         </div>
       )}
@@ -265,12 +255,7 @@ function AccessibleForm() {
 
       {/* Error message with role="alert" */}
       {errors.email && (
-        <span
-          id="email-error"
-          className="error"
-          role="alert"
-          aria-live="polite"
-        >
+        <span id="email-error" className="error" role="alert" aria-live="polite">
           {errors.email.message}
         </span>
       )}
@@ -283,14 +268,14 @@ function AccessibleForm() {
 
 ### Main ARIA Attributes
 
-| Attribute | Description | Example |
-|---------|----------|--------|
-| `aria-label` | Text label | `aria-label="Login form"` |
-| `aria-invalid` | Field is invalid | `aria-invalid={!!errors.email}` |
-| `aria-describedby` | Link to description | `aria-describedby="email-error"` |
-| `aria-live` | Real-time updates | `aria-live="polite"` |
-| `role="alert"` | Important message | `role="alert"` |
-| `noValidate` | Disable native validation | `<form noValidate>` |
+| Attribute          | Description               | Example                          |
+| ------------------ | ------------------------- | -------------------------------- |
+| `aria-label`       | Text label                | `aria-label="Login form"`        |
+| `aria-invalid`     | Field is invalid          | `aria-invalid={!!errors.email}`  |
+| `aria-describedby` | Link to description       | `aria-describedby="email-error"` |
+| `aria-live`        | Real-time updates         | `aria-live="polite"`             |
+| `role="alert"`     | Important message         | `role="alert"`                   |
+| `noValidate`       | Disable native validation | `<form noValidate>`              |
 
 ### Keyboard Navigation
 
@@ -386,7 +371,9 @@ const { register } = useForm({ shouldUnregister: false })
 const { register } = useForm({ shouldUnregister: true })
 
 // For conditional fields, true is better
-{showEmail && <input {...register('email')} />}
+{
+  showEmail && <input {...register('email')} />
+}
 ```
 
 ### Performance Comparison
@@ -432,14 +419,7 @@ export function UXForm() {
     handleSubmit,
     reset,
     watch,
-    formState: {
-      errors,
-      isDirty,
-      isSubmitting,
-      isSubmitted,
-      touchedFields,
-      dirtyFields,
-    },
+    formState: { errors, isDirty, isSubmitting, isSubmitted, touchedFields, dirtyFields },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     mode: 'onChange',
@@ -471,11 +451,7 @@ export function UXForm() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      aria-label="Registration form"
-      noValidate
-    >
+    <form onSubmit={handleSubmit(onSubmit)} aria-label="Registration form" noValidate>
       {/* Status bar */}
       <div style={{ marginBottom: '1rem', padding: '0.5rem', background: '#f0f0f0' }}>
         <span>Dirty: {isDirty ? '✅' : '❌'}</span>
@@ -491,11 +467,8 @@ export function UXForm() {
           aria-invalid={!!errors.name}
           aria-describedby={errors.name ? 'name-error' : undefined}
           style={{
-            borderColor: touchedFields.name && errors.name
-              ? '#dc3545'
-              : dirtyFields.name
-              ? '#28a745'
-              : '#ddd',
+            borderColor:
+              touchedFields.name && errors.name ? '#dc3545' : dirtyFields.name ? '#28a745' : '#ddd',
           }}
         />
         {touchedFields.name && errors.name && (
@@ -592,7 +565,9 @@ export function UXForm() {
 const { errors, isDirty, isValid } = useForm()
 
 // ✅ Correct - from formState
-const { formState: { errors, isDirty, isValid } } = useForm()
+const {
+  formState: { errors, isDirty, isValid },
+} = useForm()
 ```
 
 **Why this is a mistake:** `formState` is a Proxy object that tracks subscriptions. Direct destructuring breaks this system.
@@ -607,7 +582,7 @@ reset()
 
 // ✅ Correct - with defaultValues
 const { reset } = useForm({
-  defaultValues: { name: '', email: '' }
+  defaultValues: { name: '', email: '' },
 })
 reset({ name: 'John', email: 'john@example.com' })
 ```
@@ -620,7 +595,9 @@ reset({ name: 'John', email: 'john@example.com' })
 
 ```tsx
 // ❌ Wrong - errors not visible to user
-const onSubmit = (data) => { /* ... */ }
+const onSubmit = data => {
+  /* ... */
+}
 
 // ✅ Correct - focus on first error
 useEffect(() => {
@@ -654,12 +631,14 @@ const name = useWatch({ name: 'name' })
 
 ```tsx
 // ❌ Wrong - show error immediately
-{errors.email && <span className="error">{errors.email.message}</span>}
+{
+  errors.email && <span className="error">{errors.email.message}</span>
+}
 
 // ✅ Correct - after touch
-{touchedFields.email && errors.email && (
-  <span className="error">{errors.email.message}</span>
-)}
+{
+  touchedFields.email && errors.email && <span className="error">{errors.email.message}</span>
+}
 ```
 
 **Why this is a mistake:** The user sees the error before finishing input, which worsens UX.

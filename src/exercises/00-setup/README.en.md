@@ -8,11 +8,11 @@ Welcome to the **React Hook Form** course! This is a modern library for form man
 
 Let's compare with alternatives:
 
-| Library | Size | Performance | API |
-|---------|------|-------------|-----|
-| **React Hook Form** | ~12 KB | ⭐⭐⭐⭐⭐ | Hooks |
-| Formik | ~16 KB | ⭐⭐⭐ | Components/Hooks |
-| Redux Form | ~23 KB | ⭐⭐ | Redux |
+| Library             | Size   | Performance | API              |
+| ------------------- | ------ | ----------- | ---------------- |
+| **React Hook Form** | ~12 KB | ⭐⭐⭐⭐⭐  | Hooks            |
+| Formik              | ~16 KB | ⭐⭐⭐      | Components/Hooks |
+| Redux Form          | ~23 KB | ⭐⭐        | Redux            |
 
 **React Hook Form Advantages:**
 
@@ -57,13 +57,13 @@ interface FormData {
 
 function MyForm() {
   const {
-    register,           // Registers fields in the form
-    handleSubmit,       // Handles form submission
-    watch,              // Subscribes to field values
-    formState,          // Form state (errors, validity, etc.)
-    setValue,           // Sets field value
-    getValues,          // Gets field values
-    reset,              // Resets the form
+    register, // Registers fields in the form
+    handleSubmit, // Handles form submission
+    watch, // Subscribes to field values
+    formState, // Form state (errors, validity, etc.)
+    setValue, // Sets field value
+    getValues, // Gets field values
+    reset, // Resets the form
   } = useForm<FormData>()
 
   return <form>...</form>
@@ -95,7 +95,7 @@ const onSubmit = (data: FormData) => {
   console.log(data) // { email: 'test@example.com', password: '123' }
 }
 
-<form onSubmit={handleSubmit(onSubmit)}>
+;<form onSubmit={handleSubmit(onSubmit)}>
   <input {...register('email')} />
   <input {...register('password')} />
   <button type="submit">Submit</button>
@@ -105,11 +105,13 @@ const onSubmit = (data: FormData) => {
 **Important:** `handleSubmit` automatically prevents default form submission and collects data.
 
 **What does this mean?**
+
 - **Prevents default submission** — internally calls `event.preventDefault()`, so the page doesn't reload
 - **Collects data** — automatically extracts values from all registered fields and passes them to your `onSubmit` function
 - **Triggers validation** — validates all rules before calling `onSubmit`; if there are errors, `onSubmit` won't be called
 
 Without React Hook Form, you'd have to write this manually:
+
 ```tsx
 // ❌ Manual (without React Hook Form)
 const handleSubmit = (e: FormEvent) => {
@@ -163,9 +165,7 @@ const onSubmit = (data: LoginForm) => {
 ### Step 5: Connect `handleSubmit` to Form
 
 ```tsx
-<form onSubmit={handleSubmit(onSubmit)}>
-  {/* fields */}
-</form>
+<form onSubmit={handleSubmit(onSubmit)}>{/* fields */}</form>
 ```
 
 ---
@@ -197,12 +197,7 @@ export function FirstForm() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            {...register('email')}
-            placeholder="Enter email"
-          />
+          <input id="email" type="email" {...register('email')} placeholder="Enter email" />
         </div>
 
         <div>
@@ -244,6 +239,7 @@ export function FirstForm() {
 ```
 
 **Why this is wrong:**
+
 - With `onClick`, the form won't submit when pressing Enter in input fields
 - Standard browser behavior doesn't work (keyboard navigation, accessibility)
 - `handleSubmit` receives a click event instead of a form event
@@ -262,6 +258,7 @@ register('email')
 ```
 
 **Why this is wrong:**
+
 - Code becomes verbose: `form.register`, `form.handleSubmit`, `form.formState`...
 - Harder to read, especially when using many methods
 - In JSX you have to write `{...form.register('email')}` instead of `{...register('email')}`
@@ -278,6 +275,7 @@ const { register } = useForm<FormData>()
 ```
 
 **Why this is wrong:**
+
 - TypeScript doesn't know what fields exist in the form — you can write `register('nonExistentField')`
 - No autocomplete when typing field names
 - In `onSubmit`, data will have type `any` instead of type-safe `FormData`
@@ -303,6 +301,7 @@ Go to [`task.md`](./task.md) to complete practical exercises.
 ## What's Next?
 
 In the next level you'll learn:
+
 - Different field types (text, number, checkbox, select)
 - `watch`, `setValue`, `getValues` methods
 - Form state via `formState`

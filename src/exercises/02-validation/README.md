@@ -131,7 +131,7 @@ const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/
 <input
   {...register('password', {
     required: 'Пароль обязателен',
-    validate: (value) => {
+    validate: value => {
       if (value.length < 8) {
         return 'Минимум 8 символов'
       }
@@ -154,10 +154,10 @@ const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/
   {...register('password', {
     required: 'Пароль обязателен',
     validate: {
-      minLength: (v) => v.length >= 8 || 'Минимум 8 символов',
-      uppercase: (v) => /[A-Z]/.test(v) || 'Должна быть заглавная буква',
-      number: (v) => /\d/.test(v) || 'Должна быть цифра',
-      special: (v) => /[!@#$%^&*]/.test(v) || 'Должен быть спецсимвол',
+      minLength: v => v.length >= 8 || 'Минимум 8 символов',
+      uppercase: v => /[A-Z]/.test(v) || 'Должна быть заглавная буква',
+      number: v => /\d/.test(v) || 'Должна быть цифра',
+      special: v => /[!@#$%^&*]/.test(v) || 'Должен быть спецсимвол',
     },
   })}
 />
@@ -172,10 +172,10 @@ function PasswordForm() {
   return (
     <form>
       <input {...register('password')} />
-      
+
       <input
         {...register('confirmPassword', {
-          validate: (value) => {
+          validate: value => {
             const password = getValues('password')
             return value === password || 'Пароли не совпадают'
           },
@@ -194,26 +194,28 @@ function PasswordForm() {
 
 ```tsx
 function RegistrationForm() {
-  const { register, watch, formState: { errors } } = useForm()
-  
+  const {
+    register,
+    watch,
+    formState: { errors },
+  } = useForm()
+
   const password = watch('password')
 
   return (
     <form>
       <input {...register('password', { required: 'Обязательно' })} />
-      
+
       <input
         {...register('confirmPassword', {
           required: 'Обязательно',
           validate: {
-            match: (v) => v === password || 'Пароли не совпадают',
+            match: v => v === password || 'Пароли не совпадают',
           },
         })}
       />
-      
-      {errors.confirmPassword && (
-        <span className="error">{errors.confirmPassword.message}</span>
-      )}
+
+      {errors.confirmPassword && <span className="error">{errors.confirmPassword.message}</span>}
     </form>
   )
 }
@@ -223,27 +225,31 @@ function RegistrationForm() {
 
 ```tsx
 function ChangePasswordForm() {
-  const { register, watch, formState: { errors } } = useForm()
-  
+  const {
+    register,
+    watch,
+    formState: { errors },
+  } = useForm()
+
   const currentPassword = watch('currentPassword')
   const newPassword = watch('newPassword')
 
   return (
     <form>
       <input {...register('currentPassword')} />
-      
+
       <input
         {...register('newPassword', {
           validate: {
-            different: (v) => v !== currentPassword || 'Новый пароль должен отличаться',
+            different: v => v !== currentPassword || 'Новый пароль должен отличаться',
           },
         })}
       />
-      
+
       <input
         {...register('confirmPassword', {
           validate: {
-            match: (v) => v === newPassword || 'Пароли не совпадают',
+            match: v => v === newPassword || 'Пароли не совпадают',
           },
         })}
       />
@@ -277,18 +283,18 @@ useForm({ mode: 'all' })
 ```tsx
 useForm({
   mode: 'onChange',
-  reValidateMode: 'onChange',  // По умолчанию
+  reValidateMode: 'onChange', // По умолчанию
 })
 ```
 
 ### Рекомендации по выбору режима
 
-| Режим | Когда использовать |
-|-------|-------------------|
-| `onSubmit` | Простые формы, минимальный шум |
+| Режим      | Когда использовать                 |
+| ---------- | ---------------------------------- |
+| `onSubmit` | Простые формы, минимальный шум     |
 | `onChange` | Формы с мгновенной обратной связью |
-| `onBlur` | Когда нужно проверить после ввода |
-| `all` | Максимальная строгость |
+| `onBlur`   | Когда нужно проверить после ввода  |
+| `all`      | Максимальная строгость             |
 
 ---
 
@@ -297,10 +303,10 @@ useForm({
 ### Базовое отображение
 
 ```tsx
-<input {...register('email', { required: 'Обязательно' })} />
-{errors.email && (
-  <span className="error">{errors.email.message}</span>
-)}
+;<input {...register('email', { required: 'Обязательно' })} />
+{
+  errors.email && <span className="error">{errors.email.message}</span>
+}
 ```
 
 ### Стилизованное отображение
@@ -334,25 +340,25 @@ useForm({
 ### Несколько ошибок для одного поля
 
 ```tsx
-<input
+;<input
   {...register('password', {
     validate: {
-      minLength: (v) => v.length >= 8 || 'Минимум 8 символов',
-      uppercase: (v) => /[A-Z]/.test(v) || 'Должна быть заглавная',
-      number: (v) => /\d/.test(v) || 'Должна быть цифра',
+      minLength: v => v.length >= 8 || 'Минимум 8 символов',
+      uppercase: v => /[A-Z]/.test(v) || 'Должна быть заглавная',
+      number: v => /\d/.test(v) || 'Должна быть цифра',
     },
   })}
 />
 
-{errors.password && (
-  <div style={{ color: '#dc3545', fontSize: '0.875rem' }}>
-    {Object.entries(errors.password).map(([key, value]) => (
-      <div key={key}>
-        {typeof value === 'string' ? value : value?.message}
-      </div>
-    ))}
-  </div>
-)}
+{
+  errors.password && (
+    <div style={{ color: '#dc3545', fontSize: '0.875rem' }}>
+      {Object.entries(errors.password).map(([key, value]) => (
+        <div key={key}>{typeof value === 'string' ? value : value?.message}</div>
+      ))}
+    </div>
+  )
+}
 ```
 
 ---
@@ -366,17 +372,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 // Схема валидации
 const schema = z.object({
-  username: z
-    .string()
-    .min(3, 'Минимум 3 символа')
-    .max(20, 'Максимум 20 символов'),
-  email: z
-    .string()
-    .email('Неверный формат email'),
-  age: z
-    .number()
-    .min(18, 'Минимум 18 лет')
-    .max(120, 'Максимум 120 лет'),
+  username: z.string().min(3, 'Минимум 3 символа').max(20, 'Максимум 20 символов'),
+  email: z.string().email('Неверный формат email'),
+  age: z.number().min(18, 'Минимум 18 лет').max(120, 'Максимум 120 лет'),
   password: z
     .string()
     .min(6, 'Минимум 6 символов')
@@ -405,36 +403,25 @@ export function RegistrationForm() {
       <div>
         <label>Username</label>
         <input {...register('username')} />
-        {errors.username && (
-          <span className="error">{errors.username.message}</span>
-        )}
+        {errors.username && <span className="error">{errors.username.message}</span>}
       </div>
 
       <div>
         <label>Email</label>
         <input type="email" {...register('email')} />
-        {errors.email && (
-          <span className="error">{errors.email.message}</span>
-        )}
+        {errors.email && <span className="error">{errors.email.message}</span>}
       </div>
 
       <div>
         <label>Age</label>
-        <input
-          type="number"
-          {...register('age', { valueAsNumber: true })}
-        />
-        {errors.age && (
-          <span className="error">{errors.age.message}</span>
-        )}
+        <input type="number" {...register('age', { valueAsNumber: true })} />
+        {errors.age && <span className="error">{errors.age.message}</span>}
       </div>
 
       <div>
         <label>Password</label>
         <input type="password" {...register('password')} />
-        {errors.password && (
-          <span className="error">{errors.password.message}</span>
-        )}
+        {errors.password && <span className="error">{errors.password.message}</span>}
       </div>
 
       <button type="submit" disabled={!isValid || isSubmitting}>
@@ -484,7 +471,7 @@ pattern: {
 
 ```tsx
 // ❌ Неправильно - нет return true при успехе
-validate: (value) => {
+validate: value => {
   if (value.length < 8) {
     return 'Минимум 8 символов'
   }
@@ -492,7 +479,7 @@ validate: (value) => {
 }
 
 // ✅ Правильно - явно возвращаем true
-validate: (value) => {
+validate: value => {
   if (value.length < 8) {
     return 'Минимум 8 символов'
   }
@@ -508,11 +495,11 @@ validate: (value) => {
 
 ```tsx
 // ❌ Неправильно - нет доступа к password
-validate: (value) => value === password // password не определён
+validate: value => value === password // password не определён
 
 // ✅ Правильно - используем getValues
 const { getValues } = useForm()
-validate: (value) => {
+validate: value => {
   const password = getValues('password')
   return value === password || 'Пароли не совпадают'
 }

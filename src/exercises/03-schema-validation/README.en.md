@@ -6,12 +6,12 @@ Schema validation is a declarative way to describe validation rules for the enti
 
 **Why schemas are better than built-in validation?**
 
-| Built-in Validation | Schema Validation |
-|---------------------|-------------------|
-| Rules scattered across fields | All rules in one place |
+| Built-in Validation            | Schema Validation           |
+| ------------------------------ | --------------------------- |
+| Rules scattered across fields  | All rules in one place      |
 | Complex cross-field validation | Easy cross-field validation |
-| Less type safety | Full type safety |
-| Hard to reuse | Easy to reuse |
+| Less type safety               | Full type safety            |
+| Hard to reuse                  | Easy to reuse               |
 
 ---
 
@@ -22,6 +22,7 @@ Schema validation is a declarative way to describe validation rules for the enti
 **Zod** is a TypeScript-first schema validation library with zero dependencies.
 
 **Installation:**
+
 ```bash
 npm install zod @hookform/resolvers
 ```
@@ -126,10 +127,12 @@ const schema = z.object({
   skills: z.array(z.string()).min(1, 'Select at least one skill'),
 
   // Array of objects
-  contacts: z.array(z.object({
-    type: z.string(),
-    value: z.string(),
-  })),
+  contacts: z.array(
+    z.object({
+      type: z.string(),
+      value: z.string(),
+    })
+  ),
 })
 ```
 
@@ -157,10 +160,12 @@ const schema = z.object({
   }),
 
   // Optional object
-  company: z.object({
-    name: z.string(),
-    position: z.string(),
-  }).optional(),
+  company: z
+    .object({
+      name: z.string(),
+      position: z.string(),
+    })
+    .optional(),
 })
 ```
 
@@ -171,55 +176,53 @@ const schema = z.object({
 #### Single refine
 
 ```tsx
-const schema = z.object({
-  password: z.string(),
-  confirmPassword: z.string(),
-}).refine(
-  (data) => data.password === data.confirmPassword,
-  {
+const schema = z
+  .object({
+    password: z.string(),
+    confirmPassword: z.string(),
+  })
+  .refine(data => data.password === data.confirmPassword, {
     message: 'Passwords do not match',
     path: ['confirmPassword'], // Which field to apply error to
-  }
-)
+  })
 ```
 
 #### Multiple refine
 
 ```tsx
-const schema = z.object({
-  currentPassword: z.string(),
-  newPassword: z.string(),
-}).refine(
-  (data) => data.newPassword !== data.currentPassword,
-  {
+const schema = z
+  .object({
+    currentPassword: z.string(),
+    newPassword: z.string(),
+  })
+  .refine(data => data.newPassword !== data.currentPassword, {
     message: 'New password must be different',
     path: ['newPassword'],
-  }
-).refine(
-  (data) => data.newPassword.length >= 8,
-  {
+  })
+  .refine(data => data.newPassword.length >= 8, {
     message: 'Minimum 8 characters',
     path: ['newPassword'],
-  }
-)
+  })
 ```
 
 #### Async refine
 
 ```tsx
-const schema = z.object({
-  username: z.string(),
-}).refine(
-  async (data) => {
-    const response = await fetch(`/api/check-username?username=${data.username}`)
-    const { available } = await response.json()
-    return available
-  },
-  {
-    message: 'Username is taken',
-    path: ['username'],
-  }
-)
+const schema = z
+  .object({
+    username: z.string(),
+  })
+  .refine(
+    async data => {
+      const response = await fetch(`/api/check-username?username=${data.username}`)
+      const { available } = await response.json()
+      return available
+    },
+    {
+      message: 'Username is taken',
+      path: ['username'],
+    }
+  )
 ```
 
 ---
@@ -229,44 +232,46 @@ const schema = z.object({
 ```tsx
 import { z } from 'zod'
 
-const registrationSchema = z.object({
-  // Personal information
-  firstName: z.string().min(1, 'Required'),
-  lastName: z.string().min(1, 'Required'),
-  email: z.string().email('Invalid email'),
-  age: z.number().min(18, 'Minimum 18 years').max(120, 'Maximum 120 years'),
+const registrationSchema = z
+  .object({
+    // Personal information
+    firstName: z.string().min(1, 'Required'),
+    lastName: z.string().min(1, 'Required'),
+    email: z.string().email('Invalid email'),
+    age: z.number().min(18, 'Minimum 18 years').max(120, 'Maximum 120 years'),
 
-  // Password
-  password: z.string()
-    .min(8, 'Minimum 8 characters')
-    .regex(/[A-Z]/, 'Must have uppercase letter')
-    .regex(/\d/, 'Must have a digit')
-    .regex(/[!@#$%^&*]/, 'Must have special character'),
+    // Password
+    password: z
+      .string()
+      .min(8, 'Minimum 8 characters')
+      .regex(/[A-Z]/, 'Must have uppercase letter')
+      .regex(/\d/, 'Must have a digit')
+      .regex(/[!@#$%^&*]/, 'Must have special character'),
 
-  confirmPassword: z.string(),
+    confirmPassword: z.string(),
 
-  // Address
-  address: z.object({
-    country: z.string().min(1, 'Required'),
-    city: z.string().min(1, 'Required'),
-    zip: z.string().regex(/^\d{5}$/, 'Invalid zip code'),
-  }),
+    // Address
+    address: z.object({
+      country: z.string().min(1, 'Required'),
+      city: z.string().min(1, 'Required'),
+      zip: z.string().regex(/^\d{5}$/, 'Invalid zip code'),
+    }),
 
-  // Skills
-  skills: z.array(z.string()).min(1, 'Select at least one'),
+    // Skills
+    skills: z.array(z.string()).min(1, 'Select at least one'),
 
-  // Role
-  role: z.enum(['developer', 'designer', 'manager']),
+    // Role
+    role: z.enum(['developer', 'designer', 'manager']),
 
-  // Consent
-  agree: z.boolean().refine(v => v === true, 'Consent required'),
-})
+    // Consent
+    agree: z.boolean().refine(v => v === true, 'Consent required'),
+  })
 
-// Cross-field validation
-.refine(
-  (data) => data.password === data.confirmPassword,
-  { message: 'Passwords do not match', path: ['confirmPassword'] }
-)
+  // Cross-field validation
+  .refine(data => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  })
 
 type RegistrationForm = z.infer<typeof registrationSchema>
 ```
@@ -280,6 +285,7 @@ type RegistrationForm = z.infer<typeof registrationSchema>
 **Yup** is a time-tested schema validation library with a chainable API.
 
 **Installation:**
+
 ```bash
 npm install yup @hookform/resolvers
 ```
@@ -416,19 +422,14 @@ const schema = yup.object({
 ```tsx
 const schema = yup.object({
   password: yup.string(),
-  confirmPassword: yup.string()
-    .oneOf([yup.ref('password')], 'Passwords must match'),
+  confirmPassword: yup.string().oneOf([yup.ref('password')], 'Passwords must match'),
 
   // Custom test
-  username: yup.string().test(
-    'is-available',
-    'Username is taken',
-    async (value) => {
-      const response = await fetch(`/api/check-username?username=${value}`)
-      const { available } = await response.json()
-      return available
-    }
-  ),
+  username: yup.string().test('is-available', 'Username is taken', async value => {
+    const response = await fetch(`/api/check-username?username=${value}`)
+    const { available } = await response.json()
+    return available
+  }),
 })
 ```
 
@@ -436,15 +437,15 @@ const schema = yup.object({
 
 ## Part 3: Zod vs Yup Comparison
 
-| Criterion | Zod | Yup |
-|----------|-----|-----|
-| **Size** | ~12 KB | ~14 KB |
-| **TypeScript** | First-class, excellent type inference | Good, but sometimes requires annotations |
-| **API** | Functional, composable | Chainable, expressive |
-| **Performance** | Faster | Slower |
-| **Async Validation** | Via `refine` | Via `test` |
-| **Community** | Large, growing | Very large, mature |
-| **Documentation** | Excellent | Good |
+| Criterion            | Zod                                   | Yup                                      |
+| -------------------- | ------------------------------------- | ---------------------------------------- |
+| **Size**             | ~12 KB                                | ~14 KB                                   |
+| **TypeScript**       | First-class, excellent type inference | Good, but sometimes requires annotations |
+| **API**              | Functional, composable                | Chainable, expressive                    |
+| **Performance**      | Faster                                | Slower                                   |
+| **Async Validation** | Via `refine`                          | Via `test`                               |
+| **Community**        | Large, growing                        | Very large, mature                       |
+| **Documentation**    | Excellent                             | Good                                     |
 
 ### When to Choose Zod?
 
@@ -471,14 +472,16 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-const schema = z.object({
-  email: z.string().email('Invalid email'),
-  password: z.string().min(8, 'Minimum 8 characters'),
-  confirmPassword: z.string(),
-}).refine(
-  (data) => data.password === data.confirmPassword,
-  { message: 'Passwords do not match', path: ['confirmPassword'] }
-)
+const schema = z
+  .object({
+    email: z.string().email('Invalid email'),
+    password: z.string().min(8, 'Minimum 8 characters'),
+    confirmPassword: z.string(),
+  })
+  .refine(data => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  })
 
 type FormData = z.infer<typeof schema>
 
@@ -513,9 +516,7 @@ export function RegistrationForm() {
       <div>
         <label>Confirm Password</label>
         <input type="password" {...register('confirmPassword')} />
-        {errors.confirmPassword && (
-          <span className="error">{errors.confirmPassword.message}</span>
-        )}
+        {errors.confirmPassword && <span className="error">{errors.confirmPassword.message}</span>}
       </div>
 
       <button type="submit" disabled={!isValid || isSubmitting}>

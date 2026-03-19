@@ -25,12 +25,7 @@ function MyForm() {
         name="firstName"
         control={control}
         render={({ field, fieldState: { error } }) => (
-          <TextField
-            {...field}
-            label="First Name"
-            error={!!error}
-            helperText={error?.message}
-          />
+          <TextField {...field} label="First Name" error={!!error} helperText={error?.message} />
         )}
       />
 
@@ -66,25 +61,17 @@ function FormTextField({ label, error, ...props }: any) {
         }}
         {...props}
       />
-      {error && (
-        <span style={{ color: '#dc3545', fontSize: '0.875rem' }}>
-          {error}
-        </span>
-      )}
+      {error && <span style={{ color: '#dc3545', fontSize: '0.875rem' }}>{error}</span>}
     </div>
   )
 }
 
 // Usage with Controller
-<Controller
+;<Controller
   name="email"
   control={control}
   render={({ field, fieldState: { error } }) => (
-    <FormTextField
-      {...field}
-      label="Email"
-      error={error?.message}
-    />
+    <FormTextField {...field} label="Email" error={error?.message} />
   )}
 />
 ```
@@ -134,10 +121,7 @@ const { formState: { isSubmitting } } = useForm()
 ```tsx
 import { useState, useEffect } from 'react'
 
-function useFormPersist<T extends Record<string, any>>(
-  name: string,
-  defaultValues?: T
-) {
+function useFormPersist<T extends Record<string, any>>(name: string, defaultValues?: T) {
   // Load from localStorage
   const [stored, setStored] = useState<T>(() => {
     const saved = localStorage.getItem(`form-${name}`)
@@ -153,7 +137,7 @@ function useFormPersist<T extends Record<string, any>>(
   // Clear
   const clear = () => {
     localStorage.removeItem(`form-${name}`)
-    setStored(defaultValues || {} as T)
+    setStored(defaultValues || ({} as T))
   }
 
   return { stored, save, clear }
@@ -188,7 +172,9 @@ function ArticleForm() {
       <textarea {...register('content')} placeholder="Content" />
 
       <button type="submit">Publish</button>
-      <button type="button" onClick={clear}>Clear Draft</button>
+      <button type="button" onClick={clear}>
+        Clear Draft
+      </button>
     </form>
   )
 }
@@ -231,10 +217,7 @@ function SearchForm() {
 ### useFieldValidation — Custom Validation
 
 ```tsx
-function useFieldValidation<T>(
-  value: T,
-  validations: Array<(v: T) => string | true>
-) {
+function useFieldValidation<T>(value: T, validations: Array<(v: T) => string | true>) {
   const [error, setError] = useState<string | null>(null)
   const [isValid, setIsValid] = useState(true)
 
@@ -260,9 +243,9 @@ function PasswordField() {
   const password = watch('password')
 
   const { error, isValid } = useFieldValidation(password, [
-    (v) => v.length >= 8 || 'Minimum 8 characters',
-    (v) => /[A-Z]/.test(v) || 'Must have uppercase letter',
-    (v) => /\d/.test(v) || 'Must have a digit',
+    v => v.length >= 8 || 'Minimum 8 characters',
+    v => /[A-Z]/.test(v) || 'Must have uppercase letter',
+    v => /\d/.test(v) || 'Must have a digit',
   ])
 
   return (
@@ -353,9 +336,7 @@ function WizardForm() {
   const { handleSubmit, trigger } = methods
 
   const onNext = async () => {
-    const fields = step === 1
-      ? ['email', 'password']
-      : ['firstName', 'lastName']
+    const fields = step === 1 ? ['email', 'password'] : ['firstName', 'lastName']
 
     const isValid = await trigger(fields)
     if (isValid) setStep(step + 1)
@@ -368,9 +349,15 @@ function WizardForm() {
         {step === 2 && <ProfileStep />}
 
         <div>
-          {step > 1 && <button type="button" onClick={() => setStep(s => s - 1)}>←</button>}
+          {step > 1 && (
+            <button type="button" onClick={() => setStep(s => s - 1)}>
+              ←
+            </button>
+          )}
           {step < 2 ? (
-            <button type="button" onClick={onNext}>→</button>
+            <button type="button" onClick={onNext}>
+              →
+            </button>
           ) : (
             <button type="submit">Submit</button>
           )}
@@ -429,7 +416,7 @@ function FormWithSubscription() {
 
   // Save on change
   useEffect(() => {
-    const subscription = watch((value) => {
+    const subscription = watch(value => {
       localStorage.setItem('email-draft', JSON.stringify(value))
     })
     return () => subscription.unsubscribe()
@@ -479,7 +466,7 @@ const schema = z
     newsletter: z.boolean().optional(),
     notifications: z.boolean().optional(),
   })
-  .refine((data) => data.password === data.confirm, {
+  .refine(data => data.password === data.confirm, {
     message: 'Passwords do not match',
     path: ['confirm'],
   })
@@ -488,7 +475,10 @@ type FormData = z.infer<typeof schema>
 
 // Step 1 component
 function AccountStep() {
-  const { register, formState: { errors } } = useFormContext<FormData>()
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<FormData>()
 
   return (
     <>
@@ -515,7 +505,10 @@ function AccountStep() {
 
 // Step 2 component
 function ProfileStep() {
-  const { register, formState: { errors } } = useFormContext<FormData>()
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<FormData>()
   const [preview, setPreview] = useState<string | null>(null)
   const avatar = useWatch({ name: 'avatar' })
 
@@ -547,7 +540,7 @@ function ProfileStep() {
           type="file"
           accept="image/*"
           {...register('avatar')}
-          onChange={(e) => {
+          onChange={e => {
             const file = e.target.files?.[0]
             if (file) setPreview(URL.createObjectURL(file))
           }}
@@ -573,7 +566,7 @@ function SettingsStep() {
         <input
           type="checkbox"
           checked={watch('notifications')}
-          onChange={(e) => setValue('notifications', e.target.checked)}
+          onChange={e => setValue('notifications', e.target.checked)}
         />
         Notifications
       </label>
@@ -598,11 +591,8 @@ export function RegistrationWizard() {
   const { handleSubmit, trigger } = methods
 
   const onNext = async () => {
-    const fields = step === 1
-      ? ['email', 'password', 'confirm']
-      : step === 2
-      ? ['firstName', 'lastName']
-      : []
+    const fields =
+      step === 1 ? ['email', 'password', 'confirm'] : step === 2 ? ['firstName', 'lastName'] : []
 
     const valid = await trigger(fields)
     if (valid) setStep(step + 1)
@@ -618,7 +608,12 @@ export function RegistrationWizard() {
       <div>
         <h2>🎉 Registration Complete!</h2>
         <pre>{JSON.stringify(submitted, null, 2)}</pre>
-        <button onClick={() => { setSubmitted(null); setStep(1) }}>
+        <button
+          onClick={() => {
+            setSubmitted(null)
+            setStep(1)
+          }}
+        >
           Start Over
         </button>
       </div>
@@ -635,9 +630,15 @@ export function RegistrationWizard() {
         {step === 3 && <SettingsStep />}
 
         <div>
-          {step > 1 && <button type="button" onClick={() => setStep(s => s - 1)}>←</button>}
+          {step > 1 && (
+            <button type="button" onClick={() => setStep(s => s - 1)}>
+              ←
+            </button>
+          )}
           {step < 3 ? (
-            <button type="button" onClick={onNext}>→</button>
+            <button type="button" onClick={onNext}>
+              →
+            </button>
           ) : (
             <button type="submit">Complete</button>
           )}

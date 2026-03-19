@@ -1,9 +1,6 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
-import { FormContainer, TaskDescription, TheoryBlock } from 'src/components';
-import { useExerciseNavigation, useLanguage, useTheme } from 'src/hooks';
-
-import { Task3_1, Task3_2, Task3_3, Task3_4, Task3_5 } from 'exercises';
+import { Task3_1, Task3_2, Task3_3, Task3_4, Task3_5 } from ".."
 
 import {
   Task3_1_Solution,
@@ -11,41 +8,43 @@ import {
   Task3_3_Solution,
   Task3_4_Solution,
   Task3_5_Solution,
-} from './Solution';
-import solutionStyles from '../../components/SolutionButton.module.css';
-import taskStyles from '../../components/TaskButtons.module.css';
+} from './Solution'
+import { FormContainer, TaskDescription, TheoryBlock } from '../../components'
+import solutionStyles from '../../components/SolutionButton.module.css'
+import taskStyles from '../../components/TaskButtons.module.css'
+import { useExerciseNavigation, useLanguage, useTheme } from '../../hooks'
 
 interface SchemaValidationExerciseProps {
-  initialTask?: string;
+  initialTask?: string
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function SchemaValidationExercise(_props: SchemaValidationExerciseProps) {
-  const { theme } = useTheme();
-  const { t } = useLanguage();
-  const isDark = theme === 'dark';
+  const { theme } = useTheme()
+  const { t } = useLanguage()
+  const isDark = theme === 'dark'
   const { currentTask, changeTask } = useExerciseNavigation({
     levelId: '3',
     defaultTask: '3.1',
     validTasks: ['3.1', '3.2', '3.3', '3.4', '3.5'],
-  });
-  const [showSolution, setShowSolution] = useState(false);
+  })
+  const [showSolution, setShowSolution] = useState(false)
 
   const tasks: Record<string, React.ReactElement> = {
-    '3.1': <Task3_1/>,
-    '3.2': <Task3_2/>,
-    '3.3': <Task3_3/>,
-    '3.4': <Task3_4/>,
-    '3.5': <Task3_5/>,
-  };
+    '3.1': <Task3_1 />,
+    '3.2': <Task3_2 />,
+    '3.3': <Task3_3 />,
+    '3.4': <Task3_4 />,
+    '3.5': <Task3_5 />,
+  }
 
   const solutions: Record<string, React.ReactElement> = {
-    '3.1': <Task3_1_Solution/>,
-    '3.2': <Task3_2_Solution/>,
-    '3.3': <Task3_3_Solution/>,
-    '3.4': <Task3_4_Solution/>,
-    '3.5': <Task3_5_Solution/>,
-  };
+    '3.1': <Task3_1_Solution />,
+    '3.2': <Task3_2_Solution />,
+    '3.3': <Task3_3_Solution />,
+    '3.4': <Task3_4_Solution />,
+    '3.5': <Task3_5_Solution />,
+  }
 
   const taskList = [
     { id: '3.1', name: 'Zod базовая' },
@@ -53,7 +52,7 @@ export function SchemaValidationExercise(_props: SchemaValidationExerciseProps) 
     { id: '3.3', name: 'Сложные схемы' },
     { id: '3.4', name: 'refine' },
     { id: '3.5', name: 'Сравнение' },
-  ];
+  ]
 
   return (
     <div>
@@ -66,7 +65,7 @@ export function SchemaValidationExercise(_props: SchemaValidationExerciseProps) 
 
       <div className={taskStyles.container}>
         {taskList.map(task => {
-          const isActive = currentTask === task.id;
+          const isActive = currentTask === task.id
           const buttonClass = `${taskStyles.button} ${
             isActive
               ? isDark
@@ -75,12 +74,12 @@ export function SchemaValidationExercise(_props: SchemaValidationExerciseProps) 
               : isDark
                 ? taskStyles.buttonInactiveDark
                 : taskStyles.buttonInactiveLight
-          }`;
+          }`
           return (
             <button key={task.id} onClick={() => changeTask(task.id)} className={buttonClass}>
               {t('task.title')} {task.id}
             </button>
-          );
+          )
         })}
       </div>
 
@@ -103,9 +102,9 @@ export function SchemaValidationExercise(_props: SchemaValidationExerciseProps) 
         </FormContainer>
       )}
 
-      <TaskDescription taskNumber={currentTask} level="3"/>
+      <TaskDescription taskNumber={currentTask} level="3" />
 
-      <TheoryBlock level="3"/>
+      <TheoryBlock level="3" />
     </div>
-  );
+  )
 }

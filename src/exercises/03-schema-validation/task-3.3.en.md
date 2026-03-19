@@ -1,9 +1,11 @@
 # Exercise 3.3: Complex Schemas
 
 ## Goal
+
 Learn to create complex schemas with objects, arrays, and enums.
 
 ## Requirements
+
 Create a user profile form:
 
 1. **Personal Information** (object):

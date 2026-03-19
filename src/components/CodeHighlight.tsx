@@ -1,33 +1,32 @@
-import { useMemo } from 'react';
-import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
-import ts from 'react-syntax-highlighter/dist/esm/languages/hljs/typescript';
+import { useMemo } from 'react'
+import { Light as SyntaxHighlighter } from 'react-syntax-highlighter'
+import ts from 'react-syntax-highlighter/dist/esm/languages/hljs/typescript'
 
-import { githubLightStyle, githubDarkStyle } from 'src/styles';
+import { useTheme } from '../hooks'
+import { githubLightStyle, githubDarkStyle } from '../styles'
 
-import { useTheme } from '../hooks';
 
-import styles from './CodeHighlight.module.css';
+import styles from './CodeHighlight.module.css'
 
 // Регистрируем язык TypeScript
-SyntaxHighlighter.registerLanguage('typescript', ts);
+SyntaxHighlighter.registerLanguage('typescript', ts)
 
 interface CodeHighlightProps {
-  code: string;
-  language?: string;
-  inline?: boolean;
+  code: string
+  language?: string
+  inline?: boolean
 }
 
 /**
  * Компонент для подсветки синтаксиса кода
  */
-export function CodeHighlight(
-  {
-    code,
-    language = 'typescript',
-    inline = false,
-  }: CodeHighlightProps) {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
+export function CodeHighlight({
+  code,
+  language = 'typescript',
+  inline = false,
+}: CodeHighlightProps) {
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
 
   // Мемоизируем рендеринг для производительности
   const highlightedCode = useMemo(() => {
@@ -41,7 +40,7 @@ export function CodeHighlight(
         >
           {code}
         </code>
-      );
+      )
     }
 
     return (
@@ -52,8 +51,8 @@ export function CodeHighlight(
       >
         {code}
       </SyntaxHighlighter>
-    );
-  }, [code, language, inline, isDark]);
+    )
+  }, [code, language, inline, isDark])
 
-  return highlightedCode;
+  return highlightedCode
 }

@@ -13,6 +13,7 @@
 **Controller** — это компонент для интеграции контролируемых компонентов с React Hook Form.
 
 **Когда использовать Controller:**
+
 - ✅ Сторонние UI-компоненты (Material-UI, Ant Design, Chakra UI)
 - ✅ Кастомные компоненты инпутов
 - ✅ Компоненты, которые не принимают `ref`
@@ -74,15 +75,10 @@ function MyForm() {
   name="category"
   control={control}
   render={({
-    field,           // { onChange, onBlur, value, name, ref }
-    fieldState,      // { invalid, isTouched, isDirty, error }
-    formState,       // { errors, isSubmitting, isValid }
-  }) => (
-    <Select
-      {...field}
-      onChange={(selected) => field.onChange(selected?.value)}
-    />
-  )}
+    field, // { onChange, onBlur, value, name, ref }
+    fieldState, // { invalid, isTouched, isDirty, error }
+    formState, // { errors, isSubmitting, isValid }
+  }) => <Select {...field} onChange={selected => field.onChange(selected?.value)} />}
 />
 ```
 
@@ -96,25 +92,18 @@ function TextField({ label, error, ...props }: any) {
   return (
     <div className="form-group">
       {label && <label>{label}</label>}
-      <input
-        style={{ borderColor: error ? '#dc3545' : '#ddd' }}
-        {...props}
-      />
+      <input style={{ borderColor: error ? '#dc3545' : '#ddd' }} {...props} />
       {error && <span className="error">{error}</span>}
     </div>
   )
 }
 
 // Использование с Controller
-<Controller
+;<Controller
   name="email"
   control={control}
   render={({ field, fieldState: { error } }) => (
-    <TextField
-      {...field}
-      label="Email"
-      error={error?.message}
-    />
+    <TextField {...field} label="Email" error={error?.message} />
   )}
 />
 ```
@@ -185,7 +174,7 @@ function SelectForm() {
 ### Select с валидацией
 
 ```tsx
-<select
+;<select
   {...register('country', {
     required: 'Выберите страну',
   })}
@@ -194,9 +183,9 @@ function SelectForm() {
   <option value="us">USA</option>
   <option value="ru">Россия</option>
 </select>
-{errors.country && (
-  <span className="error">{errors.country.message}</span>
-)}
+{
+  errors.country && <span className="error">{errors.country.message}</span>
+}
 ```
 
 ---
@@ -216,8 +205,7 @@ function SingleCheckbox() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>
-        <input type="checkbox" {...register('agree')} />
-        Я согласен с правилами
+        <input type="checkbox" {...register('agree')} />Я согласен с правилами
       </label>
       <button type="submit">Отправить</button>
     </form>
@@ -230,14 +218,17 @@ function SingleCheckbox() {
 ```tsx
 function MultiCheckbox() {
   const { register, watch, setValue, handleSubmit } = useForm()
-  
+
   const skills = watch('skills') || []
 
   const handleSkillChange = (skill: string, checked: boolean) => {
     if (checked) {
       setValue('skills', [...skills, skill])
     } else {
-      setValue('skills', skills.filter(s => s !== skill))
+      setValue(
+        'skills',
+        skills.filter(s => s !== skill)
+      )
     }
   }
 
@@ -253,7 +244,7 @@ function MultiCheckbox() {
             type="checkbox"
             value="react"
             checked={skills.includes('react')}
-            onChange={(e) => handleSkillChange('react', e.target.checked)}
+            onChange={e => handleSkillChange('react', e.target.checked)}
           />
           React
         </label>
@@ -262,7 +253,7 @@ function MultiCheckbox() {
             type="checkbox"
             value="vue"
             checked={skills.includes('vue')}
-            onChange={(e) => handleSkillChange('vue', e.target.checked)}
+            onChange={e => handleSkillChange('vue', e.target.checked)}
           />
           Vue
         </label>
@@ -271,7 +262,7 @@ function MultiCheckbox() {
             type="checkbox"
             value="angular"
             checked={skills.includes('angular')}
-            onChange={(e) => handleSkillChange('angular', e.target.checked)}
+            onChange={e => handleSkillChange('angular', e.target.checked)}
           />
           Angular
         </label>
@@ -285,13 +276,18 @@ function MultiCheckbox() {
 ### С валидацией (минимум один выбран)
 
 ```tsx
-const { register, watch, setValue, formState: { errors } } = useForm()
+const {
+  register,
+  watch,
+  setValue,
+  formState: { errors },
+} = useForm()
 const skills = watch('skills') || []
 
 // Валидация
-{errors.skills && (
-  <span className="error">{errors.skills.message}</span>
-)}
+{
+  errors.skills && <span className="error">{errors.skills.message}</span>
+}
 
 // При отправке через zodResolver:
 const schema = z.object({
@@ -316,11 +312,7 @@ function FileUpload() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input
-        type="file"
-        accept="image/*"
-        {...register('avatar')}
-      />
+      <input type="file" accept="image/*" {...register('avatar')} />
       <button type="submit">Загрузить</button>
     </form>
   )
@@ -331,14 +323,12 @@ function FileUpload() {
 
 ```tsx
 const schema = z.object({
-  avatar: z.instanceof(FileList)
-    .refine((files) => files.length > 0, 'Выберите файл')
+  avatar: z
+    .instanceof(FileList)
+    .refine(files => files.length > 0, 'Выберите файл')
+    .refine(files => files[0]?.size < 2000000, 'Максимум 2MB')
     .refine(
-      (files) => files[0]?.size < 2000000,
-      'Максимум 2MB'
-    )
-    .refine(
-      (files) => ['image/jpeg', 'image/png', 'image/gif'].includes(files[0]?.type),
+      files => ['image/jpeg', 'image/png', 'image/gif'].includes(files[0]?.type),
       'Только JPG, PNG, GIF'
     ),
 })
@@ -352,7 +342,7 @@ import { useState } from 'react'
 function FileUploadWithPreview() {
   const { register, handleSubmit, watch } = useForm()
   const [preview, setPreview] = useState<string | null>(null)
-  
+
   const avatarFile = watch('avatar')
 
   React.useEffect(() => {
@@ -369,18 +359,16 @@ function FileUploadWithPreview() {
         type="file"
         accept="image/*"
         {...register('avatar')}
-        onChange={(e) => {
+        onChange={e => {
           const file = e.target.files?.[0]
           if (file) {
             setPreview(URL.createObjectURL(file))
           }
         }}
       />
-      
-      {preview && (
-        <img src={preview} alt="Preview" style={{ maxWidth: '200px' }} />
-      )}
-      
+
+      {preview && <img src={preview} alt="Preview" style={{ maxWidth: '200px' }} />}
+
       <button type="submit">Загрузить</button>
     </form>
   )
@@ -404,10 +392,7 @@ function DateForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>Дата рождения</label>
-      <input
-        type="date"
-        {...register('birthDate')}
-      />
+      <input type="date" {...register('birthDate')} />
       <button type="submit">Отправить</button>
     </form>
   )
@@ -427,10 +412,7 @@ function DateTimeForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>Запись на встречу</label>
-      <input
-        type="datetime-local"
-        {...register('appointment')}
-      />
+      <input type="datetime-local" {...register('appointment')} />
       <button type="submit">Записаться</button>
     </form>
   )
@@ -442,12 +424,10 @@ function DateTimeForm() {
 ```tsx
 const schema = z.object({
   birthDate: z.string().min(1, 'Выберите дату'),
-  appointment: z.string()
+  appointment: z
+    .string()
     .min(1, 'Выберите время')
-    .refine(
-      (date) => new Date(date) > new Date(),
-      'Время должно быть в будущем'
-    ),
+    .refine(date => new Date(date) > new Date(), 'Время должно быть в будущем'),
 })
 ```
 
@@ -466,8 +446,7 @@ const schema = z.object({
   price: z.number().positive(),
   inStock: z.boolean(),
   tags: z.array(z.string()).min(1, 'Выберите хотя бы один тег'),
-  image: z.instanceof(FileList)
-    .refine((files) => files.length > 0, 'Выберите изображение'),
+  image: z.instanceof(FileList).refine(files => files.length > 0, 'Выберите изображение'),
 })
 
 type ProductForm = z.infer<typeof schema>
@@ -500,7 +479,10 @@ export function ProductForm() {
     if (checked) {
       setValue('tags', [...selectedTags, tag])
     } else {
-      setValue('tags', selectedTags.filter(t => t !== tag))
+      setValue(
+        'tags',
+        selectedTags.filter(t => t !== tag)
+      )
     }
   }
 
@@ -537,17 +519,13 @@ export function ProductForm() {
 
       <div>
         <label>Цена</label>
-        <input
-          type="number"
-          {...register('price', { valueAsNumber: true })}
-        />
+        <input type="number" {...register('price', { valueAsNumber: true })} />
         {errors.price && <span className="error">{errors.price.message}</span>}
       </div>
 
       <div>
         <label>
-          <input type="checkbox" {...register('inStock')} />
-          В наличии
+          <input type="checkbox" {...register('inStock')} />В наличии
         </label>
       </div>
 
@@ -559,7 +537,7 @@ export function ProductForm() {
               type="checkbox"
               value={tag}
               checked={selectedTags.includes(tag)}
-              onChange={(e) => handleTagChange(tag, e.target.checked)}
+              onChange={e => handleTagChange(tag, e.target.checked)}
             />
             {tag}
           </label>
@@ -573,7 +551,7 @@ export function ProductForm() {
           type="file"
           accept="image/*"
           {...register('image')}
-          onChange={(e) => {
+          onChange={e => {
             const file = e.target.files?.[0]
             if (file) {
               setPreview(URL.createObjectURL(file))

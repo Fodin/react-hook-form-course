@@ -1,9 +1,6 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
-import { FormContainer, TaskDescription, TheoryBlock } from 'src/components';
-import { useTheme, useLanguage, useExerciseNavigation } from 'src/hooks';
-
-import { Task4_1, Task4_2, Task4_3, Task4_4, Task4_5 } from 'exercises';
+import { Task4_1, Task4_2, Task4_3, Task4_4, Task4_5 } from ".."
 
 import {
   Task4_1_Solution,
@@ -11,41 +8,43 @@ import {
   Task4_3_Solution,
   Task4_4_Solution,
   Task4_5_Solution,
-} from './Solution';
-import solutionStyles from '../../components/SolutionButton.module.css';
-import taskStyles from '../../components/TaskButtons.module.css';
+} from './Solution'
+import { FormContainer, TaskDescription, TheoryBlock } from '../../components'
+import solutionStyles from '../../components/SolutionButton.module.css'
+import taskStyles from '../../components/TaskButtons.module.css'
+import { useTheme, useLanguage, useExerciseNavigation } from '../../hooks'
 
 interface ComplexFieldsExerciseProps {
-  initialTask?: string;
+  initialTask?: string
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function ComplexFieldsExercise(_props: ComplexFieldsExerciseProps) {
-  const { theme } = useTheme();
-  const { t } = useLanguage();
-  const isDark = theme === 'dark';
+  const { theme } = useTheme()
+  const { t } = useLanguage()
+  const isDark = theme === 'dark'
   const { currentTask, changeTask } = useExerciseNavigation({
     levelId: '4',
     defaultTask: '4.1',
     validTasks: ['4.1', '4.2', '4.3', '4.4', '4.5'],
-  });
-  const [showSolution, setShowSolution] = useState(false);
+  })
+  const [showSolution, setShowSolution] = useState(false)
 
   const tasks: Record<string, React.ReactElement> = {
-    '4.1': <Task4_1/>,
-    '4.2': <Task4_2/>,
-    '4.3': <Task4_3/>,
-    '4.4': <Task4_4/>,
-    '4.5': <Task4_5/>,
-  };
+    '4.1': <Task4_1 />,
+    '4.2': <Task4_2 />,
+    '4.3': <Task4_3 />,
+    '4.4': <Task4_4 />,
+    '4.5': <Task4_5 />,
+  }
 
   const solutions: Record<string, React.ReactElement> = {
-    '4.1': <Task4_1_Solution/>,
-    '4.2': <Task4_2_Solution/>,
-    '4.3': <Task4_3_Solution/>,
-    '4.4': <Task4_4_Solution/>,
-    '4.5': <Task4_5_Solution/>,
-  };
+    '4.1': <Task4_1_Solution />,
+    '4.2': <Task4_2_Solution />,
+    '4.3': <Task4_3_Solution />,
+    '4.4': <Task4_4_Solution />,
+    '4.5': <Task4_5_Solution />,
+  }
 
   const taskList = [
     { id: '4.1', name: 'Controller' },
@@ -53,7 +52,7 @@ export function ComplexFieldsExercise(_props: ComplexFieldsExerciseProps) {
     { id: '4.3', name: 'Checkbox' },
     { id: '4.4', name: 'File Upload' },
     { id: '4.5', name: 'Дата/Время' },
-  ];
+  ]
 
   return (
     <div>
@@ -66,7 +65,7 @@ export function ComplexFieldsExercise(_props: ComplexFieldsExerciseProps) {
 
       <div className={taskStyles.container}>
         {taskList.map(task => {
-          const isActive = currentTask === task.id;
+          const isActive = currentTask === task.id
           const buttonClass = `${taskStyles.button} ${
             isActive
               ? isDark
@@ -75,12 +74,12 @@ export function ComplexFieldsExercise(_props: ComplexFieldsExerciseProps) {
               : isDark
                 ? taskStyles.buttonInactiveDark
                 : taskStyles.buttonInactiveLight
-          }`;
+          }`
           return (
             <button key={task.id} onClick={() => changeTask(task.id)} className={buttonClass}>
               {t('task.title')} {task.id}
             </button>
-          );
+          )
         })}
       </div>
 
@@ -103,9 +102,9 @@ export function ComplexFieldsExercise(_props: ComplexFieldsExerciseProps) {
         </FormContainer>
       )}
 
-      <TaskDescription taskNumber={currentTask} level="4"/>
+      <TaskDescription taskNumber={currentTask} level="4" />
 
-      <TheoryBlock level="4"/>
+      <TheoryBlock level="4" />
     </div>
-  );
+  )
 }

@@ -10,10 +10,10 @@
 
 ### Что такое Dirty и Touched?
 
-| Состояние | Описание | Когда меняется |
-|-----------|----------|----------------|
-| `dirty` | Поле было изменено | При изменении значения |
-| `touched` | Поле было затронуто | При потере фокуса (blur) |
+| Состояние | Описание            | Когда меняется            |
+| --------- | ------------------- | ------------------------- |
+| `dirty`   | Поле было изменено  | При изменении значения    |
+| `touched` | Поле было затронуто | При потере фокуса (blur)  |
 | `isDirty` | Форма была изменена | При изменении любого поля |
 
 ### Получение состояния
@@ -23,26 +23,20 @@ function MyForm() {
   const {
     register,
     formState: {
-      dirtyFields,      // Какие поля изменены
-      touchedFields,    // Какие поля затронуты
-      isDirty,          // Форма изменена
-      isSubmitted,      // Форма отправлена
+      dirtyFields, // Какие поля изменены
+      touchedFields, // Какие поля затронуты
+      isDirty, // Форма изменена
+      isSubmitted, // Форма отправлена
     },
   } = useForm()
 
   return (
     <form>
       <input {...register('name')} />
-      
-      <div>
-        Dirty: {dirtyFields.name ? '✅' : '❌'}
-      </div>
-      <div>
-        Touched: {touchedFields.name ? '✅' : '❌'}
-      </div>
-      <div>
-        Форма изменена: {isDirty ? 'Да' : 'Нет'}
-      </div>
+
+      <div>Dirty: {dirtyFields.name ? '✅' : '❌'}</div>
+      <div>Touched: {touchedFields.name ? '✅' : '❌'}</div>
+      <div>Форма изменена: {isDirty ? 'Да' : 'Нет'}</div>
     </form>
   )
 }
@@ -52,15 +46,15 @@ function MyForm() {
 
 ```tsx
 // Показывать ошибку только после того, как поле затронуто
-<input {...register('email', { required: 'Обязательно' })} />
-{touchedFields.email && errors.email && (
-  <span className="error">{errors.email.message}</span>
-)}
+;<input {...register('email', { required: 'Обязательно' })} />
+{
+  touchedFields.email && errors.email && <span className="error">{errors.email.message}</span>
+}
 
 // Или показывать только если поле изменено и невалидно
-{dirtyFields.email && errors.email && (
-  <span className="error">{errors.email.message}</span>
-)}
+{
+  dirtyFields.email && errors.email && <span className="error">{errors.email.message}</span>
+}
 ```
 
 ### Визуальная индикация
@@ -69,9 +63,7 @@ function MyForm() {
 <input
   {...register('name')}
   style={{
-    borderColor: dirtyFields.name
-      ? errors.name ? '#dc3545' : '#28a745'
-      : '#ddd',
+    borderColor: dirtyFields.name ? (errors.name ? '#dc3545' : '#28a745') : '#ddd',
   }}
 />
 ```
@@ -118,9 +110,9 @@ reset({
 
 // С опциями
 reset(values, {
-  keepErrors: false,      // Сохранить ошибки
-  keepDirty: false,       // Сохранить dirty состояние
-  keepValues: false,      // Сохранить значения
+  keepErrors: false, // Сохранить ошибки
+  keepDirty: false, // Сохранить dirty состояние
+  keepValues: false, // Сохранить значения
   keepDefaultValues: false,
   keepIsSubmitted: false,
   keepTouched: false,
@@ -162,7 +154,11 @@ useEffect(() => {
 import { useEffect } from 'react'
 
 function MyForm() {
-  const { register, handleSubmit, formState: { errors } } = useForm()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm()
 
   useEffect(() => {
     const firstError = Object.keys(errors)[0]
@@ -176,10 +172,10 @@ function MyForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <input id="email" {...register('email')} />
       {errors.email && <span className="error">{errors.email.message}</span>}
-      
+
       <input id="password" {...register('password')} />
       {errors.password && <span className="error">{errors.password.message}</span>}
-      
+
       <button type="submit">Отправить</button>
     </form>
   )
@@ -216,7 +212,9 @@ function useFocusOnError(errors: any) {
 
 // Использование
 function MyForm() {
-  const { formState: { errors } } = useForm()
+  const {
+    formState: { errors },
+  } = useForm()
   useFocusOnError(errors)
   // ...
 }
@@ -237,18 +235,10 @@ function AccessibleForm() {
   } = useForm()
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      aria-label="Форма регистрации"
-      noValidate
-    >
+    <form onSubmit={handleSubmit(onSubmit)} aria-label="Форма регистрации" noValidate>
       {/* Сообщение об общих ошибках */}
       {isSubmitted && Object.keys(errors).length > 0 && (
-        <div
-          role="alert"
-          aria-live="assertive"
-          style={{ color: '#dc3545' }}
-        >
+        <div role="alert" aria-live="assertive" style={{ color: '#dc3545' }}>
           Пожалуйста, исправьте ошибки в форме
         </div>
       )}
@@ -262,15 +252,10 @@ function AccessibleForm() {
         aria-invalid={!!errors.email}
         aria-describedby={errors.email ? 'email-error' : undefined}
       />
-      
+
       {/* Сообщение об ошибке с role="alert" */}
       {errors.email && (
-        <span
-          id="email-error"
-          className="error"
-          role="alert"
-          aria-live="polite"
-        >
+        <span id="email-error" className="error" role="alert" aria-live="polite">
           {errors.email.message}
         </span>
       )}
@@ -283,14 +268,14 @@ function AccessibleForm() {
 
 ### Основные ARIA атрибуты
 
-| Атрибут | Описание | Пример |
-|---------|----------|--------|
-| `aria-label` | Текстовая метка | `aria-label="Форма входа"` |
-| `aria-invalid` | Поле невалидно | `aria-invalid={!!errors.email}` |
-| `aria-describedby` | Связь с описанием | `aria-describedby="email-error"` |
-| `aria-live` | Обновления в реальном времени | `aria-live="polite"` |
-| `role="alert"` | Важное сообщение | `role="alert"` |
-| `noValidate` | Отключить нативную валидацию | `<form noValidate>` |
+| Атрибут            | Описание                      | Пример                           |
+| ------------------ | ----------------------------- | -------------------------------- |
+| `aria-label`       | Текстовая метка               | `aria-label="Форма входа"`       |
+| `aria-invalid`     | Поле невалидно                | `aria-invalid={!!errors.email}`  |
+| `aria-describedby` | Связь с описанием             | `aria-describedby="email-error"` |
+| `aria-live`        | Обновления в реальном времени | `aria-live="polite"`             |
+| `role="alert"`     | Важное сообщение              | `role="alert"`                   |
+| `noValidate`       | Отключить нативную валидацию  | `<form noValidate>`              |
 
 ### Keyboard navigation
 
@@ -335,7 +320,7 @@ import { useWatch } from 'react-hook-form'
 
 function OptimizedForm() {
   const { control, register } = useForm()
-  
+
   // Подписка только на одно поле
   const name = useWatch({
     control,
@@ -366,7 +351,7 @@ const PriceDisplay = memo(({ control }: { control: any }) => {
 
 function MyForm() {
   const { control, register } = useForm()
-  
+
   return (
     <form>
       <input {...register('price', { valueAsNumber: true })} />
@@ -386,7 +371,9 @@ const { register } = useForm({ shouldUnregister: false })
 const { register } = useForm({ shouldUnregister: true })
 
 // Для conditional полей лучше true
-{showEmail && <input {...register('email')} />}
+{
+  showEmail && <input {...register('email')} />
+}
 ```
 
 ### Сравнение производительности
@@ -426,20 +413,13 @@ type FormData = z.infer<typeof schema>
 
 export function UXForm() {
   const [submitCount, setSubmitCount] = useState(0)
-  
+
   const {
     register,
     handleSubmit,
     reset,
     watch,
-    formState: {
-      errors,
-      isDirty,
-      isSubmitting,
-      isSubmitted,
-      touchedFields,
-      dirtyFields,
-    },
+    formState: { errors, isDirty, isSubmitting, isSubmitted, touchedFields, dirtyFields },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     mode: 'onChange',
@@ -471,11 +451,7 @@ export function UXForm() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      aria-label="Форма регистрации"
-      noValidate
-    >
+    <form onSubmit={handleSubmit(onSubmit)} aria-label="Форма регистрации" noValidate>
       {/* Статус бар */}
       <div style={{ marginBottom: '1rem', padding: '0.5rem', background: '#f0f0f0' }}>
         <span>Изменена: {isDirty ? '✅' : '❌'}</span>
@@ -491,11 +467,8 @@ export function UXForm() {
           aria-invalid={!!errors.name}
           aria-describedby={errors.name ? 'name-error' : undefined}
           style={{
-            borderColor: touchedFields.name && errors.name
-              ? '#dc3545'
-              : dirtyFields.name
-              ? '#28a745'
-              : '#ddd',
+            borderColor:
+              touchedFields.name && errors.name ? '#dc3545' : dirtyFields.name ? '#28a745' : '#ddd',
           }}
         />
         {touchedFields.name && errors.name && (
@@ -592,7 +565,9 @@ export function UXForm() {
 const { errors, isDirty, isValid } = useForm()
 
 // ✅ Правильно - из formState
-const { formState: { errors, isDirty, isValid } } = useForm()
+const {
+  formState: { errors, isDirty, isValid },
+} = useForm()
 ```
 
 **Почему это ошибка:** `formState` — это Proxy-объект, который отслеживает подписки. Прямая деструктуризация ломает эту систему.
@@ -607,7 +582,7 @@ reset()
 
 // ✅ Правильно - с defaultValues
 const { reset } = useForm({
-  defaultValues: { name: '', email: '' }
+  defaultValues: { name: '', email: '' },
 })
 reset({ name: 'John', email: 'john@example.com' })
 ```
@@ -620,7 +595,9 @@ reset({ name: 'John', email: 'john@example.com' })
 
 ```tsx
 // ❌ Неправильно - ошибки не видны пользователю
-const onSubmit = (data) => { /* ... */ }
+const onSubmit = data => {
+  /* ... */
+}
 
 // ✅ Правильно - фокус на первой ошибке
 useEffect(() => {
@@ -654,12 +631,14 @@ const name = useWatch({ name: 'name' })
 
 ```tsx
 // ❌ Неправильно - показывать ошибку сразу
-{errors.email && <span className="error">{errors.email.message}</span>}
+{
+  errors.email && <span className="error">{errors.email.message}</span>
+}
 
 // ✅ Правильно - после касания
-{touchedFields.email && errors.email && (
-  <span className="error">{errors.email.message}</span>
-)}
+{
+  touchedFields.email && errors.email && <span className="error">{errors.email.message}</span>
+}
 ```
 
 **Почему это ошибка:** Пользователь видит ошибку до того, как закончил ввод, что ухудшает UX.

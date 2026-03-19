@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useTheme } from 'src/hooks';
+import React, { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useTheme } from '../../hooks'
 
 // ============================================
 // Задание 4.1: Controller — Решение
@@ -11,7 +11,7 @@ import { useTheme } from 'src/hooks';
 const categorySchema = z.object({
   name: z.string().min(1, 'Обязательно'),
   category: z.string().min(1, 'Выберите категорию'),
-});
+})
 
 type CategoryForm = z.infer<typeof categorySchema>
 
@@ -20,7 +20,7 @@ const categories = [
   { value: 'clothing', label: 'Одежда' },
   { value: 'books', label: 'Книги' },
   { value: 'home', label: 'Дом' },
-];
+]
 
 function CustomSelect({ value, onChange, options, placeholder }: any) {
   return (
@@ -40,7 +40,7 @@ function CustomSelect({ value, onChange, options, placeholder }: any) {
         ))}
       </select>
     </div>
-  );
+  )
 }
 
 export function Task4_1_Solution() {
@@ -51,11 +51,11 @@ export function Task4_1_Solution() {
     formState: { errors },
   } = useForm<CategoryForm>({
     resolver: zodResolver(categorySchema),
-  });
+  })
 
   const onSubmit = (data: CategoryForm) => {
-    console.log('Category:', data);
-  };
+    console.log('Category:', data)
+  }
 
   return (
     <div className="exercise-container">
@@ -75,7 +75,7 @@ export function Task4_1_Solution() {
             control={control}
             defaultValue=""
             render={({ field }) => (
-              <CustomSelect {...field} options={categories} placeholder="Выберите категорию"/>
+              <CustomSelect {...field} options={categories} placeholder="Выберите категорию" />
             )}
           />
           {errors.category && <span className="error">{errors.category.message}</span>}
@@ -84,7 +84,7 @@ export function Task4_1_Solution() {
         <button type="submit">Сохранить</button>
       </form>
     </div>
-  );
+  )
 }
 
 // ============================================
@@ -94,7 +94,7 @@ export function Task4_1_Solution() {
 const profileSchema = z.object({
   gender: z.enum(['male', 'female', 'other'], { required_error: 'Выберите пол' }),
   country: z.string().min(1, 'Выберите страну'),
-});
+})
 
 type ProfileForm = z.infer<typeof profileSchema>
 
@@ -105,11 +105,11 @@ export function Task4_2_Solution() {
     formState: { errors },
   } = useForm<ProfileForm>({
     resolver: zodResolver(profileSchema),
-  });
+  })
 
   const onSubmit = (data: ProfileForm) => {
-    console.log('Profile:', data);
-  };
+    console.log('Profile:', data)
+  }
 
   return (
     <div className="exercise-container">
@@ -151,7 +151,7 @@ export function Task4_2_Solution() {
         <button type="submit">Сохранить</button>
       </form>
     </div>
-  );
+  )
 }
 
 // ============================================
@@ -161,15 +161,15 @@ export function Task4_2_Solution() {
 const skillsSchema = z.object({
   agree: z.boolean().refine(v => v === true, 'Необходимо согласие'),
   skills: z.array(z.string()).min(1, 'Выберите хотя бы один навык'),
-});
+})
 
 type SkillsForm = z.infer<typeof skillsSchema>
 
-const allSkills = ['React', 'Vue', 'Angular', 'Svelte'];
+const allSkills = ['React', 'Vue', 'Angular', 'Svelte']
 
 export function Task4_3_Solution() {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
 
   const {
     register,
@@ -182,24 +182,24 @@ export function Task4_3_Solution() {
     defaultValues: {
       skills: [],
     },
-  });
+  })
 
-  const selectedSkills = watch('skills', []);
+  const selectedSkills = watch('skills', [])
 
   const handleSkillChange = (skill: string, checked: boolean) => {
     if (checked) {
-      setValue('skills', [...selectedSkills, skill]);
+      setValue('skills', [...selectedSkills, skill])
     } else {
       setValue(
         'skills',
         selectedSkills.filter(s => s !== skill)
-      );
+      )
     }
-  };
+  }
 
   const onSubmit = (data: SkillsForm) => {
-    console.log('Skills:', data);
-  };
+    console.log('Skills:', data)
+  }
 
   return (
     <div className="exercise-container">
@@ -269,7 +269,7 @@ export function Task4_3_Solution() {
         </button>
       </form>
     </div>
-  );
+  )
 }
 
 // ============================================
@@ -285,7 +285,7 @@ const fileSchema = z.object({
       files => ['image/jpeg', 'image/png', 'image/gif'].includes(files[0]?.type),
       'Только JPG, PNG, GIF'
     ),
-});
+})
 
 type FileForm = z.infer<typeof fileSchema>
 
@@ -297,14 +297,14 @@ export function Task4_4_Solution() {
     formState: { errors },
   } = useForm<FileForm>({
     resolver: zodResolver(fileSchema),
-  });
+  })
 
-  const avatarFile = watch('avatar');
-  const [preview, setPreview] = useState<string | null>(null);
+  const avatarFile = watch('avatar')
+  const [preview, setPreview] = useState<string | null>(null)
 
   const onSubmit = (data: FileForm) => {
-    console.log('File:', data.avatar[0]);
-  };
+    console.log('File:', data.avatar[0])
+  }
 
   return (
     <div className="exercise-container">
@@ -318,9 +318,9 @@ export function Task4_4_Solution() {
             accept="image/jpeg,image/png,image/gif"
             {...register('avatar')}
             onChange={e => {
-              const file = e.target.files?.[0];
+              const file = e.target.files?.[0]
               if (file) {
-                setPreview(URL.createObjectURL(file));
+                setPreview(URL.createObjectURL(file))
               }
             }}
           />
@@ -329,7 +329,7 @@ export function Task4_4_Solution() {
 
         {preview && (
           <div style={{ marginTop: '1rem' }}>
-            <img src={preview} alt="Preview" style={{ maxWidth: '200px', borderRadius: '8px' }}/>
+            <img src={preview} alt="Preview" style={{ maxWidth: '200px', borderRadius: '8px' }} />
           </div>
         )}
 
@@ -338,7 +338,7 @@ export function Task4_4_Solution() {
         </button>
       </form>
     </div>
-  );
+  )
 }
 
 // ============================================
@@ -348,7 +348,7 @@ export function Task4_4_Solution() {
 const dateSchema = z.object({
   birthDate: z.string().min(1, 'Выберите дату'),
   appointment: z.string().min(1, 'Выберите время'),
-});
+})
 
 type DateForm = z.infer<typeof dateSchema>
 
@@ -359,11 +359,11 @@ export function Task4_5_Solution() {
     formState: { errors },
   } = useForm<DateForm>({
     resolver: zodResolver(dateSchema),
-  });
+  })
 
   const onSubmit = (data: DateForm) => {
-    console.log('Dates:', data);
-  };
+    console.log('Dates:', data)
+  }
 
   return (
     <div className="exercise-container">
@@ -385,5 +385,5 @@ export function Task4_5_Solution() {
         <button type="submit">Записаться</button>
       </form>
     </div>
-  );
+  )
 }

@@ -8,11 +8,11 @@
 
 Сравним с альтернативами:
 
-| Библиотека | Размер | Производительность | API |
-|------------|--------|-------------------|-----|
-| **React Hook Form** | ~12 KB | ⭐⭐⭐⭐⭐ | Хуки |
-| Formik | ~16 KB | ⭐⭐⭐ | Компоненты/Хуки |
-| Redux Form | ~23 KB | ⭐⭐ | Redux |
+| Библиотека          | Размер | Производительность | API             |
+| ------------------- | ------ | ------------------ | --------------- |
+| **React Hook Form** | ~12 KB | ⭐⭐⭐⭐⭐         | Хуки            |
+| Formik              | ~16 KB | ⭐⭐⭐             | Компоненты/Хуки |
+| Redux Form          | ~23 KB | ⭐⭐               | Redux           |
 
 **Преимущества React Hook Form:**
 
@@ -57,13 +57,13 @@ interface FormData {
 
 function MyForm() {
   const {
-    register,           // Регистрирует поля в форме
-    handleSubmit,       // Обрабатывает отправку
-    watch,              // Подписывается на значения
-    formState,          // Состояние формы (ошибки, валидность)
-    setValue,           // Устанавливает значение поля
-    getValues,          // Получает значения
-    reset,              // Сбрасывает форму
+    register, // Регистрирует поля в форме
+    handleSubmit, // Обрабатывает отправку
+    watch, // Подписывается на значения
+    formState, // Состояние формы (ошибки, валидность)
+    setValue, // Устанавливает значение поля
+    getValues, // Получает значения
+    reset, // Сбрасывает форму
   } = useForm<FormData>()
 
   return <form>...</form>
@@ -77,14 +77,14 @@ function MyForm() {
 <input {...register('email')} />
 
 // С опциями валидации
-<input 
+<input
   {...register('email', {
     required: 'Email обязателен',
     pattern: {
       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
       message: 'Неверный формат email'
     }
-  })} 
+  })}
 />
 ```
 
@@ -95,7 +95,7 @@ const onSubmit = (data: FormData) => {
   console.log(data) // { email: 'test@example.com', password: '123' }
 }
 
-<form onSubmit={handleSubmit(onSubmit)}>
+;<form onSubmit={handleSubmit(onSubmit)}>
   <input {...register('email')} />
   <input {...register('password')} />
   <button type="submit">Отправить</button>
@@ -105,11 +105,13 @@ const onSubmit = (data: FormData) => {
 **Важно:** `handleSubmit` автоматически предотвращает стандартную отправку формы и собирает данные.
 
 **Что это значит?**
+
 - **Предотвращает стандартную отправку** — внутри вызывается `event.preventDefault()`, поэтому страница не перезагружается
 - **Собирает данные** — автоматически извлекает значения из всех зарегистрированных полей и передает их в вашу функцию `onSubmit`
 - **Запускает валидацию** — перед вызовом `onSubmit` проверяет все правила валидации; если есть ошибки, `onSubmit` не вызывается
 
 Без React Hook Form вам пришлось бы писать это вручную:
+
 ```tsx
 // ❌ Вручную (без React Hook Form)
 const handleSubmit = (e: FormEvent) => {
@@ -163,9 +165,7 @@ const onSubmit = (data: LoginForm) => {
 ### Шаг 5: Подключите `handleSubmit` к форме
 
 ```tsx
-<form onSubmit={handleSubmit(onSubmit)}>
-  {/* поля */}
-</form>
+<form onSubmit={handleSubmit(onSubmit)}>{/* поля */}</form>
 ```
 
 ---
@@ -193,18 +193,13 @@ export function FirstForm() {
   return (
     <div>
       <h2>Форма входа</h2>
-      
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            {...register('email')}
-            placeholder="Введите email"
-          />
+          <input id="email" type="email" {...register('email')} placeholder="Введите email" />
         </div>
-        
+
         <div>
           <label htmlFor="password">Пароль</label>
           <input
@@ -214,7 +209,7 @@ export function FirstForm() {
             placeholder="Введите пароль"
           />
         </div>
-        
+
         <button type="submit">Войти</button>
       </form>
 
@@ -244,6 +239,7 @@ export function FirstForm() {
 ```
 
 **Почему это неправильно:**
+
 - При `onClick` форма не отправляется при нажатии Enter в полях ввода
 - Не работает стандартное поведение браузера (навигация клавиатурой, доступность)
 - `handleSubmit` не получает событие формы, а получает событие клика кнопки
@@ -262,6 +258,7 @@ register('email')
 ```
 
 **Почему это неправильно:**
+
 - Код становится многословным: `form.register`, `form.handleSubmit`, `form.formState`...
 - Труднее читать, особенно при использовании многих методов
 - В JSX приходится писать `{...form.register('email')}` вместо `{...register('email')}`
@@ -278,6 +275,7 @@ const { register } = useForm<FormData>()
 ```
 
 **Почему это неправильно:**
+
 - TypeScript не знает, какие поля есть в форме — можно написать `register('неСуществующееПоле')`
 - Нет автодополнения при вводе имен полей
 - В `onSubmit` данные будут иметь тип `any` вместо типобезопасного `FormData`
@@ -303,6 +301,7 @@ const { register } = useForm<FormData>()
 ## Что дальше?
 
 В следующем уровне вы изучите:
+
 - Различные типы полей (text, number, checkbox, select)
 - Методы `watch`, `setValue`, `getValues`
 - Состояние формы через `formState`

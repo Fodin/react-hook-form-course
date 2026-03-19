@@ -1,13 +1,13 @@
-import { LevelInfo } from './LevelSidebar';
-import { useLanguage } from '../hooks';
-import type { TranslationKey } from '../translations';
+import { LevelInfo } from './LevelSidebar'
+import { useLanguage } from '../hooks'
+import type { TranslationKey } from '../translations'
 
 interface ExerciseHeaderProps {
-  level: LevelInfo;
+  level: LevelInfo
 }
 
 export function ExerciseHeader({ level }: ExerciseHeaderProps) {
-  const { t } = useLanguage();
+  const { t } = useLanguage()
 
   return (
     <header style={{ marginBottom: '2rem' }}>
@@ -16,5 +16,5 @@ export function ExerciseHeader({ level }: ExerciseHeaderProps) {
       </h1>
       <p style={{ color: 'var(--text-muted)' }}>{t(level.descriptionKey as TranslationKey)}</p>
     </header>
-  );
+  )
 }

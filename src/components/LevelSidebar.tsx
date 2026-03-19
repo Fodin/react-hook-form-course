@@ -1,28 +1,27 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
-import { useLanguage, useTheme } from 'src/hooks';
+import { useLanguage, useTheme } from '../hooks'
+import { LanguageToggle } from './LanguageToggle'
+import { ThemeToggle } from './ThemeToggle'
+import type { TranslationKey } from '../translations'
 
-import { LanguageToggle } from './LanguageToggle';
-import { ThemeToggle } from './ThemeToggle';
-import type { TranslationKey } from '../translations';
-
-import styles from './LevelSidebar.module.css';
+import styles from './LevelSidebar.module.css'
 
 export interface LevelInfo {
-  id: string;
-  name: string;
-  descriptionKey: string;
+  id: string
+  name: string
+  descriptionKey: string
 }
 
 interface LevelSidebarProps {
-  levels: LevelInfo[];
-  currentLevel: string;
+  levels: LevelInfo[]
+  currentLevel: string
 }
 
 export function LevelSidebar({ levels, currentLevel }: LevelSidebarProps) {
-  const { theme } = useTheme();
-  const { t } = useLanguage();
-  const isDark = theme === 'dark';
+  const { theme } = useTheme()
+  const { t } = useLanguage()
+  const isDark = theme === 'dark'
 
   return (
     <div>
@@ -34,14 +33,14 @@ export function LevelSidebar({ levels, currentLevel }: LevelSidebarProps) {
             className={`
               ${styles.button}
               ${
-              currentLevel === level.id
-                ? isDark
-                  ? styles.buttonActiveDark
-                  : styles.buttonActiveLight
-                : isDark
-                  ? styles.buttonInactiveDark
-                  : styles.buttonInactiveLight
-            }
+                currentLevel === level.id
+                  ? isDark
+                    ? styles.buttonActiveDark
+                    : styles.buttonActiveLight
+                  : isDark
+                    ? styles.buttonInactiveDark
+                    : styles.buttonInactiveLight
+              }
             `}
           >
             <div className={styles.buttonTitle}>
@@ -56,9 +55,9 @@ export function LevelSidebar({ levels, currentLevel }: LevelSidebarProps) {
       </nav>
 
       <div className={`${styles.toggles} ${isDark ? styles.togglesDark : styles.togglesLight}`}>
-        <ThemeToggle/>
-        <LanguageToggle/>
+        <ThemeToggle />
+        <LanguageToggle />
       </div>
     </div>
-  );
+  )
 }

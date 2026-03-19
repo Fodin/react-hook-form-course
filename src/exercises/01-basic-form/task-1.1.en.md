@@ -1,10 +1,13 @@
 # Exercise 1.1: Registration Form with Different Field Types
 
 ## Goal
+
 Learn to register fields of different types.
 
 ## Requirements
+
 Create a registration form with the following fields:
+
 1. `firstName` — text (required)
 2. `lastName` — text (required)
 3. `email` — email (required)

@@ -16,13 +16,13 @@ import { useForm } from 'react-hook-form'
 const validateUsername = async (value: string) => {
   // Имитация запроса к серверу
   await new Promise(resolve => setTimeout(resolve, 500))
-  
+
   // Проверка доступности
   const takenUsernames = ['admin', 'user', 'test']
   if (takenUsernames.includes(value.toLowerCase())) {
     return 'Имя пользователя занято'
   }
-  
+
   return true
 }
 
@@ -60,15 +60,15 @@ function AsyncValidationForm() {
 
   const validateUsername = async (value: string) => {
     if (!value || value.length < 3) return true
-    
+
     setChecking(true)
-    
+
     try {
       const response = await fetch(`/api/check-username?username=${value}`)
       const { available } = await response.json()
-      
+
       setAvailable(available)
-      
+
       if (!available) {
         setError('username', {
           type: 'manual',
@@ -76,7 +76,7 @@ function AsyncValidationForm() {
         })
         return false
       }
-      
+
       clearErrors('username')
       return true
     } catch (error) {
@@ -88,18 +88,13 @@ function AsyncValidationForm() {
 
   return (
     <form>
-      <input
-        {...register('username')}
-        onBlur={(e) => validateUsername(e.target.value)}
-      />
-      
+      <input {...register('username')} onBlur={e => validateUsername(e.target.value)} />
+
       {checking && <span>⏳ Проверка...</span>}
       {available === true && <span>✅ Доступно</span>}
       {available === false && <span>❌ Занято</span>}
-      
-      {errors.username && (
-        <span className="error">{errors.username.message}</span>
-      )}
+
+      {errors.username && <span className="error">{errors.username.message}</span>}
     </form>
   )
 }
@@ -116,7 +111,7 @@ const schema = z.object({
 
 // Async валидация через refine
 const schemaWithAsync = schema.refine(
-  async (data) => {
+  async data => {
     const response = await fetch(`/api/check-username?username=${data.username}`)
     const { available } = await response.json()
     return available
@@ -142,7 +137,12 @@ const { register, handleSubmit } = useForm({
 
 ```tsx
 function EditForm() {
-  const { register, handleSubmit, reset, formState: { isDirty } } = useForm()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isDirty },
+  } = useForm()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -150,7 +150,7 @@ function EditForm() {
     fetch('/api/user/1')
       .then(res => res.json())
       .then(data => {
-        reset(data)  // Заполнение формы
+        reset(data) // Заполнение формы
         setLoading(false)
       })
   }, [reset])
@@ -163,7 +163,7 @@ function EditForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <input {...register('name')} />
       <input {...register('email')} />
-      
+
       <button type="submit" disabled={!isDirty}>
         Сохранить {isDirty && '*'}
       </button>
@@ -178,7 +178,7 @@ function EditForm() {
 function EditFormWithErrorHandling() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  
+
   const { register, handleSubmit, reset } = useForm()
 
   useEffect(() => {
@@ -186,7 +186,7 @@ function EditFormWithErrorHandling() {
       try {
         const response = await fetch('/api/user/1')
         if (!response.ok) throw new Error('Не удалось загрузить данные')
-        
+
         const data = await response.json()
         reset(data)
       } catch (err) {
@@ -202,11 +202,7 @@ function EditFormWithErrorHandling() {
   if (loading) return <div>⏳ Загрузка...</div>
   if (error) return <div style={{ color: 'red' }}>❌ {error}</div>
 
-  return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {/* поля формы */}
-    </form>
-  )
+  return <form onSubmit={handleSubmit(onSubmit)}>{/* поля формы */}</form>
 }
 ```
 
@@ -223,8 +219,13 @@ type UserForm = z.infer<typeof userSchema>
 
 function EditUserForm() {
   const [loading, setLoading] = useState(true)
-  
-  const { register, handleSubmit, reset, formState: { isDirty } } = useForm<UserForm>({
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isDirty },
+  } = useForm<UserForm>({
     resolver: zodResolver(userSchema),
   })
 
@@ -244,7 +245,7 @@ function EditUserForm() {
       <input {...register('name')} />
       <input type="email" {...register('email')} />
       <textarea {...register('bio')} />
-      
+
       <button type="submit" disabled={!isDirty}>
         Сохранить изменения
       </button>
@@ -263,20 +264,20 @@ function EditUserForm() {
 function SubmitForm() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  
+
   const { register, handleSubmit, reset } = useForm()
 
   const onSubmit = async (data: any) => {
     setSubmitting(true)
     setError(null)
-    
+
     try {
       await fetch('/api/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       })
-      
+
       reset()
       alert('Успешно отправлено!')
     } catch (err) {
@@ -288,15 +289,11 @@ function SubmitForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {error && (
-        <div style={{ color: 'red', marginBottom: '1rem' }}>
-          ❌ {error}
-        </div>
-      )}
-      
+      {error && <div style={{ color: 'red', marginBottom: '1rem' }}>❌ {error}</div>}
+
       <input {...register('name')} disabled={submitting} />
       <input {...register('email')} disabled={submitting} />
-      
+
       <button type="submit" disabled={submitting}>
         {submitting ? '⏳ Отправка...' : 'Отправить'}
       </button>
@@ -312,13 +309,13 @@ function SubmitWithNotification() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
-  
+
   const { register, handleSubmit, reset } = useForm()
 
   const onSubmit = async (data: any) => {
     setSubmitting(true)
     setError(null)
-    
+
     try {
       await new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -329,10 +326,10 @@ function SubmitWithNotification() {
           }
         }, 1500)
       })
-      
+
       setSuccess(true)
       reset()
-      
+
       // Скрыть уведомление через 3 секунды
       setTimeout(() => setSuccess(false), 3000)
     } catch (err) {
@@ -345,32 +342,36 @@ function SubmitWithNotification() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {success && (
-        <div style={{
-          padding: '1rem',
-          background: '#d1e7dd',
-          color: '#0f5132',
-          marginBottom: '1rem',
-          borderRadius: '4px',
-        }}>
+        <div
+          style={{
+            padding: '1rem',
+            background: '#d1e7dd',
+            color: '#0f5132',
+            marginBottom: '1rem',
+            borderRadius: '4px',
+          }}
+        >
           ✅ Отправлено успешно!
         </div>
       )}
-      
+
       {error && (
-        <div style={{
-          padding: '1rem',
-          background: '#f8d7da',
-          color: '#842029',
-          marginBottom: '1rem',
-          borderRadius: '4px',
-        }}>
+        <div
+          style={{
+            padding: '1rem',
+            background: '#f8d7da',
+            color: '#842029',
+            marginBottom: '1rem',
+            borderRadius: '4px',
+          }}
+        >
           ❌ {error}
         </div>
       )}
-      
+
       <input {...register('name')} disabled={submitting} />
       <input {...register('email')} disabled={submitting} />
-      
+
       <button type="submit" disabled={submitting}>
         {submitting ? '⏳ Отправка...' : 'Отправить'}
       </button>
@@ -397,10 +398,10 @@ function AutoSaveForm() {
       console.log('Auto-saved:', values)
       localStorage.setItem('draft', JSON.stringify(values))
       setSaved(true)
-      
+
       // Скрыть индикатор через 2 секунды
       setTimeout(() => setSaved(false), 2000)
-    }, 1000)  // Debounce 1 секунда
+    }, 1000) // Debounce 1 секунда
 
     return () => clearTimeout(timer)
   }, [values])
@@ -408,10 +409,8 @@ function AutoSaveForm() {
   return (
     <form>
       <textarea {...register('content')} />
-      
-      {saved && (
-        <div style={{ color: 'green' }}>✓ Сохранено</div>
-      )}
+
+      {saved && <div style={{ color: 'green' }}>✓ Сохранено</div>}
     </form>
   )
 }
@@ -467,7 +466,7 @@ function DraftForm() {
   useEffect(() => {
     const timer = setTimeout(async () => {
       setStatus('saving')
-      
+
       try {
         await fetch('/api/draft', {
           method: 'POST',
@@ -475,7 +474,7 @@ function DraftForm() {
           body: JSON.stringify(values),
         })
         setStatus('saved')
-        
+
         setTimeout(() => setStatus('idle'), 2000)
       } catch (error) {
         setStatus('error')
@@ -488,7 +487,7 @@ function DraftForm() {
   return (
     <form>
       <textarea {...register('content')} />
-      
+
       <div style={{ marginTop: '0.5rem', fontSize: '0.875rem' }}>
         {status === 'saving' && '⏳ Сохранение...'}
         {status === 'saved' && '✓ Сохранено'}
@@ -541,30 +540,33 @@ export function AsyncRegistrationForm() {
     mode: 'onChange',
   })
 
-  const validateUsername = useCallback(async (value: string) => {
-    if (!value || value.length < 3) return true
-    
-    setChecking(true)
-    const isAvailable = await checkUsername(value)
-    setAvailable(isAvailable)
-    setChecking(false)
-    
-    if (!isAvailable) {
-      setError('username', {
-        type: 'manual',
-        message: 'Имя пользователя занято',
-      })
-      return false
-    }
-    
-    clearErrors('username')
-    return true
-  }, [setError, clearErrors])
+  const validateUsername = useCallback(
+    async (value: string) => {
+      if (!value || value.length < 3) return true
+
+      setChecking(true)
+      const isAvailable = await checkUsername(value)
+      setAvailable(isAvailable)
+      setChecking(false)
+
+      if (!isAvailable) {
+        setError('username', {
+          type: 'manual',
+          message: 'Имя пользователя занято',
+        })
+        return false
+      }
+
+      clearErrors('username')
+      return true
+    },
+    [setError, clearErrors]
+  )
 
   const onSubmit = async (data: FormData) => {
     setSubmitting(true)
     setError(null)
-    
+
     try {
       await new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -575,7 +577,7 @@ export function AsyncRegistrationForm() {
           }
         }, 1500)
       })
-      
+
       setSuccess(true)
       setTimeout(() => setSuccess(false), 3000)
     } catch (err) {
@@ -594,7 +596,7 @@ export function AsyncRegistrationForm() {
           ✅ Регистрация успешна!
         </div>
       )}
-      
+
       {error && (
         <div style={{ padding: '1rem', background: '#f8d7da', marginBottom: '1rem' }}>
           ❌ {error}
@@ -603,10 +605,7 @@ export function AsyncRegistrationForm() {
 
       <div>
         <label>Username</label>
-        <input
-          {...register('username')}
-          onBlur={(e) => validateUsername(e.target.value)}
-        />
+        <input {...register('username')} onBlur={e => validateUsername(e.target.value)} />
         {checking && <span>⏳ Проверка...</span>}
         {available === true && <span>✅ Доступно</span>}
         {available === false && <span>❌ Занято</span>}
@@ -682,12 +681,12 @@ useEffect(() => {
 
 ```tsx
 // ❌ Неправильно - ошибка игнорируется
-const onSubmit = async (data) => {
+const onSubmit = async data => {
   await fetch('/api/submit', { body: JSON.stringify(data) })
 }
 
 // ✅ Правильно - try/catch
-const onSubmit = async (data) => {
+const onSubmit = async data => {
   try {
     await fetch('/api/submit', { body: JSON.stringify(data) })
   } catch (err) {
@@ -704,20 +703,22 @@ const onSubmit = async (data) => {
 
 ```tsx
 // ❌ Неправильно - пользователь ждёт без обратной связи
-validate: async (value) => {
+validate: async value => {
   const response = await fetch(`/api/check?username=${value}`)
   return response.json()
 }
 
 // ✅ Правильно - показываем статус
 const [checking, setChecking] = useState(false)
-validate: async (value) => {
+validate: async value => {
   setChecking(true)
   const response = await fetch(`/api/check?username=${value}`)
   setChecking(false)
   return response.json()
 }
-{checking && <span>⏳ Проверка...</span>}
+{
+  checking && <span>⏳ Проверка...</span>
+}
 ```
 
 **Почему это ошибка:** Пользователь не понимает, что происходит во время проверки.
@@ -729,7 +730,9 @@ validate: async (value) => {
 ```tsx
 // ❌ Неправильно - ошибка загрузки игнорируется
 useEffect(() => {
-  fetch('/api/user/1').then(res => res.json()).then(reset)
+  fetch('/api/user/1')
+    .then(res => res.json())
+    .then(reset)
 }, [reset])
 
 // ✅ Правильно - обработка ошибок

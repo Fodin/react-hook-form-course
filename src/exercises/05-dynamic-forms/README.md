@@ -38,14 +38,16 @@ function DynamicForm() {
       {fields.map((field, index) => (
         <div key={field.id}>
           <input {...register(`emails.${index}.value`)} placeholder="Email" />
-          <button type="button" onClick={() => remove(index)}>✕</button>
+          <button type="button" onClick={() => remove(index)}>
+            ✕
+          </button>
         </div>
       ))}
-      
+
       <button type="button" onClick={() => append({ value: '' })}>
         + Добавить
       </button>
-      
+
       <button type="submit">Отправить</button>
     </form>
   )
@@ -56,15 +58,15 @@ function DynamicForm() {
 
 ```tsx
 const {
-  fields,      // Массив полей { id, ...value }
-  append,      // Добавить в конец
-  prepend,     // Добавить в начало
-  insert,      // Вставить по индексу
-  remove,      // Удалить по индексу
-  swap,        // Поменять местами
-  move,        // Переместить
-  replace,     // Заменить весь массив
-  update,      // Обновить конкретное поле
+  fields, // Массив полей { id, ...value }
+  append, // Добавить в конец
+  prepend, // Добавить в начало
+  insert, // Вставить по индексу
+  remove, // Удалить по индексу
+  swap, // Поменять местами
+  move, // Переместить
+  replace, // Заменить весь массив
+  update, // Обновить конкретное поле
 } = useFieldArray({ control, name: 'items' })
 ```
 
@@ -107,13 +109,22 @@ update(0, { value: 'updated' })
 import { z } from 'zod'
 
 const schema = z.object({
-  emails: z.array(z.object({
-    value: z.string().email('Неверный email'),
-  })).min(1, 'Минимум один email'),
+  emails: z
+    .array(
+      z.object({
+        value: z.string().email('Неверный email'),
+      })
+    )
+    .min(1, 'Минимум один email'),
 })
 
 // Использование
-const { control, register, handleSubmit, formState: { errors } } = useForm({
+const {
+  control,
+  register,
+  handleSubmit,
+  formState: { errors },
+} = useForm({
   resolver: zodResolver(schema),
   defaultValues: { emails: [{ value: '' }] },
 })
@@ -121,15 +132,19 @@ const { control, register, handleSubmit, formState: { errors } } = useForm({
 const { fields, append, remove } = useFieldArray({ control, name: 'emails' })
 
 // Отображение ошибок
-{fields.map((field, index) => (
-  <div key={field.id}>
-    <input {...register(`emails.${index}.value` as const)} />
-    {errors.emails?.[index]?.value && (
-      <span className="error">{errors.emails[index]?.value?.message}</span>
-    )}
-    <button type="button" onClick={() => remove(index)}>✕</button>
-  </div>
-))}
+{
+  fields.map((field, index) => (
+    <div key={field.id}>
+      <input {...register(`emails.${index}.value` as const)} />
+      {errors.emails?.[index]?.value && (
+        <span className="error">{errors.emails[index]?.value?.message}</span>
+      )}
+      <button type="button" onClick={() => remove(index)}>
+        ✕
+      </button>
+    </div>
+  ))
+}
 ```
 
 ---
@@ -141,7 +156,7 @@ const { fields, append, remove } = useFieldArray({ control, name: 'emails' })
 ```tsx
 function ConditionalForm() {
   const { register, handleSubmit, watch } = useForm()
-  
+
   const contactMethod = watch('contactMethod')
 
   return (
@@ -152,17 +167,11 @@ function ConditionalForm() {
         <option value="telegram">Telegram</option>
       </select>
 
-      {contactMethod === 'email' && (
-        <input {...register('email')} placeholder="Email" />
-      )}
+      {contactMethod === 'email' && <input {...register('email')} placeholder="Email" />}
 
-      {contactMethod === 'phone' && (
-        <input {...register('phone')} placeholder="Телефон" />
-      )}
+      {contactMethod === 'phone' && <input {...register('phone')} placeholder="Телефон" />}
 
-      {contactMethod === 'telegram' && (
-        <input {...register('telegram')} placeholder="@username" />
-      )}
+      {contactMethod === 'telegram' && <input {...register('telegram')} placeholder="@username" />}
 
       <button type="submit">Отправить</button>
     </form>
@@ -185,16 +194,21 @@ const { register } = useForm({ shouldUnregister: true })
 **Решение 2:** Кастомная валидация
 
 ```tsx
-const schema = z.object({
-  contactMethod: z.enum(['email', 'phone', 'telegram']),
-  email: z.string().email().optional(),
-  phone: z.string().optional(),
-  telegram: z.string().optional(),
-}).refine((data) => {
-  if (data.contactMethod === 'email') return !!data.email
-  if (data.contactMethod === 'phone') return !!data.phone
-  return !!data.telegram
-}, { message: 'Заполните контакт', path: ['email'] })
+const schema = z
+  .object({
+    contactMethod: z.enum(['email', 'phone', 'telegram']),
+    email: z.string().email().optional(),
+    phone: z.string().optional(),
+    telegram: z.string().optional(),
+  })
+  .refine(
+    data => {
+      if (data.contactMethod === 'email') return !!data.email
+      if (data.contactMethod === 'phone') return !!data.phone
+      return !!data.telegram
+    },
+    { message: 'Заполните контакт', path: ['email'] }
+  )
 ```
 
 ---
@@ -212,7 +226,7 @@ const citiesByCountry = {
 
 function DependentFields() {
   const { register, handleSubmit, watch, setValue } = useForm()
-  
+
   const country = watch('country')
   const cities = country ? citiesByCountry[country] || [] : []
 
@@ -228,7 +242,9 @@ function DependentFields() {
       <select {...register('city')} disabled={!country}>
         <option value="">Выберите город</option>
         {cities.map(city => (
-          <option key={city} value={city}>{city}</option>
+          <option key={city} value={city}>
+            {city}
+          </option>
         ))}
       </select>
 
@@ -281,8 +297,14 @@ function WizardForm() {
         <>
           <h2>Шаг 1: Аккаунт</h2>
           <input {...register('email', { required: true })} placeholder="Email" />
-          <input {...register('password', { required: true })} type="password" placeholder="Пароль" />
-          <button type="button" onClick={onNext}>Далее →</button>
+          <input
+            {...register('password', { required: true })}
+            type="password"
+            placeholder="Пароль"
+          />
+          <button type="button" onClick={onNext}>
+            Далее →
+          </button>
         </>
       )}
 
@@ -292,8 +314,12 @@ function WizardForm() {
           <input {...register('firstName', { required: true })} placeholder="Имя" />
           <input {...register('lastName', { required: true })} placeholder="Фамилия" />
           <div>
-            <button type="button" onClick={onPrev}>← Назад</button>
-            <button type="button" onClick={onNext}>Далее →</button>
+            <button type="button" onClick={onPrev}>
+              ← Назад
+            </button>
+            <button type="button" onClick={onNext}>
+              Далее →
+            </button>
           </div>
         </>
       )}
@@ -303,7 +329,9 @@ function WizardForm() {
           <h2>Шаг 3: Подтверждение</h2>
           <textarea {...register('comments')} placeholder="Комментарий" />
           <div>
-            <button type="button" onClick={onPrev}>← Назад</button>
+            <button type="button" onClick={onPrev}>
+              ← Назад
+            </button>
             <button type="submit">Отправить</button>
           </div>
         </>
@@ -318,7 +346,7 @@ function WizardForm() {
 ```tsx
 function WizardWithPersistence() {
   const [step, setStep] = useState(1)
-  
+
   const { register, handleSubmit, trigger, watch } = useForm({
     defaultValues: {
       email: '',
@@ -341,9 +369,9 @@ function WizardWithPersistence() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>Шаг {step} из 3</div>
-      
+
       {/* Рендеринг шагов */}
-      
+
       <pre>{JSON.stringify(allData, null, 2)}</pre>
     </form>
   )
@@ -364,21 +392,25 @@ const schema = z.object({
   contactMethod: z.enum(['email', 'phone']),
   email: z.string().email().optional(),
   phone: z.string().optional(),
-  
+
   // Шаг 2: Товары
-  items: z.array(z.object({
-    name: z.string().min(1),
-    quantity: z.number().min(1),
-    price: z.number().positive(),
-  })).min(1, 'Добавьте хотя бы один товар'),
-  
+  items: z
+    .array(
+      z.object({
+        name: z.string().min(1),
+        quantity: z.number().min(1),
+        price: z.number().positive(),
+      })
+    )
+    .min(1, 'Добавьте хотя бы один товар'),
+
   // Шаг 3: Доставка
   address: z.object({
     city: z.string().min(1),
     street: z.string().min(1),
     zip: z.string().regex(/^\d{5}$/, 'Неверный индекс'),
   }),
-  
+
   comments: z.string().optional(),
 })
 
@@ -386,7 +418,7 @@ type OrderForm = z.infer<typeof schema>
 
 export function OrderWizard() {
   const [step, setStep] = useState(1)
-  
+
   const {
     control,
     register,
@@ -412,7 +444,7 @@ export function OrderWizard() {
 
   const onNext = async () => {
     let fieldsToValidate: any[] = []
-    
+
     if (step === 1) {
       fieldsToValidate = ['contactMethod']
       if (contactMethod === 'email') fieldsToValidate.push('email')
@@ -422,7 +454,7 @@ export function OrderWizard() {
     } else if (step === 3) {
       fieldsToValidate = ['address.city', 'address.street', 'address.zip']
     }
-    
+
     const isValid = await trigger(fieldsToValidate)
     if (isValid) setStep(step + 1)
   }
@@ -439,7 +471,7 @@ export function OrderWizard() {
       {step === 1 && (
         <div>
           <h2>Контактная информация</h2>
-          
+
           <div>
             <label>Способ связи</label>
             <select {...register('contactMethod')}>
@@ -462,7 +494,9 @@ export function OrderWizard() {
             </div>
           )}
 
-          <button type="button" onClick={onNext}>Далее →</button>
+          <button type="button" onClick={onNext}>
+            Далее →
+          </button>
         </div>
       )}
 
@@ -470,13 +504,10 @@ export function OrderWizard() {
       {step === 2 && (
         <div>
           <h2>Товары</h2>
-          
+
           {fields.map((field, index) => (
             <div key={field.id} style={{ marginBottom: '1rem' }}>
-              <input
-                {...register(`items.${index}.name` as const)}
-                placeholder="Название"
-              />
+              <input {...register(`items.${index}.name` as const)} placeholder="Название" />
               <input
                 type="number"
                 {...register(`items.${index}.quantity` as const, { valueAsNumber: true })}
@@ -487,7 +518,9 @@ export function OrderWizard() {
                 {...register(`items.${index}.price` as const, { valueAsNumber: true })}
                 placeholder="Цена"
               />
-              <button type="button" onClick={() => remove(index)}>✕</button>
+              <button type="button" onClick={() => remove(index)}>
+                ✕
+              </button>
             </div>
           ))}
 
@@ -496,8 +529,12 @@ export function OrderWizard() {
           </button>
 
           <div>
-            <button type="button" onClick={() => setStep(1)}>← Назад</button>
-            <button type="button" onClick={onNext}>Далее →</button>
+            <button type="button" onClick={() => setStep(1)}>
+              ← Назад
+            </button>
+            <button type="button" onClick={onNext}>
+              Далее →
+            </button>
           </div>
         </div>
       )}
@@ -506,19 +543,23 @@ export function OrderWizard() {
       {step === 3 && (
         <div>
           <h2>Адрес доставки</h2>
-          
+
           <input {...register('address.city')} placeholder="Город" />
           {errors.address?.city && <span className="error">{errors.address.city.message}</span>}
-          
+
           <input {...register('address.street')} placeholder="Улица" />
           {errors.address?.street && <span className="error">{errors.address.street.message}</span>}
-          
+
           <input {...register('address.zip')} placeholder="Индекс" />
           {errors.address?.zip && <span className="error">{errors.address.zip.message}</span>}
 
           <div>
-            <button type="button" onClick={() => setStep(2)}>← Назад</button>
-            <button type="button" onClick={onNext}>Далее →</button>
+            <button type="button" onClick={() => setStep(2)}>
+              ← Назад
+            </button>
+            <button type="button" onClick={onNext}>
+              Далее →
+            </button>
           </div>
         </div>
       )}
@@ -527,11 +568,13 @@ export function OrderWizard() {
       {step === 4 && (
         <div>
           <h2>Подтверждение</h2>
-          
+
           <textarea {...register('comments')} placeholder="Комментарий к заказу" />
 
           <div>
-            <button type="button" onClick={() => setStep(3)}>← Назад</button>
+            <button type="button" onClick={() => setStep(3)}>
+              ← Назад
+            </button>
             <button type="submit">Оформить заказ</button>
           </div>
         </div>
@@ -549,18 +592,22 @@ export function OrderWizard() {
 
 ```tsx
 // ❌ Неправильно - индекс может измениться
-{fields.map((field, index) => (
-  <div key={index}>
-    <input {...register(`emails.${index}.value`)} />
-  </div>
-))}
+{
+  fields.map((field, index) => (
+    <div key={index}>
+      <input {...register(`emails.${index}.value`)} />
+    </div>
+  ))
+}
 
 // ✅ Правильно - используем field.id
-{fields.map((field, index) => (
-  <div key={field.id}>
-    <input {...register(`emails.${index}.value`)} />
-  </div>
-))}
+{
+  fields.map((field, index) => (
+    <div key={field.id}>
+      <input {...register(`emails.${index}.value`)} />
+    </div>
+  ))
+}
 ```
 
 **Почему это ошибка:** При удалении/добавлении элементов индекс меняется, что вызывает проблемы с состоянием React.
@@ -572,17 +619,25 @@ export function OrderWizard() {
 ```tsx
 // ❌ Неправильно - массив не изменяется
 const { fields } = useFieldArray({ control, name: 'emails' })
-{fields.map(field => <div key={field.id}>{field.value}</div>)}
+{
+  fields.map(field => <div key={field.id}>{field.value}</div>)
+}
 
 // ✅ Правильно - используем методы
 const { fields, append, remove } = useFieldArray({ control, name: 'emails' })
-{fields.map((field, index) => (
-  <div key={field.id}>
-    <input {...register(`emails.${index}.value`)} />
-    <button type="button" onClick={() => remove(index)}>✕</button>
-  </div>
-))}
-<button type="button" onClick={() => append({ value: '' })}>+ Добавить</button>
+{
+  fields.map((field, index) => (
+    <div key={field.id}>
+      <input {...register(`emails.${index}.value`)} />
+      <button type="button" onClick={() => remove(index)}>
+        ✕
+      </button>
+    </div>
+  ))
+}
+;<button type="button" onClick={() => append({ value: '' })}>
+  + Добавить
+</button>
 ```
 
 **Почему это ошибка:** Без `append`/`remove` массив полей остаётся статичным.
@@ -610,11 +665,15 @@ const onNext = async () => {
 
 ```tsx
 // ❌ Неправильно - скрытое поле остаётся в форме
-{showEmail && <input {...register('email', { required: true })} />}
+{
+  showEmail && <input {...register('email', { required: true })} />
+}
 
 // ✅ Правильно - unregister при скрытии
 const { register } = useForm({ shouldUnregister: true })
-{showEmail && <input {...register('email', { required: true })} />}
+{
+  showEmail && <input {...register('email', { required: true })} />
+}
 ```
 
 **Почему это ошибка:** Скрытые поля могут вызывать ошибки валидации, если не unregister.

@@ -1,10 +1,13 @@
 # Exercise 2.2: Pattern Validation
 
 ## Goal
+
 Learn to use RegExp patterns.
 
 ## Requirements
+
 Create a form with fields:
+
 1. `phone` — Russian phone number (+7 XXX XXX-XX-XX)
 2. `website` — URL (https://...)
 3. `hexColor` — HEX color (#FFF or #FFFFFF)

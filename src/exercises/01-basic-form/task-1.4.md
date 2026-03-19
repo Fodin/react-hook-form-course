@@ -1,9 +1,11 @@
 # Задание 1.4: formState — ошибки и валидность
 
 ## Цель
+
 Научиться отображать состояние формы.
 
 ## Требования
+
 1. Создайте форму с полями `email` и `password`
 2. Отображайте:
    - Индикатор валидности формы (зелёный/красный)
@@ -15,5 +17,7 @@
 ## Подсказка
 
 ```typescript
-const { formState: { errors, isValid, isSubmitting, isDirty } } = useForm()
+const {
+  formState: { errors, isValid, isSubmitting, isDirty },
+} = useForm()
 ```

@@ -131,7 +131,7 @@ const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/
 <input
   {...register('password', {
     required: 'Password is required',
-    validate: (value) => {
+    validate: value => {
       if (value.length < 8) {
         return 'Minimum 8 characters'
       }
@@ -154,10 +154,10 @@ const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/
   {...register('password', {
     required: 'Password is required',
     validate: {
-      minLength: (v) => v.length >= 8 || 'Minimum 8 characters',
-      uppercase: (v) => /[A-Z]/.test(v) || 'Must have uppercase letter',
-      number: (v) => /\d/.test(v) || 'Must have a digit',
-      special: (v) => /[!@#$%^&*]/.test(v) || 'Must have special character',
+      minLength: v => v.length >= 8 || 'Minimum 8 characters',
+      uppercase: v => /[A-Z]/.test(v) || 'Must have uppercase letter',
+      number: v => /\d/.test(v) || 'Must have a digit',
+      special: v => /[!@#$%^&*]/.test(v) || 'Must have special character',
     },
   })}
 />
@@ -175,7 +175,7 @@ function PasswordForm() {
 
       <input
         {...register('confirmPassword', {
-          validate: (value) => {
+          validate: value => {
             const password = getValues('password')
             return value === password || 'Passwords do not match'
           },
@@ -194,7 +194,11 @@ function PasswordForm() {
 
 ```tsx
 function RegistrationForm() {
-  const { register, watch, formState: { errors } } = useForm()
+  const {
+    register,
+    watch,
+    formState: { errors },
+  } = useForm()
 
   const password = watch('password')
 
@@ -206,14 +210,12 @@ function RegistrationForm() {
         {...register('confirmPassword', {
           required: 'Required',
           validate: {
-            match: (v) => v === password || 'Passwords do not match',
+            match: v => v === password || 'Passwords do not match',
           },
         })}
       />
 
-      {errors.confirmPassword && (
-        <span className="error">{errors.confirmPassword.message}</span>
-      )}
+      {errors.confirmPassword && <span className="error">{errors.confirmPassword.message}</span>}
     </form>
   )
 }
@@ -223,7 +225,11 @@ function RegistrationForm() {
 
 ```tsx
 function ChangePasswordForm() {
-  const { register, watch, formState: { errors } } = useForm()
+  const {
+    register,
+    watch,
+    formState: { errors },
+  } = useForm()
 
   const currentPassword = watch('currentPassword')
   const newPassword = watch('newPassword')
@@ -235,7 +241,7 @@ function ChangePasswordForm() {
       <input
         {...register('newPassword', {
           validate: {
-            different: (v) => v !== currentPassword || 'New password must be different',
+            different: v => v !== currentPassword || 'New password must be different',
           },
         })}
       />
@@ -243,7 +249,7 @@ function ChangePasswordForm() {
       <input
         {...register('confirmPassword', {
           validate: {
-            match: (v) => v === newPassword || 'Passwords do not match',
+            match: v => v === newPassword || 'Passwords do not match',
           },
         })}
       />
@@ -277,18 +283,18 @@ useForm({ mode: 'all' })
 ```tsx
 useForm({
   mode: 'onChange',
-  reValidateMode: 'onChange',  // Default
+  reValidateMode: 'onChange', // Default
 })
 ```
 
 ### Recommendations for Mode Selection
 
-| Mode | When to Use |
-|------|-------------|
-| `onSubmit` | Simple forms, minimal noise |
-| `onChange` | Forms with instant feedback |
-| `onBlur` | When you need to check after input |
-| `all` | Maximum strictness |
+| Mode       | When to Use                        |
+| ---------- | ---------------------------------- |
+| `onSubmit` | Simple forms, minimal noise        |
+| `onChange` | Forms with instant feedback        |
+| `onBlur`   | When you need to check after input |
+| `all`      | Maximum strictness                 |
 
 ---
 
@@ -297,10 +303,10 @@ useForm({
 ### Basic Display
 
 ```tsx
-<input {...register('email', { required: 'Required' })} />
-{errors.email && (
-  <span className="error">{errors.email.message}</span>
-)}
+;<input {...register('email', { required: 'Required' })} />
+{
+  errors.email && <span className="error">{errors.email.message}</span>
+}
 ```
 
 ### Styled Display
@@ -334,25 +340,25 @@ useForm({
 ### Multiple Errors for One Field
 
 ```tsx
-<input
+;<input
   {...register('password', {
     validate: {
-      minLength: (v) => v.length >= 8 || 'Minimum 8 characters',
-      uppercase: (v) => /[A-Z]/.test(v) || 'Must have uppercase',
-      number: (v) => /\d/.test(v) || 'Must have a digit',
+      minLength: v => v.length >= 8 || 'Minimum 8 characters',
+      uppercase: v => /[A-Z]/.test(v) || 'Must have uppercase',
+      number: v => /\d/.test(v) || 'Must have a digit',
     },
   })}
 />
 
-{errors.password && (
-  <div style={{ color: '#dc3545', fontSize: '0.875rem' }}>
-    {Object.entries(errors.password).map(([key, value]) => (
-      <div key={key}>
-        {typeof value === 'string' ? value : value?.message}
-      </div>
-    ))}
-  </div>
-)}
+{
+  errors.password && (
+    <div style={{ color: '#dc3545', fontSize: '0.875rem' }}>
+      {Object.entries(errors.password).map(([key, value]) => (
+        <div key={key}>{typeof value === 'string' ? value : value?.message}</div>
+      ))}
+    </div>
+  )
+}
 ```
 
 ---
@@ -366,17 +372,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 // Validation schema
 const schema = z.object({
-  username: z
-    .string()
-    .min(3, 'Minimum 3 characters')
-    .max(20, 'Maximum 20 characters'),
-  email: z
-    .string()
-    .email('Invalid email format'),
-  age: z
-    .number()
-    .min(18, 'Minimum 18 years')
-    .max(120, 'Maximum 120 years'),
+  username: z.string().min(3, 'Minimum 3 characters').max(20, 'Maximum 20 characters'),
+  email: z.string().email('Invalid email format'),
+  age: z.number().min(18, 'Minimum 18 years').max(120, 'Maximum 120 years'),
   password: z
     .string()
     .min(6, 'Minimum 6 characters')
@@ -405,36 +403,25 @@ export function RegistrationForm() {
       <div>
         <label>Username</label>
         <input {...register('username')} />
-        {errors.username && (
-          <span className="error">{errors.username.message}</span>
-        )}
+        {errors.username && <span className="error">{errors.username.message}</span>}
       </div>
 
       <div>
         <label>Email</label>
         <input type="email" {...register('email')} />
-        {errors.email && (
-          <span className="error">{errors.email.message}</span>
-        )}
+        {errors.email && <span className="error">{errors.email.message}</span>}
       </div>
 
       <div>
         <label>Age</label>
-        <input
-          type="number"
-          {...register('age', { valueAsNumber: true })}
-        />
-        {errors.age && (
-          <span className="error">{errors.age.message}</span>
-        )}
+        <input type="number" {...register('age', { valueAsNumber: true })} />
+        {errors.age && <span className="error">{errors.age.message}</span>}
       </div>
 
       <div>
         <label>Password</label>
         <input type="password" {...register('password')} />
-        {errors.password && (
-          <span className="error">{errors.password.message}</span>
-        )}
+        {errors.password && <span className="error">{errors.password.message}</span>}
       </div>
 
       <button type="submit" disabled={!isValid || isSubmitting}>
@@ -484,7 +471,7 @@ pattern: {
 
 ```tsx
 // ❌ Wrong - no return true on success
-validate: (value) => {
+validate: value => {
   if (value.length < 8) {
     return 'Minimum 8 characters'
   }
@@ -492,7 +479,7 @@ validate: (value) => {
 }
 
 // ✅ Correct - explicitly return true
-validate: (value) => {
+validate: value => {
   if (value.length < 8) {
     return 'Minimum 8 characters'
   }
@@ -508,11 +495,11 @@ validate: (value) => {
 
 ```tsx
 // ❌ Wrong - no access to password
-validate: (value) => value === password // password is undefined
+validate: value => value === password // password is undefined
 
 // ✅ Correct - use getValues
 const { getValues } = useForm()
-validate: (value) => {
+validate: value => {
   const password = getValues('password')
   return value === password || 'Passwords do not match'
 }

@@ -25,6 +25,7 @@ const importRules = {
       groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index']],
       pathGroups: [
         { pattern: 'src/**', group: 'internal', position: 'before' },
+        { pattern: 'exercises/**', group: 'internal', position: 'after' },
         { pattern: './*.module.css', group: 'index', position: 'after' },
       ],
       'newlines-between': 'always',

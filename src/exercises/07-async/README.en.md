@@ -88,18 +88,13 @@ function AsyncValidationForm() {
 
   return (
     <form>
-      <input
-        {...register('username')}
-        onBlur={(e) => validateUsername(e.target.value)}
-      />
+      <input {...register('username')} onBlur={e => validateUsername(e.target.value)} />
 
       {checking && <span>⏳ Checking...</span>}
       {available === true && <span>✅ Available</span>}
       {available === false && <span>❌ Taken</span>}
 
-      {errors.username && (
-        <span className="error">{errors.username.message}</span>
-      )}
+      {errors.username && <span className="error">{errors.username.message}</span>}
     </form>
   )
 }
@@ -116,7 +111,7 @@ const schema = z.object({
 
 // Async validation via refine
 const schemaWithAsync = schema.refine(
-  async (data) => {
+  async data => {
     const response = await fetch(`/api/check-username?username=${data.username}`)
     const { available } = await response.json()
     return available
@@ -142,7 +137,12 @@ const { register, handleSubmit } = useForm({
 
 ```tsx
 function EditForm() {
-  const { register, handleSubmit, reset, formState: { isDirty } } = useForm()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isDirty },
+  } = useForm()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -150,7 +150,7 @@ function EditForm() {
     fetch('/api/user/1')
       .then(res => res.json())
       .then(data => {
-        reset(data)  // Fill form
+        reset(data) // Fill form
         setLoading(false)
       })
   }, [reset])
@@ -202,11 +202,7 @@ function EditFormWithErrorHandling() {
   if (loading) return <div>⏳ Loading...</div>
   if (error) return <div style={{ color: 'red' }}>❌ {error}</div>
 
-  return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {/* form fields */}
-    </form>
-  )
+  return <form onSubmit={handleSubmit(onSubmit)}>{/* form fields */}</form>
 }
 ```
 
@@ -224,7 +220,12 @@ type UserForm = z.infer<typeof userSchema>
 function EditUserForm() {
   const [loading, setLoading] = useState(true)
 
-  const { register, handleSubmit, reset, formState: { isDirty } } = useForm<UserForm>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isDirty },
+  } = useForm<UserForm>({
     resolver: zodResolver(userSchema),
   })
 
@@ -288,11 +289,7 @@ function SubmitForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {error && (
-        <div style={{ color: 'red', marginBottom: '1rem' }}>
-          ❌ {error}
-        </div>
-      )}
+      {error && <div style={{ color: 'red', marginBottom: '1rem' }}>❌ {error}</div>}
 
       <input {...register('name')} disabled={submitting} />
       <input {...register('email')} disabled={submitting} />
@@ -345,25 +342,29 @@ function SubmitWithNotification() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {success && (
-        <div style={{
-          padding: '1rem',
-          background: '#d1e7dd',
-          color: '#0f5132',
-          marginBottom: '1rem',
-          borderRadius: '4px',
-        }}>
+        <div
+          style={{
+            padding: '1rem',
+            background: '#d1e7dd',
+            color: '#0f5132',
+            marginBottom: '1rem',
+            borderRadius: '4px',
+          }}
+        >
           ✅ Submitted successfully!
         </div>
       )}
 
       {error && (
-        <div style={{
-          padding: '1rem',
-          background: '#f8d7da',
-          color: '#842029',
-          marginBottom: '1rem',
-          borderRadius: '4px',
-        }}>
+        <div
+          style={{
+            padding: '1rem',
+            background: '#f8d7da',
+            color: '#842029',
+            marginBottom: '1rem',
+            borderRadius: '4px',
+          }}
+        >
           ❌ {error}
         </div>
       )}
@@ -400,7 +401,7 @@ function AutoSaveForm() {
 
       // Hide indicator after 2 seconds
       setTimeout(() => setSaved(false), 2000)
-    }, 1000)  // Debounce 1 second
+    }, 1000) // Debounce 1 second
 
     return () => clearTimeout(timer)
   }, [values])
@@ -409,9 +410,7 @@ function AutoSaveForm() {
     <form>
       <textarea {...register('content')} />
 
-      {saved && (
-        <div style={{ color: 'green' }}>✓ Saved</div>
-      )}
+      {saved && <div style={{ color: 'green' }}>✓ Saved</div>}
     </form>
   )
 }
@@ -541,25 +540,28 @@ export function AsyncRegistrationForm() {
     mode: 'onChange',
   })
 
-  const validateUsername = useCallback(async (value: string) => {
-    if (!value || value.length < 3) return true
+  const validateUsername = useCallback(
+    async (value: string) => {
+      if (!value || value.length < 3) return true
 
-    setChecking(true)
-    const isAvailable = await checkUsername(value)
-    setAvailable(isAvailable)
-    setChecking(false)
+      setChecking(true)
+      const isAvailable = await checkUsername(value)
+      setAvailable(isAvailable)
+      setChecking(false)
 
-    if (!isAvailable) {
-      setError('username', {
-        type: 'manual',
-        message: 'Username is taken',
-      })
-      return false
-    }
+      if (!isAvailable) {
+        setError('username', {
+          type: 'manual',
+          message: 'Username is taken',
+        })
+        return false
+      }
 
-    clearErrors('username')
-    return true
-  }, [setError, clearErrors])
+      clearErrors('username')
+      return true
+    },
+    [setError, clearErrors]
+  )
 
   const onSubmit = async (data: FormData) => {
     setSubmitting(true)
@@ -603,10 +605,7 @@ export function AsyncRegistrationForm() {
 
       <div>
         <label>Username</label>
-        <input
-          {...register('username')}
-          onBlur={(e) => validateUsername(e.target.value)}
-        />
+        <input {...register('username')} onBlur={e => validateUsername(e.target.value)} />
         {checking && <span>⏳ Checking...</span>}
         {available === true && <span>✅ Available</span>}
         {available === false && <span>❌ Taken</span>}
@@ -682,12 +681,12 @@ useEffect(() => {
 
 ```tsx
 // ❌ Wrong - error ignored
-const onSubmit = async (data) => {
+const onSubmit = async data => {
   await fetch('/api/submit', { body: JSON.stringify(data) })
 }
 
 // ✅ Correct - try/catch
-const onSubmit = async (data) => {
+const onSubmit = async data => {
   try {
     await fetch('/api/submit', { body: JSON.stringify(data) })
   } catch (err) {
@@ -704,20 +703,22 @@ const onSubmit = async (data) => {
 
 ```tsx
 // ❌ Wrong - user waits without feedback
-validate: async (value) => {
+validate: async value => {
   const response = await fetch(`/api/check?username=${value}`)
   return response.json()
 }
 
 // ✅ Correct - show status
 const [checking, setChecking] = useState(false)
-validate: async (value) => {
+validate: async value => {
   setChecking(true)
   const response = await fetch(`/api/check?username=${value}`)
   setChecking(false)
   return response.json()
 }
-{checking && <span>⏳ Checking...</span>}
+{
+  checking && <span>⏳ Checking...</span>
+}
 ```
 
 **Why this is a mistake:** The user doesn't understand what's happening during validation.
@@ -729,7 +730,9 @@ validate: async (value) => {
 ```tsx
 // ❌ Wrong - load error ignored
 useEffect(() => {
-  fetch('/api/user/1').then(res => res.json()).then(reset)
+  fetch('/api/user/1')
+    .then(res => res.json())
+    .then(reset)
 }, [reset])
 
 // ✅ Correct - error handling

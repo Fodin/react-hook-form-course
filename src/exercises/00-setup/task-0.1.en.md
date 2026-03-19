@@ -1,9 +1,11 @@
 # Task 0.1: First Form
 
 ## Goal
+
 Create a simple form with two fields: email and password.
 
 ## Requirements
+
 1. Create a `LoginForm` interface with fields:
    - `email: string`
    - `password: string`

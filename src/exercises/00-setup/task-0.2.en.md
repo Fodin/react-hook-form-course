@@ -1,9 +1,11 @@
 # Task 0.2: Display Data on Page
 
 ## Goal
+
 Add display of form data after submission.
 
 ## Requirements
+
 1. Create state to store form data after submission
 2. Display data below the form after successful submission
 3. Add a "Clear" button to reset displayed data

@@ -6,12 +6,12 @@
 
 **Почему схемы лучше встроенной валидации?**
 
-| Встроенная валидация | Валидация по схемам |
-|---------------------|---------------------|
-| Правила разбросаны по полям | Все правила в одном месте |
+| Встроенная валидация            | Валидация по схемам            |
+| ------------------------------- | ------------------------------ |
+| Правила разбросаны по полям     | Все правила в одном месте      |
 | Сложная кросс-полевая валидация | Легкая кросс-полевая валидация |
-| Меньше типобезопасности | Полная типобезопасность |
-| Сложно переиспользовать | Легко переиспользовать |
+| Меньше типобезопасности         | Полная типобезопасность        |
+| Сложно переиспользовать         | Легко переиспользовать         |
 
 ---
 
@@ -22,6 +22,7 @@
 **Zod** — это TypeScript-first библиотека для валидации схем с нулевыми зависимостями.
 
 **Установка:**
+
 ```bash
 npm install zod @hookform/resolvers
 ```
@@ -58,25 +59,25 @@ const { register, handleSubmit } = useForm<FormData>({
 const schema = z.object({
   // Обязательная строка
   name: z.string(),
-  
+
   // Email
   email: z.string().email('Неверный email'),
-  
+
   // URL
   website: z.string().url('Неверный URL'),
-  
+
   // UUID
   id: z.string().uuid('Неверный UUID'),
-  
+
   // С длиной
   username: z.string().min(3).max(20),
-  
+
   // С паттерном
   phone: z.string().regex(/^\+7\d{10}$/, 'Неверный формат'),
-  
+
   // Опциональная
   bio: z.string().optional(),
-  
+
   // С дефолтным значением
   role: z.string().default('user'),
 })
@@ -88,19 +89,19 @@ const schema = z.object({
 const schema = z.object({
   // Обязательное число
   age: z.number(),
-  
+
   // С диапазоном
   rating: z.number().min(1).max(10),
-  
+
   // Положительное
   price: z.number().positive('Цена должна быть положительной'),
-  
+
   // Отрицательное
   balance: z.number().negative(),
-  
+
   // Целое
   count: z.number().int('Должно быть целым числом'),
-  
+
   // Опциональное
   discount: z.number().optional(),
 })
@@ -121,15 +122,17 @@ const schema = z.object({
 const schema = z.object({
   // Массив строк
   tags: z.array(z.string()),
-  
+
   // С минимальной длиной
   skills: z.array(z.string()).min(1, 'Выберите хотя бы один навык'),
-  
+
   // Массив объектов
-  contacts: z.array(z.object({
-    type: z.string(),
-    value: z.string(),
-  })),
+  contacts: z.array(
+    z.object({
+      type: z.string(),
+      value: z.string(),
+    })
+  ),
 })
 ```
 
@@ -139,7 +142,7 @@ const schema = z.object({
 const schema = z.object({
   // Zod enum
   role: z.enum(['admin', 'user', 'guest']),
-  
+
   // TypeScript enum
   status: z.nativeEnum(Status),
 })
@@ -155,12 +158,14 @@ const schema = z.object({
     street: z.string(),
     zip: z.string().regex(/^\d{5}$/, 'Неверный индекс'),
   }),
-  
+
   // Опциональный объект
-  company: z.object({
-    name: z.string(),
-    position: z.string(),
-  }).optional(),
+  company: z
+    .object({
+      name: z.string(),
+      position: z.string(),
+    })
+    .optional(),
 })
 ```
 
@@ -171,55 +176,53 @@ const schema = z.object({
 #### Одиночное refine
 
 ```tsx
-const schema = z.object({
-  password: z.string(),
-  confirmPassword: z.string(),
-}).refine(
-  (data) => data.password === data.confirmPassword,
-  {
+const schema = z
+  .object({
+    password: z.string(),
+    confirmPassword: z.string(),
+  })
+  .refine(data => data.password === data.confirmPassword, {
     message: 'Пароли не совпадают',
     path: ['confirmPassword'], // К какому полю применить ошибку
-  }
-)
+  })
 ```
 
 #### Несколько refine
 
 ```tsx
-const schema = z.object({
-  currentPassword: z.string(),
-  newPassword: z.string(),
-}).refine(
-  (data) => data.newPassword !== data.currentPassword,
-  {
+const schema = z
+  .object({
+    currentPassword: z.string(),
+    newPassword: z.string(),
+  })
+  .refine(data => data.newPassword !== data.currentPassword, {
     message: 'Новый пароль должен отличаться',
     path: ['newPassword'],
-  }
-).refine(
-  (data) => data.newPassword.length >= 8,
-  {
+  })
+  .refine(data => data.newPassword.length >= 8, {
     message: 'Минимум 8 символов',
     path: ['newPassword'],
-  }
-)
+  })
 ```
 
 #### refine с асинхронностью
 
 ```tsx
-const schema = z.object({
-  username: z.string(),
-}).refine(
-  async (data) => {
-    const response = await fetch(`/api/check-username?username=${data.username}`)
-    const { available } = await response.json()
-    return available
-  },
-  {
-    message: 'Имя пользователя занято',
-    path: ['username'],
-  }
-)
+const schema = z
+  .object({
+    username: z.string(),
+  })
+  .refine(
+    async data => {
+      const response = await fetch(`/api/check-username?username=${data.username}`)
+      const { available } = await response.json()
+      return available
+    },
+    {
+      message: 'Имя пользователя занято',
+      path: ['username'],
+    }
+  )
 ```
 
 ---
@@ -229,44 +232,46 @@ const schema = z.object({
 ```tsx
 import { z } from 'zod'
 
-const registrationSchema = z.object({
-  // Личная информация
-  firstName: z.string().min(1, 'Обязательно'),
-  lastName: z.string().min(1, 'Обязательно'),
-  email: z.string().email('Неверный email'),
-  age: z.number().min(18, 'Минимум 18 лет').max(120, 'Максимум 120 лет'),
-  
-  // Пароль
-  password: z.string()
-    .min(8, 'Минимум 8 символов')
-    .regex(/[A-Z]/, 'Должна быть заглавная буква')
-    .regex(/\d/, 'Должна быть цифра')
-    .regex(/[!@#$%^&*]/, 'Должен быть спецсимвол'),
-  
-  confirmPassword: z.string(),
-  
-  // Адрес
-  address: z.object({
-    country: z.string().min(1, 'Обязательно'),
-    city: z.string().min(1, 'Обязательно'),
-    zip: z.string().regex(/^\d{5}$/, 'Неверный индекс'),
-  }),
-  
-  // Навыки
-  skills: z.array(z.string()).min(1, 'Выберите хотя бы один'),
-  
-  // Роль
-  role: z.enum(['developer', 'designer', 'manager']),
-  
-  // Согласие
-  agree: z.boolean().refine(v => v === true, 'Необходимо согласие'),
-})
+const registrationSchema = z
+  .object({
+    // Личная информация
+    firstName: z.string().min(1, 'Обязательно'),
+    lastName: z.string().min(1, 'Обязательно'),
+    email: z.string().email('Неверный email'),
+    age: z.number().min(18, 'Минимум 18 лет').max(120, 'Максимум 120 лет'),
 
-// Кросс-полевая валидация
-.refine(
-  (data) => data.password === data.confirmPassword,
-  { message: 'Пароли не совпадают', path: ['confirmPassword'] }
-)
+    // Пароль
+    password: z
+      .string()
+      .min(8, 'Минимум 8 символов')
+      .regex(/[A-Z]/, 'Должна быть заглавная буква')
+      .regex(/\d/, 'Должна быть цифра')
+      .regex(/[!@#$%^&*]/, 'Должен быть спецсимвол'),
+
+    confirmPassword: z.string(),
+
+    // Адрес
+    address: z.object({
+      country: z.string().min(1, 'Обязательно'),
+      city: z.string().min(1, 'Обязательно'),
+      zip: z.string().regex(/^\d{5}$/, 'Неверный индекс'),
+    }),
+
+    // Навыки
+    skills: z.array(z.string()).min(1, 'Выберите хотя бы один'),
+
+    // Роль
+    role: z.enum(['developer', 'designer', 'manager']),
+
+    // Согласие
+    agree: z.boolean().refine(v => v === true, 'Необходимо согласие'),
+  })
+
+  // Кросс-полевая валидация
+  .refine(data => data.password === data.confirmPassword, {
+    message: 'Пароли не совпадают',
+    path: ['confirmPassword'],
+  })
 
 type RegistrationForm = z.infer<typeof registrationSchema>
 ```
@@ -280,6 +285,7 @@ type RegistrationForm = z.infer<typeof registrationSchema>
 **Yup** — это проверенная временем библиотека для валидации схем с цепочечным API.
 
 **Установка:**
+
 ```bash
 npm install yup @hookform/resolvers
 ```
@@ -316,25 +322,25 @@ const { register, handleSubmit } = useForm<FormData>({
 const schema = yup.object({
   // Обязательная строка
   name: yup.string().required('Обязательно'),
-  
+
   // Email
   email: yup.string().email('Неверный email').required('Обязательно'),
-  
+
   // URL
   website: yup.string().url('Неверный URL'),
-  
+
   // С длиной
   username: yup.string().min(3).max(20),
-  
+
   // С паттерном
   phone: yup.string().matches(/^\+7\d{10}$/, 'Неверный формат'),
-  
+
   // Опциональная
   bio: yup.string(),
-  
+
   // С дефолтным значением
   role: yup.string().default('user'),
-  
+
   // Один из значений
   status: yup.string().oneOf(['active', 'inactive']),
 })
@@ -346,16 +352,16 @@ const schema = yup.object({
 const schema = yup.object({
   // Обязательное число
   age: yup.number().required('Обязательно'),
-  
+
   // С диапазоном
   rating: yup.number().min(1).max(10),
-  
+
   // Положительное
   price: yup.number().positive('Цена должна быть положительной'),
-  
+
   // Целое
   count: yup.number().integer('Должно быть целым числом'),
-  
+
   // Опциональное
   discount: yup.number(),
 })
@@ -376,10 +382,10 @@ const schema = yup.object({
 const schema = yup.object({
   // Массив строк
   tags: yup.array().of(yup.string()),
-  
+
   // С минимальной длиной
   skills: yup.array().of(yup.string()).min(1, 'Выберите хотя бы один'),
-  
+
   // Массив объектов
   contacts: yup.array().of(
     yup.object({
@@ -400,7 +406,7 @@ const schema = yup.object({
     street: yup.string().required('Обязательно'),
     zip: yup.string().matches(/^\d{5}$/, 'Неверный индекс'),
   }),
-  
+
   // Опциональный объект
   company: yup.object({
     name: yup.string(),
@@ -416,19 +422,14 @@ const schema = yup.object({
 ```tsx
 const schema = yup.object({
   password: yup.string(),
-  confirmPassword: yup.string()
-    .oneOf([yup.ref('password')], 'Пароли должны совпадать'),
-  
+  confirmPassword: yup.string().oneOf([yup.ref('password')], 'Пароли должны совпадать'),
+
   // Кастомный test
-  username: yup.string().test(
-    'is-available',
-    'Имя занято',
-    async (value) => {
-      const response = await fetch(`/api/check-username?username=${value}`)
-      const { available } = await response.json()
-      return available
-    }
-  ),
+  username: yup.string().test('is-available', 'Имя занято', async value => {
+    const response = await fetch(`/api/check-username?username=${value}`)
+    const { available } = await response.json()
+    return available
+  }),
 })
 ```
 
@@ -436,15 +437,15 @@ const schema = yup.object({
 
 ## Часть 3: Сравнение Zod vs Yup
 
-| Критерий | Zod | Yup |
-|----------|-----|-----|
-| **Размер** | ~12 KB | ~14 KB |
-| **TypeScript** | First-class, отличный вывод типов | Хороший, но иногда требует аннотаций |
-| **API** | Функциональный, композируемый | Цепочечный, выразительный |
-| **Производительность** | Быстрее | Медленнее |
-| **Асинхронная валидация** | Через `refine` | Через `test` |
-| **Сообщество** | Большое, растущее | Очень большое, зрелое |
-| **Документация** | Отличная | Хорошая |
+| Критерий                  | Zod                               | Yup                                  |
+| ------------------------- | --------------------------------- | ------------------------------------ |
+| **Размер**                | ~12 KB                            | ~14 KB                               |
+| **TypeScript**            | First-class, отличный вывод типов | Хороший, но иногда требует аннотаций |
+| **API**                   | Функциональный, композируемый     | Цепочечный, выразительный            |
+| **Производительность**    | Быстрее                           | Медленнее                            |
+| **Асинхронная валидация** | Через `refine`                    | Через `test`                         |
+| **Сообщество**            | Большое, растущее                 | Очень большое, зрелое                |
+| **Документация**          | Отличная                          | Хорошая                              |
 
 ### Когда выбирать Zod?
 
@@ -471,14 +472,16 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-const schema = z.object({
-  email: z.string().email('Неверный email'),
-  password: z.string().min(8, 'Минимум 8 символов'),
-  confirmPassword: z.string(),
-}).refine(
-  (data) => data.password === data.confirmPassword,
-  { message: 'Пароли не совпадают', path: ['confirmPassword'] }
-)
+const schema = z
+  .object({
+    email: z.string().email('Неверный email'),
+    password: z.string().min(8, 'Минимум 8 символов'),
+    confirmPassword: z.string(),
+  })
+  .refine(data => data.password === data.confirmPassword, {
+    message: 'Пароли не совпадают',
+    path: ['confirmPassword'],
+  })
 
 type FormData = z.infer<typeof schema>
 
@@ -513,9 +516,7 @@ export function RegistrationForm() {
       <div>
         <label>Confirm Password</label>
         <input type="password" {...register('confirmPassword')} />
-        {errors.confirmPassword && (
-          <span className="error">{errors.confirmPassword.message}</span>
-        )}
+        {errors.confirmPassword && <span className="error">{errors.confirmPassword.message}</span>}
       </div>
 
       <button type="submit" disabled={!isValid || isSubmitting}>

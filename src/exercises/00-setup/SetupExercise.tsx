@@ -1,47 +1,46 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
-import { TheoryBlock, FormContainer, TaskDescription } from 'src/components';
-import { useTheme, useLanguage, useProgress, useExerciseNavigation } from 'src/hooks';
+import { Task0_1, Task0_2 } from ".."
 
-import { Task0_1, Task0_2 } from 'exercises';
-
-import { Task0_1_Solution, Task0_2_Solution } from './Solution';
-import solutionStyles from '../../components/SolutionButton.module.css';
-import taskStyles from '../../components/TaskButtons.module.css';
+import { Task0_1_Solution, Task0_2_Solution } from './Solution'
+import { TheoryBlock, FormContainer, TaskDescription } from '../../components'
+import solutionStyles from '../../components/SolutionButton.module.css'
+import taskStyles from '../../components/TaskButtons.module.css'
+import { useTheme, useLanguage, useProgress, useExerciseNavigation } from '../../hooks'
 
 interface SetupExerciseProps {
-  initialTask?: string;
+  initialTask?: string
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function SetupExercise(_props: SetupExerciseProps) {
-  const { theme } = useTheme();
-  const { t } = useLanguage();
-  const { isTaskComplete, toggleTask } = useProgress();
-  const isDark = theme === 'dark';
+  const { theme } = useTheme()
+  const { t } = useLanguage()
+  const { isTaskComplete, toggleTask } = useProgress()
+  const isDark = theme === 'dark'
 
   const { currentTask, changeTask } = useExerciseNavigation({
     levelId: '0',
     defaultTask: '0.1',
     validTasks: ['0.1', '0.2'],
-  });
+  })
 
-  const [showSolution, setShowSolution] = useState(false);
+  const [showSolution, setShowSolution] = useState(false)
 
   const tasks: Record<string, React.ReactElement> = {
-    '0.1': <Task0_1/>,
-    '0.2': <Task0_2/>,
-  };
+    '0.1': <Task0_1 />,
+    '0.2': <Task0_2 />,
+  }
 
   const solutions: Record<string, React.ReactElement> = {
-    '0.1': <Task0_1_Solution/>,
-    '0.2': <Task0_2_Solution/>,
-  };
+    '0.1': <Task0_1_Solution />,
+    '0.2': <Task0_2_Solution />,
+  }
 
   const taskList = [
     { id: '0.1', name: t('task.0.1') || 'Первая форма' },
     { id: '0.2', name: t('task.0.2') || 'Вывод данных' },
-  ];
+  ]
 
   return (
     <div>
@@ -54,8 +53,8 @@ export function SetupExercise(_props: SetupExerciseProps) {
 
       <div className={taskStyles.container}>
         {taskList.map(task => {
-          const completed = isTaskComplete('0', task.id);
-          const isActive = currentTask === task.id;
+          const completed = isTaskComplete('0', task.id)
+          const isActive = currentTask === task.id
           const buttonClass = `${taskStyles.button} ${
             isActive
               ? isDark
@@ -64,7 +63,7 @@ export function SetupExercise(_props: SetupExerciseProps) {
               : isDark
                 ? taskStyles.buttonInactiveDark
                 : taskStyles.buttonInactiveLight
-          } ${completed ? taskStyles.buttonCompleted : ''}`;
+          } ${completed ? taskStyles.buttonCompleted : ''}`
 
           return (
             <div key={task.id} className={taskStyles.taskWrapper}>
@@ -79,7 +78,7 @@ export function SetupExercise(_props: SetupExerciseProps) {
                 title={completed ? 'Отметить как не выполненное' : 'Отметить как выполненное'}
               />
             </div>
-          );
+          )
         })}
       </div>
 
@@ -102,9 +101,9 @@ export function SetupExercise(_props: SetupExerciseProps) {
         </FormContainer>
       )}
 
-      <TaskDescription taskNumber={currentTask} level="0"/>
+      <TaskDescription taskNumber={currentTask} level="0" />
 
-      <TheoryBlock level="0"/>
+      <TheoryBlock level="0" />
     </div>
-  );
+  )
 }

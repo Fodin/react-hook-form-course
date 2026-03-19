@@ -1,50 +1,49 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
-import { FormContainer, TaskDescription, TheoryBlock } from 'src/components';
-import { useTheme, useLanguage, useExerciseNavigation } from 'src/hooks';
+import { Task5_1, Task5_2, Task5_3, Task5_4 } from ".."
 
-import { Task5_1, Task5_2, Task5_3, Task5_4 } from 'exercises';
-
-import { Task5_1_Solution, Task5_2_Solution, Task5_3_Solution, Task5_4_Solution } from './Solution';
-import solutionStyles from '../../components/SolutionButton.module.css';
-import taskStyles from '../../components/TaskButtons.module.css';
+import { Task5_1_Solution, Task5_2_Solution, Task5_3_Solution, Task5_4_Solution } from './Solution'
+import { FormContainer, TaskDescription, TheoryBlock } from '../../components'
+import solutionStyles from '../../components/SolutionButton.module.css'
+import taskStyles from '../../components/TaskButtons.module.css'
+import { useTheme, useLanguage, useExerciseNavigation } from '../../hooks'
 
 interface DynamicFormsExerciseProps {
-  initialTask?: string;
+  initialTask?: string
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function DynamicFormsExercise(_props: DynamicFormsExerciseProps) {
-  const { theme } = useTheme();
-  const { t } = useLanguage();
-  const isDark = theme === 'dark';
+  const { theme } = useTheme()
+  const { t } = useLanguage()
+  const isDark = theme === 'dark'
   const { currentTask, changeTask } = useExerciseNavigation({
     levelId: '5',
     defaultTask: '5.1',
     validTasks: ['5.1', '5.2', '5.3', '5.4'],
-  });
-  const [showSolution, setShowSolution] = useState(false);
+  })
+  const [showSolution, setShowSolution] = useState(false)
 
   const tasks: Record<string, React.ReactElement> = {
-    '5.1': <Task5_1/>,
-    '5.2': <Task5_2/>,
-    '5.3': <Task5_3/>,
-    '5.4': <Task5_4/>,
-  };
+    '5.1': <Task5_1 />,
+    '5.2': <Task5_2 />,
+    '5.3': <Task5_3 />,
+    '5.4': <Task5_4 />,
+  }
 
   const solutions: Record<string, React.ReactElement> = {
-    '5.1': <Task5_1_Solution/>,
-    '5.2': <Task5_2_Solution/>,
-    '5.3': <Task5_3_Solution/>,
-    '5.4': <Task5_4_Solution/>,
-  };
+    '5.1': <Task5_1_Solution />,
+    '5.2': <Task5_2_Solution />,
+    '5.3': <Task5_3_Solution />,
+    '5.4': <Task5_4_Solution />,
+  }
 
   const taskList = [
     { id: '5.1', name: 'useFieldArray' },
     { id: '5.2', name: 'Условные поля' },
     { id: '5.3', name: 'Зависимые поля' },
     { id: '5.4', name: 'Wizard' },
-  ];
+  ]
 
   return (
     <div>
@@ -57,7 +56,7 @@ export function DynamicFormsExercise(_props: DynamicFormsExerciseProps) {
 
       <div className={taskStyles.container}>
         {taskList.map(task => {
-          const isActive = currentTask === task.id;
+          const isActive = currentTask === task.id
           const buttonClass = `${taskStyles.button} ${
             isActive
               ? isDark
@@ -66,12 +65,12 @@ export function DynamicFormsExercise(_props: DynamicFormsExerciseProps) {
               : isDark
                 ? taskStyles.buttonInactiveDark
                 : taskStyles.buttonInactiveLight
-          }`;
+          }`
           return (
             <button key={task.id} onClick={() => changeTask(task.id)} className={buttonClass}>
               {t('task.title')} {task.id}
             </button>
-          );
+          )
         })}
       </div>
 
@@ -94,9 +93,9 @@ export function DynamicFormsExercise(_props: DynamicFormsExerciseProps) {
         </FormContainer>
       )}
 
-      <TaskDescription taskNumber={currentTask} level="5"/>
+      <TaskDescription taskNumber={currentTask} level="5" />
 
-      <TheoryBlock level="5"/>
+      <TheoryBlock level="5" />
     </div>
-  );
+  )
 }

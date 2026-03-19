@@ -1,10 +1,13 @@
 # Exercise 3.1: Basic Validation with Zod
 
 ## Goal
+
 Learn to use Zod schemas with React Hook Form.
 
 ## Requirements
+
 Create a registration form with Zod schema:
+
 1. `email` — email, required
 2. `password` — minimum 8 characters, required
 3. `confirmPassword` — must match password

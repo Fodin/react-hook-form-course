@@ -1,52 +1,51 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
-import { TheoryBlock, FormContainer, TaskDescription } from 'src/components';
-import { useTheme, useLanguage, useExerciseNavigation } from 'src/hooks';
+import { Task1_1, Task1_2, Task1_3, Task1_4 } from ".."
 
-import { Task1_1, Task1_2, Task1_3, Task1_4 } from 'exercises';
-
-import { Task1_1_Solution, Task1_2_Solution, Task1_3_Solution, Task1_4_Solution } from './Solution';
-import solutionStyles from '../../components/SolutionButton.module.css';
-import taskStyles from '../../components/TaskButtons.module.css';
+import { Task1_1_Solution, Task1_2_Solution, Task1_3_Solution, Task1_4_Solution } from './Solution'
+import { TheoryBlock, FormContainer, TaskDescription } from '../../components'
+import solutionStyles from '../../components/SolutionButton.module.css'
+import taskStyles from '../../components/TaskButtons.module.css'
+import { useTheme, useLanguage, useExerciseNavigation } from '../../hooks'
 
 interface BasicFormExerciseProps {
-  initialTask?: string;
+  initialTask?: string
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function BasicFormExercise(_props: BasicFormExerciseProps) {
-  const { theme } = useTheme();
-  const { t } = useLanguage();
-  const isDark = theme === 'dark';
+  const { theme } = useTheme()
+  const { t } = useLanguage()
+  const isDark = theme === 'dark'
 
   const { currentTask, changeTask } = useExerciseNavigation({
     levelId: '1',
     defaultTask: '1.1',
     validTasks: ['1.1', '1.2', '1.3', '1.4'],
-  });
+  })
 
-  const [showSolution, setShowSolution] = useState(false);
+  const [showSolution, setShowSolution] = useState(false)
 
   const tasks: Record<string, React.ReactElement> = {
-    '1.1': <Task1_1/>,
-    '1.2': <Task1_2/>,
-    '1.3': <Task1_3/>,
-    '1.4': <Task1_4/>,
-  };
+    '1.1': <Task1_1 />,
+    '1.2': <Task1_2 />,
+    '1.3': <Task1_3 />,
+    '1.4': <Task1_4 />,
+  }
 
   const solutions: Record<string, React.ReactElement> = {
-    '1.1': <Task1_1_Solution/>,
-    '1.2': <Task1_2_Solution/>,
-    '1.3': <Task1_3_Solution/>,
-    '1.4': <Task1_4_Solution/>,
-  };
+    '1.1': <Task1_1_Solution />,
+    '1.2': <Task1_2_Solution />,
+    '1.3': <Task1_3_Solution />,
+    '1.4': <Task1_4_Solution />,
+  }
 
   const taskList: { id: string; name: string }[] = [
     { id: '1.1', name: 'Форма регистрации' },
     { id: '1.2', name: 'Watch в реальном времени' },
     { id: '1.3', name: 'setValue и getValues' },
     { id: '1.4', name: 'formState' },
-  ];
+  ]
 
   return (
     <div>
@@ -59,7 +58,7 @@ export function BasicFormExercise(_props: BasicFormExerciseProps) {
 
       <div className={taskStyles.container}>
         {taskList.map(task => {
-          const isActive = currentTask === task.id;
+          const isActive = currentTask === task.id
           const buttonClass = `${taskStyles.button} ${
             isActive
               ? isDark
@@ -68,13 +67,13 @@ export function BasicFormExercise(_props: BasicFormExerciseProps) {
               : isDark
                 ? taskStyles.buttonInactiveDark
                 : taskStyles.buttonInactiveLight
-          }`;
+          }`
 
           return (
             <button key={task.id} onClick={() => changeTask(task.id)} className={buttonClass}>
               {t('task.title')} {task.id}
             </button>
-          );
+          )
         })}
       </div>
 
@@ -97,9 +96,9 @@ export function BasicFormExercise(_props: BasicFormExerciseProps) {
         </FormContainer>
       )}
 
-      <TaskDescription taskNumber={currentTask} level="1"/>
+      <TaskDescription taskNumber={currentTask} level="1" />
 
-      <TheoryBlock level="1"/>
+      <TheoryBlock level="1" />
     </div>
-  );
+  )
 }

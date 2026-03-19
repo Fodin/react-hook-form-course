@@ -25,15 +25,10 @@ function MyForm() {
         name="firstName"
         control={control}
         render={({ field, fieldState: { error } }) => (
-          <TextField
-            {...field}
-            label="First Name"
-            error={!!error}
-            helperText={error?.message}
-          />
+          <TextField {...field} label="First Name" error={!!error} helperText={error?.message} />
         )}
       />
-      
+
       <Controller
         name="category"
         control={control}
@@ -66,25 +61,17 @@ function FormTextField({ label, error, ...props }: any) {
         }}
         {...props}
       />
-      {error && (
-        <span style={{ color: '#dc3545', fontSize: '0.875rem' }}>
-          {error}
-        </span>
-      )}
+      {error && <span style={{ color: '#dc3545', fontSize: '0.875rem' }}>{error}</span>}
     </div>
   )
 }
 
 // Использование с Controller
-<Controller
+;<Controller
   name="email"
   control={control}
   render={({ field, fieldState: { error } }) => (
-    <FormTextField
-      {...field}
-      label="Email"
-      error={error?.message}
-    />
+    <FormTextField {...field} label="Email" error={error?.message} />
   )}
 />
 ```
@@ -134,10 +121,7 @@ const { formState: { isSubmitting } } = useForm()
 ```tsx
 import { useState, useEffect } from 'react'
 
-function useFormPersist<T extends Record<string, any>>(
-  name: string,
-  defaultValues?: T
-) {
+function useFormPersist<T extends Record<string, any>>(name: string, defaultValues?: T) {
   // Загрузка из localStorage
   const [stored, setStored] = useState<T>(() => {
     const saved = localStorage.getItem(`form-${name}`)
@@ -153,7 +137,7 @@ function useFormPersist<T extends Record<string, any>>(
   // Очистка
   const clear = () => {
     localStorage.removeItem(`form-${name}`)
-    setStored(defaultValues || {} as T)
+    setStored(defaultValues || ({} as T))
   }
 
   return { stored, save, clear }
@@ -186,9 +170,11 @@ function ArticleForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <input {...register('title')} placeholder="Заголовок" />
       <textarea {...register('content')} placeholder="Содержание" />
-      
+
       <button type="submit">Опубликовать</button>
-      <button type="button" onClick={clear}>Очистить черновик</button>
+      <button type="button" onClick={clear}>
+        Очистить черновик
+      </button>
     </form>
   )
 }
@@ -231,10 +217,7 @@ function SearchForm() {
 ### useFieldValidation — кастомная валидация
 
 ```tsx
-function useFieldValidation<T>(
-  value: T,
-  validations: Array<(v: T) => string | true>
-) {
+function useFieldValidation<T>(value: T, validations: Array<(v: T) => string | true>) {
   const [error, setError] = useState<string | null>(null)
   const [isValid, setIsValid] = useState(true)
 
@@ -260,9 +243,9 @@ function PasswordField() {
   const password = watch('password')
 
   const { error, isValid } = useFieldValidation(password, [
-    (v) => v.length >= 8 || 'Минимум 8 символов',
-    (v) => /[A-Z]/.test(v) || 'Должна быть заглавная буква',
-    (v) => /\d/.test(v) || 'Должна быть цифра',
+    v => v.length >= 8 || 'Минимум 8 символов',
+    v => /[A-Z]/.test(v) || 'Должна быть заглавная буква',
+    v => /\d/.test(v) || 'Должна быть цифра',
   ])
 
   return (
@@ -286,7 +269,7 @@ import { FormProvider, useForm, useFormContext } from 'react-hook-form'
 // Подкомпонент с useFormContext
 function PersonalStep() {
   const { register } = useFormContext()
-  
+
   return (
     <>
       <input {...register('firstName')} placeholder="Имя" />
@@ -297,7 +280,7 @@ function PersonalStep() {
 
 function ContactStep() {
   const { register } = useFormContext()
-  
+
   return (
     <>
       <input type="email" {...register('email')} placeholder="Email" />
@@ -340,7 +323,7 @@ function App() {
 ```tsx
 function WizardForm() {
   const [step, setStep] = useState(1)
-  
+
   const methods = useForm({
     defaultValues: {
       email: '',
@@ -353,10 +336,8 @@ function WizardForm() {
   const { handleSubmit, trigger } = methods
 
   const onNext = async () => {
-    const fields = step === 1
-      ? ['email', 'password']
-      : ['firstName', 'lastName']
-    
+    const fields = step === 1 ? ['email', 'password'] : ['firstName', 'lastName']
+
     const isValid = await trigger(fields)
     if (isValid) setStep(step + 1)
   }
@@ -366,11 +347,17 @@ function WizardForm() {
       <form onSubmit={handleSubmit(onSubmit)}>
         {step === 1 && <AccountStep />}
         {step === 2 && <ProfileStep />}
-        
+
         <div>
-          {step > 1 && <button type="button" onClick={() => setStep(s => s - 1)}>←</button>}
+          {step > 1 && (
+            <button type="button" onClick={() => setStep(s => s - 1)}>
+              ←
+            </button>
+          )}
           {step < 2 ? (
-            <button type="button" onClick={onNext}>→</button>
+            <button type="button" onClick={onNext}>
+              →
+            </button>
           ) : (
             <button type="submit">Отправить</button>
           )}
@@ -429,7 +416,7 @@ function FormWithSubscription() {
 
   // Сохранение при изменении
   useEffect(() => {
-    const subscription = watch((value) => {
+    const subscription = watch(value => {
       localStorage.setItem('email-draft', JSON.stringify(value))
     })
     return () => subscription.unsubscribe()
@@ -469,17 +456,17 @@ const schema = z
     email: z.string().email('Неверный email'),
     password: z.string().min(8, 'Минимум 8 символов'),
     confirm: z.string(),
-    
+
     // Шаг 2: Профиль
     firstName: z.string().min(1, 'Обязательно'),
     lastName: z.string().min(1, 'Обязательно'),
     avatar: z.instanceof(FileList).optional(),
-    
+
     // Шаг 3: Настройки
     newsletter: z.boolean().optional(),
     notifications: z.boolean().optional(),
   })
-  .refine((data) => data.password === data.confirm, {
+  .refine(data => data.password === data.confirm, {
     message: 'Пароли не совпадают',
     path: ['confirm'],
   })
@@ -488,7 +475,10 @@ type FormData = z.infer<typeof schema>
 
 // Компонент шага 1
 function AccountStep() {
-  const { register, formState: { errors } } = useFormContext<FormData>()
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<FormData>()
 
   return (
     <>
@@ -497,13 +487,13 @@ function AccountStep() {
         <input type="email" {...register('email')} />
         {errors.email && <span className="error">{errors.email.message}</span>}
       </div>
-      
+
       <div>
         <label>Password</label>
         <input type="password" {...register('password')} />
         {errors.password && <span className="error">{errors.password.message}</span>}
       </div>
-      
+
       <div>
         <label>Confirm</label>
         <input type="password" {...register('confirm')} />
@@ -515,7 +505,10 @@ function AccountStep() {
 
 // Компонент шага 2
 function ProfileStep() {
-  const { register, formState: { errors } } = useFormContext<FormData>()
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<FormData>()
   const [preview, setPreview] = useState<string | null>(null)
   const avatar = useWatch({ name: 'avatar' })
 
@@ -534,20 +527,20 @@ function ProfileStep() {
         <input {...register('firstName')} />
         {errors.firstName && <span className="error">{errors.firstName.message}</span>}
       </div>
-      
+
       <div>
         <label>Last Name</label>
         <input {...register('lastName')} />
         {errors.lastName && <span className="error">{errors.lastName.message}</span>}
       </div>
-      
+
       <div>
         <label>Avatar</label>
         <input
           type="file"
           accept="image/*"
           {...register('avatar')}
-          onChange={(e) => {
+          onChange={e => {
             const file = e.target.files?.[0]
             if (file) setPreview(URL.createObjectURL(file))
           }}
@@ -568,12 +561,12 @@ function SettingsStep() {
         <input type="checkbox" {...register('newsletter')} />
         Подписаться на рассылку
       </label>
-      
+
       <label>
         <input
           type="checkbox"
           checked={watch('notifications')}
-          onChange={(e) => setValue('notifications', e.target.checked)}
+          onChange={e => setValue('notifications', e.target.checked)}
         />
         Уведомления
       </label>
@@ -598,12 +591,9 @@ export function RegistrationWizard() {
   const { handleSubmit, trigger } = methods
 
   const onNext = async () => {
-    const fields = step === 1
-      ? ['email', 'password', 'confirm']
-      : step === 2
-      ? ['firstName', 'lastName']
-      : []
-    
+    const fields =
+      step === 1 ? ['email', 'password', 'confirm'] : step === 2 ? ['firstName', 'lastName'] : []
+
     const valid = await trigger(fields)
     if (valid) setStep(step + 1)
   }
@@ -618,7 +608,12 @@ export function RegistrationWizard() {
       <div>
         <h2>🎉 Регистрация завершена!</h2>
         <pre>{JSON.stringify(submitted, null, 2)}</pre>
-        <button onClick={() => { setSubmitted(null); setStep(1) }}>
+        <button
+          onClick={() => {
+            setSubmitted(null)
+            setStep(1)
+          }}
+        >
           Начать заново
         </button>
       </div>
@@ -629,15 +624,21 @@ export function RegistrationWizard() {
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>Шаг {step} из 3</div>
-        
+
         {step === 1 && <AccountStep />}
         {step === 2 && <ProfileStep />}
         {step === 3 && <SettingsStep />}
-        
+
         <div>
-          {step > 1 && <button type="button" onClick={() => setStep(s => s - 1)}>←</button>}
+          {step > 1 && (
+            <button type="button" onClick={() => setStep(s => s - 1)}>
+              ←
+            </button>
+          )}
           {step < 3 ? (
-            <button type="button" onClick={onNext}>→</button>
+            <button type="button" onClick={onNext}>
+              →
+            </button>
           ) : (
             <button type="submit">Завершить</button>
           )}
