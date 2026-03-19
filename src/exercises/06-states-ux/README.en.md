@@ -2,7 +2,9 @@
 
 ## Introduction
 
-Good form UX is not just about validation. It's about understanding form state, managing focus, accessibility, and optimizing performance. In this level, you will learn all aspects of creating user-friendly forms.
+Good form UX is not just about validation. It's about understanding form state, managing focus,
+accessibility, and optimizing performance. In this level, you will learn all aspects of creating
+user-friendly forms.
 
 ---
 
@@ -11,7 +13,7 @@ Good form UX is not just about validation. It's about understanding form state, 
 ### What are Dirty and Touched?
 
 | State     | Description       | When it Changes        |
-| --------- | ----------------- | ---------------------- |
+|-----------|-------------------|------------------------|
 | `dirty`   | Field was changed | When value changes     |
 | `touched` | Field was touched | On blur                |
 | `isDirty` | Form was changed  | When any field changes |
@@ -135,9 +137,17 @@ useEffect(() => {
 }, [values])
 
 // Reset button active only if form is dirty
-<button type="button" onClick={() => reset()} disabled={!isDirty}>
-  Reset
-</button>
+< button
+type = "button"
+onClick = {()
+=>
+reset()
+}
+disabled = {!
+isDirty
+}>
+Reset
+< /button>
 ```
 
 ---
@@ -146,7 +156,8 @@ useEffect(() => {
 
 ### Why Focus Management?
 
-On validation error, the user should immediately understand where the problem is. Automatic focus on the first error field improves UX.
+On validation error, the user should immediately understand where the problem is. Automatic focus on
+the first error field improves UX.
 
 ### Manual Focus Setting
 
@@ -269,7 +280,7 @@ function AccessibleForm() {
 ### Main ARIA Attributes
 
 | Attribute          | Description               | Example                          |
-| ------------------ | ------------------------- | -------------------------------- |
+|--------------------|---------------------------|----------------------------------|
 | `aria-label`       | Text label                | `aria-label="Login form"`        |
 | `aria-invalid`     | Field is invalid          | `aria-invalid={!!errors.email}`  |
 | `aria-describedby` | Link to description       | `aria-describedby="email-error"` |
@@ -355,7 +366,7 @@ function MyForm() {
   return (
     <form>
       <input {...register('price', { valueAsNumber: true })} />
-      <PriceDisplay control={control} />
+      <PriceDisplay control={control}/>
     </form>
   )
 }
@@ -570,7 +581,8 @@ const {
 } = useForm()
 ```
 
-**Why this is a mistake:** `formState` is a Proxy object that tracks subscriptions. Direct destructuring breaks this system.
+**Why this is a mistake:** `formState` is a Proxy object that tracks subscriptions. Direct
+destructuring breaks this system.
 
 ---
 
@@ -587,7 +599,8 @@ const { reset } = useForm({
 reset({ name: 'John', email: 'john@example.com' })
 ```
 
-**Why this is a mistake:** Without `defaultValues`, the form may incorrectly determine `isDirty` state.
+**Why this is a mistake:** Without `defaultValues`, the form may incorrectly determine `isDirty`
+state.
 
 ---
 
@@ -623,7 +636,8 @@ console.log('Render', values)
 const name = useWatch({ name: 'name' })
 ```
 
-**Why this is a mistake:** `watch()` subscribes to all form changes, causing the entire component to re-render.
+**Why this is a mistake:** `watch()` subscribes to all form changes, causing the entire component to
+re-render.
 
 ---
 
@@ -642,12 +656,6 @@ const name = useWatch({ name: 'name' })
 ```
 
 **Why this is a mistake:** The user sees the error before finishing input, which worsens UX.
-
----
-
-## 📝 Exercises
-
-Go to the [`task.md`](./task.md) file for practical exercises.
 
 ---
 

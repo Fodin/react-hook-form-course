@@ -2,7 +2,9 @@
 
 ## Introduction
 
-Real forms often require server interaction: checking username availability, loading data for editing, submitting forms with error handling. In this level, you will learn all aspects of async form handling.
+Real forms often require server interaction: checking username availability, loading data for
+editing, submitting forms with error handling. In this level, you will learn all aspects of async
+form handling.
 
 ---
 
@@ -88,7 +90,7 @@ function AsyncValidationForm() {
 
   return (
     <form>
-      <input {...register('username')} onBlur={e => validateUsername(e.target.value)} />
+      <input {...register('username')} onBlur={e => validateUsername(e.target.value)}/>
 
       {checking && <span>⏳ Checking...</span>}
       {available === true && <span>✅ Available</span>}
@@ -291,8 +293,8 @@ function SubmitForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       {error && <div style={{ color: 'red', marginBottom: '1rem' }}>❌ {error}</div>}
 
-      <input {...register('name')} disabled={submitting} />
-      <input {...register('email')} disabled={submitting} />
+      <input {...register('name')} disabled={submitting}/>
+      <input {...register('email')} disabled={submitting}/>
 
       <button type="submit" disabled={submitting}>
         {submitting ? '⏳ Submitting...' : 'Submit'}
@@ -369,8 +371,8 @@ function SubmitWithNotification() {
         </div>
       )}
 
-      <input {...register('name')} disabled={submitting} />
-      <input {...register('email')} disabled={submitting} />
+      <input {...register('name')} disabled={submitting}/>
+      <input {...register('email')} disabled={submitting}/>
 
       <button type="submit" disabled={submitting}>
         {submitting ? '⏳ Submitting...' : 'Submit'}
@@ -449,7 +451,7 @@ function SearchForm() {
 
   return (
     <form>
-      <input {...register('query')} placeholder="Search..." />
+      <input {...register('query')} placeholder="Search..."/>
     </form>
   )
 }
@@ -605,7 +607,7 @@ export function AsyncRegistrationForm() {
 
       <div>
         <label>Username</label>
-        <input {...register('username')} onBlur={e => validateUsername(e.target.value)} />
+        <input {...register('username')} onBlur={e => validateUsername(e.target.value)}/>
         {checking && <span>⏳ Checking...</span>}
         {available === true && <span>✅ Available</span>}
         {available === false && <span>❌ Taken</span>}
@@ -644,12 +646,15 @@ export function AsyncRegistrationForm() {
 
 // ✅ Correct - show state
 const { formState: { isSubmitting } } = useForm()
-<button type="submit" disabled={isSubmitting}>
-  {isSubmitting ? '⏳ Submitting...' : 'Submit'}
+< button
+type = "submit"
+disabled = { isSubmitting } >
+  { isSubmitting ? '⏳ Submitting...' : 'Submit' }
 </button>
 ```
 
-**Why this is a mistake:** The user may submit the form multiple times if loading state is not visible.
+**Why this is a mistake:** The user may submit the form multiple times if loading state is not
+visible.
 
 ---
 
@@ -748,12 +753,6 @@ useEffect(() => {
 ```
 
 **Why this is a mistake:** If loading fails, the form will stay in loading state without data.
-
----
-
-## 📝 Exercises
-
-Go to the [`task.md`](./task.md) file for practical exercises.
 
 ---
 

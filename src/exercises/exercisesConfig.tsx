@@ -1,18 +1,18 @@
 import type { ReactElement } from 'react'
 
-import { Task0_1_Solution, Task0_2_Solution } from 'exercises/00-setup'
+import { Task0_1_Solution, Task0_2_Solution } from 'src/exercises/00-setup'
 import {
   Task1_1_Solution,
   Task1_2_Solution,
   Task1_3_Solution,
   Task1_4_Solution,
-} from 'exercises/01-basic-form'
+} from 'src/exercises/01-basic-form'
 import {
   Task2_1_Solution,
   Task2_2_Solution,
   Task2_3_Solution,
   Task2_4_Solution,
-} from 'exercises/02-validation'
+} from 'src/exercises/02-validation'
 import {
   Task3_1_Solution,
   Task3_2_Solution,
@@ -20,20 +20,20 @@ import {
   Task3_4_Solution,
   Task3_5_Solution,
   Task3_6_Solution,
-} from 'exercises/03-schema-validation'
+} from 'src/exercises/03-schema-validation'
 import {
   Task4_1_Solution,
   Task4_2_Solution,
   Task4_3_Solution,
   Task4_4_Solution,
   Task4_5_Solution,
-} from 'exercises/04-complex-fields'
+} from 'src/exercises/04-complex-fields'
 import {
   Task5_1_Solution,
   Task5_2_Solution,
   Task5_3_Solution,
   Task5_4_Solution,
-} from 'exercises/05-dynamic-forms'
+} from 'src/exercises/05-dynamic-forms'
 import {
   Task6_1_Solution,
   Task6_2_Solution,
@@ -41,14 +41,14 @@ import {
   Task6_4_Solution,
   Task6_5_Solution,
   Task6_6_Solution,
-} from 'exercises/06-states-ux'
+} from 'src/exercises/06-states-ux'
 import {
   Task7_1_Solution,
   Task7_2_Solution,
   Task7_3_Solution,
   Task7_4_Solution,
   Task7_5_Solution,
-} from 'exercises/07-async'
+} from 'src/exercises/07-async'
 import {
   Task8_1_Solution,
   Task8_2_Solution,
@@ -56,7 +56,7 @@ import {
   Task8_4_Solution,
   Task8_5_Solution,
   Task8_6_Solution,
-} from 'exercises/08-advanced'
+} from 'src/exercises/08-advanced'
 
 import type { TranslationKey } from '../translations'
 import { TaskStub } from './TaskStub'

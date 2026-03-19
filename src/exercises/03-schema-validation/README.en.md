@@ -2,12 +2,13 @@
 
 ## Introduction
 
-Schema validation is a declarative way to describe validation rules for the entire form in one place. This makes the code cleaner, more type-safe, and easier to maintain.
+Schema validation is a declarative way to describe validation rules for the entire form in one
+place. This makes the code cleaner, more type-safe, and easier to maintain.
 
 **Why schemas are better than built-in validation?**
 
 | Built-in Validation            | Schema Validation           |
-| ------------------------------ | --------------------------- |
+|--------------------------------|-----------------------------|
 | Rules scattered across fields  | All rules in one place      |
 | Complex cross-field validation | Easy cross-field validation |
 | Less type safety               | Full type safety            |
@@ -438,7 +439,7 @@ const schema = yup.object({
 ## Part 3: Zod vs Yup Comparison
 
 | Criterion            | Zod                                   | Yup                                      |
-| -------------------- | ------------------------------------- | ---------------------------------------- |
+|----------------------|---------------------------------------|------------------------------------------|
 | **Size**             | ~12 KB                                | ~14 KB                                   |
 | **TypeScript**       | First-class, excellent type inference | Good, but sometimes requires annotations |
 | **API**              | Functional, composable                | Chainable, expressive                    |
@@ -544,7 +545,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 const { register } = useForm({ resolver: zodResolver(schema) })
 ```
 
-**Why this is a mistake:** Without `zodResolver` or `yupResolver`, the schema won't be integrated with React Hook Form.
+**Why this is a mistake:** Without `zodResolver` or `yupResolver`, the schema won't be integrated
+with React Hook Form.
 
 ---
 
@@ -563,7 +565,8 @@ const { register } = useForm({ resolver: zodResolver(schema) })
 })
 ```
 
-**Why this is a mistake:** Without `path`, the error won't appear in `errors.confirmPassword`, but in `errors.root`.
+**Why this is a mistake:** Without `path`, the error won't appear in `errors.confirmPassword`, but
+in `errors.root`.
 
 ---
 
@@ -585,7 +588,8 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 ```
 
-**Why this is a mistake:** Manual type description can get out of sync with the schema. `z.infer` guarantees accuracy.
+**Why this is a mistake:** Manual type description can get out of sync with the schema. `z.infer`
+guarantees accuracy.
 
 ---
 
@@ -599,7 +603,8 @@ bio: z.string().optional() // can be undefined
 bio: z.string().nullable() // can be null
 ```
 
-**Why this is a mistake:** `optional()` makes the field `string | undefined`, while `nullable()` makes it `string | null`. These are different types.
+**Why this is a mistake:** `optional()` makes the field `string | undefined`, while `nullable()`
+makes it `string | null`. These are different types.
 
 ---
 
@@ -614,12 +619,6 @@ skills: z.array(z.string()).min(1, 'Select at least one skill')
 ```
 
 **Why this is a mistake:** The user should understand what's wrong with the form.
-
----
-
-## 📝 Exercises
-
-Go to the [`task.md`](./task.md) file for practical exercises.
 
 ---
 

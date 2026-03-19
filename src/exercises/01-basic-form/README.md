@@ -2,7 +2,8 @@
 
 ## Введение
 
-На этом уровне вы глубоко изучите основные инструменты React Hook Form. После завершения вы сможете создавать полноценные формы с различными типами полей и управлять их состоянием.
+На этом уровне вы глубоко изучите основные инструменты React Hook Form. После завершения вы сможете
+создавать полноценные формы с различными типами полей и управлять их состоянием.
 
 ---
 
@@ -58,13 +59,13 @@ useForm<FormData>({
 
 **Режимы валидации:**
 
-| mode          | Описание                                                                  |
-| ------------- | ------------------------------------------------------------------------- |
-| `'onSubmit'`  | Валидация только при отправке (по умолчанию)                              |
-| `'onChange'`  | Валидация при каждом изменении                                            |
-| `'onBlur'`    | Валидация при потере фокуса                                               |
+| mode          | Описание                                                                     |
+|---------------|------------------------------------------------------------------------------|
+| `'onSubmit'`  | Валидация только при отправке (по умолчанию)                                 |
+| `'onChange'`  | Валидация при каждом изменении                                               |
+| `'onBlur'`    | Валидация при потере фокуса                                                  |
 | `'onTouched'` | Валидация после первого blur, затем при каждом change. Оптимальный баланс UX |
-| `'all'`       | Валидация при изменении и потере фокуса                                   |
+| `'all'`       | Валидация при изменении и потере фокуса                                      |
 
 ---
 
@@ -107,7 +108,8 @@ useForm<FormData>({
 
 **Что такое `setValueAs`?**
 
-`setValueAs` — это функция-трансформер, которая преобразует значение **перед** тем, как оно попадёт в форму.
+`setValueAs` — это функция-трансформер, которая преобразует значение **перед** тем, как оно попадёт
+в форму.
 
 **Распространённые применения:**
 
@@ -197,7 +199,8 @@ handleSubmit(
 
 ### Асинхронная отправка
 
-`handleSubmit` корректно обрабатывает асинхронные функции. Пока промис не разрешится, `isSubmitting` будет `true`:
+`handleSubmit` корректно обрабатывает асинхронные функции. Пока промис не разрешится, `isSubmitting`
+будет `true`:
 
 ```tsx
 const onSubmit = async (data: FormData) => {
@@ -256,7 +259,7 @@ const onSubmit = async (data: FormData) => {
 ### Textarea
 
 ```tsx
-<textarea {...register('bio')} rows={4} cols={50} />
+<textarea {...register('bio')} rows={4} cols={50}/>
 ```
 
 ### Select
@@ -283,12 +286,20 @@ interface FormData {
 const { register } = useForm<FormData>()
 
 // TypeScript проверит, что значения в option соответствуют типу
-<select {...register('country')}>
-  <option value="">Выберите страну</option>
-  <option value="ru">Россия</option>
-  <option value="us">USA</option>
-  <option value="de">Germany</option>
-  {/* <option value="invalid">❌ Ошибка компиляции!</option> */}
+< select
+{...
+  register('country')
+}
+>
+<
+option
+value = "" > Выберите
+страну < /option>
+<option value="ru">Россия</option>
+<option value="us">USA</option>
+<option value="de">Germany</option>
+{/* <option value="invalid">❌ Ошибка компиляции!</option> */
+}
 </select>
 
 // Альтернатива: использование enum
@@ -331,20 +342,27 @@ interface FormData {
 const { register } = useForm<FormData>()
 
 // TypeScript проверит значения
-<div>
-  <label>
-    <input type="radio" value="male" {...register('gender')} />
-    Мужской
-  </label>
-  <label>
-    <input type="radio" value="female" {...register('gender')} />
-    Женский
-  </label>
-  <label>
-    <input type="radio" value="other" {...register('gender')} />
-    Другое
-  </label>
-  {/* <input type="radio" value="invalid" {...register('gender')} /> ❌ Ошибка! */}
+< div >
+< label >
+< input
+type = "radio"
+value = "male"
+{...
+  register('gender')
+}
+/>
+Мужской
+< /label>
+<label>
+  <input type="radio" value="female" {...register('gender')} />
+  Женский
+</label>
+<label>
+  <input type="radio" value="other" {...register('gender')} />
+  Другое
+</label>
+{/* <input type="radio" value="invalid" {...register('gender')} /> ❌ Ошибка! */
+}
 </div>
 
 // Использование констант для избежания опечаток
@@ -356,7 +374,14 @@ const GENDER_OPTIONS = {
 
 type Gender = typeof GENDER_OPTIONS[keyof typeof GENDER_OPTIONS]
 
-<input type="radio" value={GENDER_OPTIONS.MALE} {...register('gender')} />
+<
+input
+type = "radio"
+value = { GENDER_OPTIONS.MALE }
+{...
+  register('gender')
+}
+/>
 ```
 
 ### Checkbox
@@ -383,7 +408,8 @@ interface FormData {
 **Множественный выбор (массив строк):**
 
 Когда нужно выбрать несколько опций из списка (например, навыки, интересы).
-React Hook Form автоматически собирает значения в массив, если несколько чекбоксов зарегистрированы с одним именем:
+React Hook Form автоматически собирает значения в массив, если несколько чекбоксов зарегистрированы
+с одним именем:
 
 ```tsx
 interface FormData {
@@ -397,7 +423,13 @@ const { register } = useForm<FormData>({
 })
 
 // Все чекбоксы используют одно имя — RHF соберёт отмеченные value в массив
-<input type="checkbox" value="react" {...register('skills')} />
+< input
+type = "checkbox"
+value = "react"
+{...
+  register('skills')
+}
+/>
 <label>React</label>
 
 <input type="checkbox" value="typescript" {...register('skills')} />
@@ -407,7 +439,8 @@ const { register } = useForm<FormData>({
 <label>Node.js</label>
 ```
 
-При отправке `skills` будет содержать массив отмеченных значений, например `['react', 'typescript']`.
+При отправке `skills` будет содержать массив отмеченных значений, например
+`['react', 'typescript']`.
 
 ---
 
@@ -455,7 +488,8 @@ function MyForm() {
 
 ### ⚠️ ВАЖНО: Правильное использование `formState` (Proxy)
 
-`formState` — это **Proxy-объект**. Это означает, что React Hook Form отслеживает, какие свойства вы используете, и подписывает компонент только на них.
+`formState` — это **Proxy-объект**. Это означает, что React Hook Form отслеживает, какие свойства вы
+используете, и подписывает компонент только на них.
 
 **Правила работы с `formState`:**
 
@@ -477,7 +511,8 @@ const {
 const { formState } = useForm()
 
 // Компонент НЕ будет перерисовываться при изменении errors!
-<div>{formState.errors.email?.message}</div>
+< div > { formState.errors.email?.message }
+</div>
 ```
 
 #### ✅ Правильно: Условный доступ к свойствам
@@ -494,7 +529,8 @@ return (
 )
 ```
 
-**Почему это работает?** Proxy отслеживает каждое обращение к `formState.errors` и `formState.isSubmitting` в JSX.
+**Почему это работает?** Proxy отслеживает каждое обращение к `formState.errors` и
+`formState.isSubmitting` в JSX.
 
 #### ✅ Правильно: Использование в useEffect
 
@@ -547,7 +583,8 @@ const {
 
 ### Зачем нужен `watch`?
 
-`watch` позволяет **подписаться на изменения** значений формы и **реагировать на них в реальном времени**.
+`watch` позволяет **подписаться на изменения** значений формы и **реагировать на них в реальном
+времени**.
 
 **Типичные сценарии использования:**
 
@@ -560,10 +597,10 @@ const {
 ### `watch` vs `onChange` vs `getValues`
 
 | Метод       | Когда использовать                         | Вызывает ререндер? |
-| ----------- | ------------------------------------------ | ------------------ |
-| `watch`     | Нужно **отображать** значение в UI         | ✅ Да              |
-| `onChange`  | Нужно **выполнить действие** при изменении | ❌ Нет             |
-| `getValues` | Нужно **получить** значение один раз       | ❌ Нет             |
+|-------------|--------------------------------------------|--------------------|
+| `watch`     | Нужно **отображать** значение в UI         | ✅ Да               |
+| `onChange`  | Нужно **выполнить действие** при изменении | ❌ Нет              |
+| `getValues` | Нужно **получить** значение один раз       | ❌ Нет              |
 
 **Пример различий:**
 
@@ -572,8 +609,13 @@ const { register, watch, getValues } = useForm()
 
 // ✅ watch — подписка с ререндером
 const password = watch('password')
-// При каждом изменении password компонент перерисуется
-<div>Длина: {password.length} символов</div>
+  // При каждом изменении password компонент перерисуется
+  < div > Длина
+:
+{
+  password.length
+}
+символов < /div>
 
 // ✅ onChange — действие без ререндера
 <input
@@ -595,7 +637,8 @@ const handleClick = () => {
 
 **Ключевое отличие `watch` от `getValues`:**
 
-> The difference between `watch` and `getValues` is that `getValues` will not trigger re-renders or subscribe to input changes.
+> The difference between `watch` and `getValues` is that `getValues` will not trigger re-renders or
+> subscribe to input changes.
 
 - `watch('email')` — **подписка**: компонент перерисуется при каждом изменении email
 - `getValues('email')` — **моментальное чтение**: просто получаем текущее значение без подписки
@@ -883,12 +926,12 @@ export function RegistrationForm() {
 
         <div>
           <label>О себе</label>
-          <textarea {...register('bio')} rows={4} />
+          <textarea {...register('bio')} rows={4}/>
         </div>
 
         <div>
           <label>Сайт</label>
-          <input type="url" {...register('website')} placeholder="https://..." />
+          <input type="url" {...register('website')} placeholder="https://..."/>
         </div>
 
         <div style={{ marginTop: '1rem' }}>
@@ -929,7 +972,8 @@ export function RegistrationForm() {
 <input type="number" {...register('age', { valueAsNumber: true })} />
 ```
 
-**Почему это ошибка:** Без `valueAsNumber: true` числовые поля возвращают строки, что может вызвать проблемы при валидации и отправке данных.
+**Почему это ошибка:** Без `valueAsNumber: true` числовые поля возвращают строки, что может вызвать
+проблемы при валидации и отправке данных.
 
 ---
 
@@ -938,14 +982,17 @@ export function RegistrationForm() {
 ```tsx
 // ❌ Неправильно - undefined до первого рендера
 const value = watch('field')
-<p>{value.length}</p> // Ошибка!
+  < p > { value.length }
+</p> // Ошибка!
 
 // ✅ Правильно - с дефолтным значением
 const value = watch('field', '')
-<p>{value.length}</p> // Работает!
+  < p > { value.length }
+</p> // Работает!
 ```
 
-**Почему это ошибка:** `watch` возвращает `undefined` пока поле не зарегистрировано. Нужно указывать значение по умолчанию.
+**Почему это ошибка:** `watch` возвращает `undefined` пока поле не зарегистрировано. Нужно указывать
+значение по умолчанию.
 
 ---
 
@@ -956,11 +1003,16 @@ const value = watch('field', '')
 setValue('email', 'test@example.com')
 
 // ✅ Правильно - сначала register, потом setValue
-<input {...register('email')} />
+< input
+{...
+  register('email')
+}
+/>
 setValue('email', 'test@example.com')
 ```
 
-**Почему это ошибка:** `setValue` работает только с зарегистрированными полями. Поле должно быть зарегистрировано через `register`.
+**Почему это ошибка:** `setValue` работает только с зарегистрированными полями. Поле должно быть
+зарегистрировано через `register`.
 
 ---
 
@@ -969,11 +1021,13 @@ setValue('email', 'test@example.com')
 ```tsx
 // ❌ Неправильно - значение не будет обновляться в UI
 const values = getValues()
-<p>{values.email}</p>
+  < p > { values.email }
+</p>
 
 // ✅ Правильно - watch подписывается на изменения и обновляет UI
 const email = watch('email')
-<p>{email}</p>
+  < p > { email }
+</p>
 
 // ✅ Также правильно - getValues в обработчиках (не в JSX)
 const onSubmit = () => {
@@ -982,7 +1036,9 @@ const onSubmit = () => {
 }
 ```
 
-**Почему это ошибка:** `getValues()` читает текущее значение **без подписки** на изменения — компонент не будет перерисовываться при вводе. Для отображения данных в UI используйте `watch`, а `getValues` — только в обработчиках событий.
+**Почему это ошибка:** `getValues()` читает текущее значение **без подписки** на изменения —
+компонент не будет перерисовываться при вводе. Для отображения данных в UI используйте `watch`, а
+`getValues` — только в обработчиках событий.
 
 ---
 
@@ -997,18 +1053,15 @@ if (someCondition) {
 
 // ✅ Правильно - деструктуризация в render-фазе подписывает Proxy
 const { formState: { errors, isDirty, isValid } } = useForm()
-<p>{errors.email?.message}</p>
+< p > { errors.email?.message }
+</p>
 ```
 
-**Почему это важно:** RHF использует Proxy для отслеживания, какие свойства `formState` вы читаете. Деструктуризация в render-фазе гарантирует подписку и ререндер при изменении.
+**Почему это важно:** RHF использует Proxy для отслеживания, какие свойства `formState` вы читаете.
+Деструктуризация в render-фазе гарантирует подписку и ререндер при изменении.
 
-**Почему это ошибка:** `formState` — это Proxy объект. Нужно деструктуризировать конкретные свойства для правильной подписки на изменения.
-
----
-
-## 📝 Задания
-
-Переходите к файлу [`task.md`](./task.md) для выполнения практических заданий.
+**Почему это ошибка:** `formState` — это Proxy объект. Нужно деструктуризировать конкретные свойства
+для правильной подписки на изменения.
 
 ---
 

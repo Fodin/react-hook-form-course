@@ -2,17 +2,18 @@
 
 ## Introduction to React Hook Form
 
-Welcome to the **React Hook Form** course! This is a modern library for form management in React that uses hooks to provide a simple and efficient API.
+Welcome to the **React Hook Form** course! This is a modern library for form management in React
+that uses hooks to provide a simple and efficient API.
 
 ### Why React Hook Form?
 
 Let's compare with alternatives:
 
 | Library             | Size   | Performance | API              |
-| ------------------- | ------ | ----------- | ---------------- |
-| **React Hook Form** | ~12 KB | ⭐⭐⭐⭐⭐  | Hooks            |
-| Formik              | ~16 KB | ⭐⭐⭐      | Components/Hooks |
-| Redux Form          | ~23 KB | ⭐⭐        | Redux            |
+|---------------------|--------|-------------|------------------|
+| **React Hook Form** | ~12 KB | ⭐⭐⭐⭐⭐       | Hooks            |
+| Formik              | ~16 KB | ⭐⭐⭐         | Components/Hooks |
+| Redux Form          | ~23 KB | ⭐⭐          | Redux            |
 
 **React Hook Form Advantages:**
 
@@ -34,14 +35,25 @@ Let's compare with alternatives:
 ```tsx
 // ❌ Controlled component (many rerenders)
 const [value, setValue] = useState('')
-<input value={value} onChange={(e) => setValue(e.target.value)} />
+< input
+value = { value }
+onChange = {(e)
+=>
+setValue(e.target.value)
+}
+/>
 
 // ✅ Uncontrolled component (minimal rerenders)
 const { register } = useForm()
-<input {...register('fieldName')} />
+< input
+{...
+  register('fieldName')
+}
+/>
 ```
 
-In the controlled approach, each change triggers a rerender. In the uncontrolled approach, React Hook Form works directly with the DOM.
+In the controlled approach, each change triggers a rerender. In the uncontrolled approach, React
+Hook Form works directly with the DOM.
 
 ### 2. The `useForm` Hook
 
@@ -92,8 +104,8 @@ function MyForm() {
 
 ```tsx
 const onSubmit = (data: FormData) => {
-  console.log(data) // { email: 'test@example.com', password: '123' }
-}
+    console.log(data) // { email: 'test@example.com', password: '123' }
+  }
 
 ;<form onSubmit={handleSubmit(onSubmit)}>
   <input {...register('email')} />
@@ -106,9 +118,12 @@ const onSubmit = (data: FormData) => {
 
 **What does this mean?**
 
-- **Prevents default submission** — internally calls `event.preventDefault()`, so the page doesn't reload
-- **Collects data** — automatically extracts values from all registered fields and passes them to your `onSubmit` function
-- **Triggers validation** — validates all rules before calling `onSubmit`; if there are errors, `onSubmit` won't be called
+- **Prevents default submission** — internally calls `event.preventDefault()`, so the page doesn't
+  reload
+- **Collects data** — automatically extracts values from all registered fields and passes them to
+  your `onSubmit` function
+- **Triggers validation** — validates all rules before calling `onSubmit`; if there are errors,
+  `onSubmit` won't be called
 
 Without React Hook Form, you'd have to write this manually:
 
@@ -197,7 +212,7 @@ export function FirstForm() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor="email">Email</label>
-          <input id="email" type="email" {...register('email')} placeholder="Enter email" />
+          <input id="email" type="email" {...register('email')} placeholder="Enter email"/>
         </div>
 
         <div>
@@ -243,7 +258,8 @@ export function FirstForm() {
 - With `onClick`, the form won't submit when pressing Enter in input fields
 - Standard browser behavior doesn't work (keyboard navigation, accessibility)
 - `handleSubmit` receives a click event instead of a form event
-- Breaks HTML semantics — button without explicit `type` defaults to `type="submit"`, but it's better to be explicit
+- Breaks HTML semantics — button without explicit `type` defaults to `type="submit"`, but it's
+  better to be explicit
 
 ### ❌ Mistake 2: Not Using Destructuring
 
@@ -276,16 +292,11 @@ const { register } = useForm<FormData>()
 
 **Why this is wrong:**
 
-- TypeScript doesn't know what fields exist in the form — you can write `register('nonExistentField')`
+- TypeScript doesn't know what fields exist in the form — you can write
+  `register('nonExistentField')`
 - No autocomplete when typing field names
 - In `onSubmit`, data will have type `any` instead of type-safe `FormData`
 - Easy to miss field renames during refactoring
-
----
-
-## 📝 Tasks
-
-Go to [`task.md`](./task.md) to complete practical exercises.
 
 ---
 

@@ -2,7 +2,9 @@
 
 ## Introduction
 
-Not all fields can be easily registered via `register`. For uncontrolled components (UI libraries, custom inputs), `Controller` is used. In this level, you will learn to work with all types of complex fields.
+Not all fields can be easily registered via `register`. For uncontrolled components (UI libraries,
+custom inputs), `Controller` is used. In this level, you will learn to work with all types of
+complex fields.
 
 ---
 
@@ -75,10 +77,10 @@ function MyForm() {
   name="category"
   control={control}
   render={({
-    field, // { onChange, onBlur, value, name, ref }
-    fieldState, // { invalid, isTouched, isDirty, error }
-    formState, // { errors, isSubmitting, isValid }
-  }) => <Select {...field} onChange={selected => field.onChange(selected?.value)} />}
+             field, // { onChange, onBlur, value, name, ref }
+             fieldState, // { invalid, isTouched, isDirty, error }
+             formState, // { errors, isSubmitting, isValid }
+           }) => <Select {...field} onChange={selected => field.onChange(selected?.value)}/>}
 />
 ```
 
@@ -103,7 +105,7 @@ function TextField({ label, error, ...props }: any) {
   name="email"
   control={control}
   render={({ field, fieldState: { error } }) => (
-    <TextField {...field} label="Email" error={error?.message} />
+    <TextField {...field} label="Email" error={error?.message}/>
   )}
 />
 ```
@@ -367,7 +369,7 @@ function FileUploadWithPreview() {
         }}
       />
 
-      {preview && <img src={preview} alt="Preview" style={{ maxWidth: '200px' }} />}
+      {preview && <img src={preview} alt="Preview" style={{ maxWidth: '200px' }}/>}
 
       <button type="submit">Upload</button>
     </form>
@@ -559,7 +561,7 @@ export function ProductForm() {
             }
           }}
         />
-        {preview && <img src={preview} alt="Preview" style={{ maxWidth: '200px' }} />}
+        {preview && <img src={preview} alt="Preview" style={{ maxWidth: '200px' }}/>}
         {errors.image && <span className="error">{errors.image.message}</span>}
       </div>
 
@@ -584,10 +586,13 @@ export function ProductForm() {
 
 // ✅ Correct - pass control
 const { control } = useForm()
-<Controller
-  name="category"
-  control={control}
-  render={({ field }) => <Select {...field} />}
+< Controller
+name = "category"
+control = { control }
+render = {({ field })
+=>
+<Select {...field} />
+}
 />
 ```
 
@@ -615,7 +620,8 @@ const { control } = useForm()
 />
 ```
 
-**Why this is a mistake:** Checkbox requires explicit `checked` for proper controlled mode operation.
+**Why this is a mistake:** Checkbox requires explicit `checked` for proper controlled mode
+operation.
 
 ---
 
@@ -638,7 +644,8 @@ const { control } = useForm()
 </form>
 ```
 
-**Why this is a mistake:** When uploading files, it's important not to submit the form automatically, but handle the file separately.
+**Why this is a mistake:** When uploading files, it's important not to submit the form
+automatically, but handle the file separately.
 
 ---
 
@@ -687,12 +694,6 @@ const { control } = useForm()
 ```
 
 **Why this is a mistake:** Radio buttons require `value` to determine the selected value.
-
----
-
-## 📝 Exercises
-
-Go to the [`task.md`](./task.md) file for practical exercises.
 
 ---
 

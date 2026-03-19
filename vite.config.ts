@@ -7,10 +7,9 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: [
-      { find: 'src/hooks', replacement: path.resolve(__dirname, './src/hooks') },
-      { find: 'src/components', replacement: path.resolve(__dirname, './src/components') },
-      { find: 'src', replacement: path.resolve(__dirname, './src') },
-    ],
+    alias: {
+      exercises: path.resolve(__dirname, './src/exercises'),
+      src: path.resolve(__dirname, './src'),
+    },
   },
 })

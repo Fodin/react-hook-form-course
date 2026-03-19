@@ -2,7 +2,9 @@
 
 ## Введение
 
-Не все поля можно легко зарегистрировать через `register`. Для неконтролируемых компонентов (UI-библиотеки, кастомные инпуты) используется `Controller`. В этом уровне вы научитесь работать со всеми типами сложных полей.
+Не все поля можно легко зарегистрировать через `register`. Для неконтролируемых компонентов (
+UI-библиотеки, кастомные инпуты) используется `Controller`. В этом уровне вы научитесь работать со
+всеми типами сложных полей.
 
 ---
 
@@ -75,10 +77,10 @@ function MyForm() {
   name="category"
   control={control}
   render={({
-    field, // { onChange, onBlur, value, name, ref }
-    fieldState, // { invalid, isTouched, isDirty, error }
-    formState, // { errors, isSubmitting, isValid }
-  }) => <Select {...field} onChange={selected => field.onChange(selected?.value)} />}
+             field, // { onChange, onBlur, value, name, ref }
+             fieldState, // { invalid, isTouched, isDirty, error }
+             formState, // { errors, isSubmitting, isValid }
+           }) => <Select {...field} onChange={selected => field.onChange(selected?.value)}/>}
 />
 ```
 
@@ -103,7 +105,7 @@ function TextField({ label, error, ...props }: any) {
   name="email"
   control={control}
   render={({ field, fieldState: { error } }) => (
-    <TextField {...field} label="Email" error={error?.message} />
+    <TextField {...field} label="Email" error={error?.message}/>
   )}
 />
 ```
@@ -367,7 +369,7 @@ function FileUploadWithPreview() {
         }}
       />
 
-      {preview && <img src={preview} alt="Preview" style={{ maxWidth: '200px' }} />}
+      {preview && <img src={preview} alt="Preview" style={{ maxWidth: '200px' }}/>}
 
       <button type="submit">Загрузить</button>
     </form>
@@ -558,7 +560,7 @@ export function ProductForm() {
             }
           }}
         />
-        {preview && <img src={preview} alt="Preview" style={{ maxWidth: '200px' }} />}
+        {preview && <img src={preview} alt="Preview" style={{ maxWidth: '200px' }}/>}
         {errors.image && <span className="error">{errors.image.message}</span>}
       </div>
 
@@ -583,10 +585,13 @@ export function ProductForm() {
 
 // ✅ Правильно - передаём control
 const { control } = useForm()
-<Controller
-  name="category"
-  control={control}
-  render={({ field }) => <Select {...field} />}
+< Controller
+name = "category"
+control = { control }
+render = {({ field })
+=>
+<Select {...field} />
+}
 />
 ```
 
@@ -602,7 +607,7 @@ const { control } = useForm()
   name="agree"
   control={control}
   render={({ field }) => (
-    <input type="checkbox" checked={field.value} onChange={field.onChange} />
+    <input type="checkbox" checked={field.value} onChange={field.onChange}/>
   )}
 />
 
@@ -610,7 +615,9 @@ const { control } = useForm()
 <input type="checkbox" {...register('agree')} />
 ```
 
-**Почему это ошибка:** `register` автоматически обрабатывает нативные чекбоксы (устанавливает `checked`, возвращает `boolean`). `Controller` нужен только для сторонних UI-компонентов (Material UI, Ant Design и т.д.), которые не предоставляют нативный `ref`.
+**Почему это ошибка:** `register` автоматически обрабатывает нативные чекбоксы (устанавливает
+`checked`, возвращает `boolean`). `Controller` нужен только для сторонних UI-компонентов (Material
+UI, Ant Design и т.д.), которые не предоставляют нативный `ref`.
 
 ---
 
@@ -629,18 +636,24 @@ const { control } = useForm()
 
 // ✅ Правильно — вызываем onChange от register, добавляя свою логику
 const avatarRegister = register('avatar')
-<input
-  type="file"
-  {...avatarRegister}
-  onChange={(e) => {
-    avatarRegister.onChange(e)  // Сначала передаём событие в RHF
-    const file = e.target.files?.[0]
-    // Дополнительная обработка (preview и т.д.)
-  }}
+  < input
+type = "file"
+{...
+  avatarRegister
+}
+onChange = {(e)
+=>
+{
+  avatarRegister.onChange(e)  // Сначала передаём событие в RHF
+  const file = e.target.files?.[0]
+  // Дополнительная обработка (preview и т.д.)
+}
+}
 />
 ```
 
-**Почему это ошибка:** Если поставить `onChange` после `{...register()}`, он перезапишет обработчик RHF. Нужно вызвать `register.onChange` явно.
+**Почему это ошибка:** Если поставить `onChange` после `{...register()}`, он перезапишет обработчик
+RHF. Нужно вызвать `register.onChange` явно.
 
 ---
 
@@ -689,12 +702,6 @@ const avatarRegister = register('avatar')
 ```
 
 **Почему это ошибка:** Radio кнопки требуют `value` для определения выбранного значения.
-
----
-
-## 📝 Задания
-
-Переходите к файлу [`task.md`](./task.md) для выполнения практических заданий.
 
 ---
 

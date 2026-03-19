@@ -2,7 +2,8 @@
 
 ## Introduction
 
-In this level, you will deeply learn the main tools of React Hook Form. After completion, you will be able to create full-featured forms with various field types and manage their state.
+In this level, you will deeply learn the main tools of React Hook Form. After completion, you will
+be able to create full-featured forms with various field types and manage their state.
 
 ---
 
@@ -59,7 +60,7 @@ useForm<FormData>({
 **Validation modes:**
 
 | mode         | Description                         |
-| ------------ | ----------------------------------- |
+|--------------|-------------------------------------|
 | `'onSubmit'` | Validation only on submit (default) |
 | `'onChange'` | Validation on every change          |
 | `'onBlur'`   | Validation on blur                  |
@@ -148,7 +149,7 @@ useForm<FormData>({
 ### Textarea
 
 ```tsx
-<textarea {...register('bio')} rows={4} cols={50} />
+<textarea {...register('bio')} rows={4} cols={50}/>
 ```
 
 ### Select
@@ -187,17 +188,20 @@ useForm<FormData>({
 const { watch, setValue } = useForm()
 const skills = watch('skills') || []
 
-<input
-  type="checkbox"
-  value="react"
-  checked={skills.includes('react')}
-  onChange={(e) => {
-    if (e.target.checked) {
-      setValue('skills', [...skills, 'react'])
-    } else {
-      setValue('skills', skills.filter(s => s !== 'react'))
-    }
-  }}
+  < input
+type = "checkbox"
+value = "react"
+checked = { skills.includes('react') }
+onChange = {(e)
+=>
+{
+  if (e.target.checked) {
+    setValue('skills', [...skills, 'react'])
+  } else {
+    setValue('skills', skills.filter(s => s !== 'react'))
+  }
+}
+}
 />
 ```
 
@@ -490,12 +494,12 @@ export function RegistrationForm() {
 
         <div>
           <label>About</label>
-          <textarea {...register('bio')} rows={4} />
+          <textarea {...register('bio')} rows={4}/>
         </div>
 
         <div>
           <label>Website</label>
-          <input type="url" {...register('website')} placeholder="https://..." />
+          <input type="url" {...register('website')} placeholder="https://..."/>
         </div>
 
         <div style={{ marginTop: '1rem' }}>
@@ -536,7 +540,8 @@ export function RegistrationForm() {
 <input type="number" {...register('age', { valueAsNumber: true })} />
 ```
 
-**Why this is a mistake:** Without `valueAsNumber: true`, numeric fields return strings, which can cause issues with validation and data submission.
+**Why this is a mistake:** Without `valueAsNumber: true`, numeric fields return strings, which can
+cause issues with validation and data submission.
 
 ---
 
@@ -545,14 +550,17 @@ export function RegistrationForm() {
 ```tsx
 // ❌ Wrong - undefined before first render
 const value = watch('field')
-<p>{value.length}</p> // Error!
+  < p > { value.length }
+</p> // Error!
 
 // ✅ Correct - with default value
 const value = watch('field', '')
-<p>{value.length}</p> // Works!
+  < p > { value.length }
+</p> // Works!
 ```
 
-**Why this is a mistake:** `watch` returns `undefined` until the field is registered. You need to specify a default value.
+**Why this is a mistake:** `watch` returns `undefined` until the field is registered. You need to
+specify a default value.
 
 ---
 
@@ -563,11 +571,16 @@ const value = watch('field', '')
 setValue('email', 'test@example.com')
 
 // ✅ Correct - first register, then setValue
-<input {...register('email')} />
+< input
+{...
+  register('email')
+}
+/>
 setValue('email', 'test@example.com')
 ```
 
-**Why this is a mistake:** `setValue` only works with registered fields. The field must be registered via `register`.
+**Why this is a mistake:** `setValue` only works with registered fields. The field must be
+registered via `register`.
 
 ---
 
@@ -576,7 +589,8 @@ setValue('email', 'test@example.com')
 ```tsx
 // ❌ Wrong - getValues in component body
 const values = getValues()
-<p>{values.email}</p>
+  < p > { values.email }
+</p>
 
 // ✅ Correct - getValues only in handlers
 const onSubmit = () => {
@@ -585,7 +599,8 @@ const onSubmit = () => {
 }
 ```
 
-**Why this is a mistake:** `getValues()` in the component body causes a re-render. Use `watch` for reactive reading or `getValues` only in handlers.
+**Why this is a mistake:** `getValues()` in the component body causes a re-render. Use `watch` for
+reactive reading or `getValues` only in handlers.
 
 ---
 
@@ -594,20 +609,17 @@ const onSubmit = () => {
 ```tsx
 // ❌ Wrong - formState doesn't track changes
 const { formState } = useForm()
-<p>{formState.errors.email}</p>
+< p > { formState.errors.email }
+</p>
 
 // ✅ Correct - destructure from formState
 const { formState: { errors, isDirty, isValid } } = useForm()
-<p>{errors.email?.message}</p>
+< p > { errors.email?.message }
+</p>
 ```
 
-**Why this is a mistake:** `formState` is a Proxy object. You need to destructure specific properties for proper change subscription.
-
----
-
-## 📝 Exercises
-
-Go to the [`task.md`](./task.md) file for practical exercises.
+**Why this is a mistake:** `formState` is a Proxy object. You need to destructure specific
+properties for proper change subscription.
 
 ---
 

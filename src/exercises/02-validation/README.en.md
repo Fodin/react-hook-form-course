@@ -2,7 +2,8 @@
 
 ## Introduction
 
-Validation is a critical part of any form. React Hook Form provides several ways to validate: from simple built-in rules to complex custom functions.
+Validation is a critical part of any form. React Hook Form provides several ways to validate: from
+simple built-in rules to complex custom functions.
 
 ---
 
@@ -290,7 +291,7 @@ useForm({
 ### Recommendations for Mode Selection
 
 | Mode       | When to Use                        |
-| ---------- | ---------------------------------- |
+|------------|------------------------------------|
 | `onSubmit` | Simple forms, minimal noise        |
 | `onChange` | Forms with instant feedback        |
 | `onBlur`   | When you need to check after input |
@@ -446,7 +447,8 @@ export function RegistrationForm() {
 <input {...register('email', { required: 'Email is required' })} />
 ```
 
-**Why this is a mistake:** Boolean value `true` doesn't give the user information about what field needs to be filled.
+**Why this is a mistake:** Boolean value `true` doesn't give the user information about what field
+needs to be filled.
 
 ---
 
@@ -459,11 +461,14 @@ pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/
 // ✅ Correct - with flags for case insensitivity
 pattern: {
   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-  message: 'Invalid email format'
+    message
+:
+  'Invalid email format'
 }
 ```
 
-**Why this is a mistake:** Without the `i` flag, the pattern will be case-sensitive. It's also important to wrap in an object with `message`.
+**Why this is a mistake:** Without the `i` flag, the pattern will be case-sensitive. It's also
+important to wrap in an object with `message`.
 
 ---
 
@@ -487,7 +492,8 @@ validate: value => {
 }
 ```
 
-**Why this is a mistake:** Validation function must return `true` on success or an error string on failure.
+**Why this is a mistake:** Validation function must return `true` on success or an error string on
+failure.
 
 ---
 
@@ -519,13 +525,8 @@ validate: value => {
 <input type="number" {...register('age', { valueAsNumber: true })} />
 ```
 
-**Why this is a mistake:** Without `valueAsNumber: true`, numeric fields return as strings, which can cause validation issues.
-
----
-
-## 📝 Exercises
-
-Go to the [`task.md`](./task.md) file for practical exercises.
+**Why this is a mistake:** Without `valueAsNumber: true`, numeric fields return as strings, which
+can cause validation issues.
 
 ---
 

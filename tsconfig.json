@@ -21,6 +21,5 @@
       "exercises/*": ["./src/exercises/*"]
     }
   },
-  "include": ["src", "exercises"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src", "exercises", "vite.config.ts"]
 }

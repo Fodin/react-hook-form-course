@@ -2,7 +2,8 @@
 
 ## Introduction
 
-In this level, you will learn advanced React Hook Form techniques: integration with UI libraries, creating custom hooks, splitting forms via Context, and saving data to localStorage.
+In this level, you will learn advanced React Hook Form techniques: integration with UI libraries,
+creating custom hooks, splitting forms via Context, and saving data to localStorage.
 
 ---
 
@@ -10,7 +11,8 @@ In this level, you will learn advanced React Hook Form techniques: integration w
 
 ### Controller for Third-party Components
 
-**Controller** is a bridge between React Hook Form's uncontrolled components and UI library controlled components.
+**Controller** is a bridge between React Hook Form's uncontrolled components and UI library
+controlled components.
 
 ```tsx
 import { Controller, useForm } from 'react-hook-form'
@@ -25,7 +27,7 @@ function MyForm() {
         name="firstName"
         control={control}
         render={({ field, fieldState: { error } }) => (
-          <TextField {...field} label="First Name" error={!!error} helperText={error?.message} />
+          <TextField {...field} label="First Name" error={!!error} helperText={error?.message}/>
         )}
       />
 
@@ -71,7 +73,7 @@ function FormTextField({ label, error, ...props }: any) {
   name="email"
   control={control}
   render={({ field, fieldState: { error } }) => (
-    <FormTextField {...field} label="Email" error={error?.message} />
+    <FormTextField {...field} label="Email" error={error?.message}/>
   )}
 />
 ```
@@ -107,9 +109,11 @@ function FormButton({ children, loading, ...props }: any) {
 // Usage
 const { formState: { isSubmitting } } = useForm()
 
-<FormButton type="submit" loading={isSubmitting}>
+< FormButton
+type = "submit"
+loading = { isSubmitting } >
   Submit
-</FormButton>
+  < /FormButton>
 ```
 
 ---
@@ -168,8 +172,8 @@ function ArticleForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input {...register('title')} placeholder="Title" />
-      <textarea {...register('content')} placeholder="Content" />
+      <input {...register('title')} placeholder="Title"/>
+      <textarea {...register('content')} placeholder="Content"/>
 
       <button type="submit">Publish</button>
       <button type="button" onClick={clear}>
@@ -210,7 +214,7 @@ function SearchForm() {
     }
   }, [debouncedQuery])
 
-  return <input {...register('search')} placeholder="Search..." />
+  return <input {...register('search')} placeholder="Search..."/>
 }
 ```
 
@@ -250,7 +254,7 @@ function PasswordField() {
 
   return (
     <div>
-      <input {...register('password')} type="password" />
+      <input {...register('password')} type="password"/>
       {!isValid && error && <span className="error">{error}</span>}
     </div>
   )
@@ -272,8 +276,8 @@ function PersonalStep() {
 
   return (
     <>
-      <input {...register('firstName')} placeholder="First Name" />
-      <input {...register('lastName')} placeholder="Last Name" />
+      <input {...register('firstName')} placeholder="First Name"/>
+      <input {...register('lastName')} placeholder="Last Name"/>
     </>
   )
 }
@@ -283,8 +287,8 @@ function ContactStep() {
 
   return (
     <>
-      <input type="email" {...register('email')} placeholder="Email" />
-      <input type="tel" {...register('phone')} placeholder="Phone" />
+      <input type="email" {...register('email')} placeholder="Email"/>
+      <input type="tel" {...register('phone')} placeholder="Phone"/>
     </>
   )
 }
@@ -309,8 +313,8 @@ function App() {
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <PersonalStep />
-        <ContactStep />
+        <PersonalStep/>
+        <ContactStep/>
         <button type="submit">Submit</button>
       </form>
     </FormProvider>
@@ -345,8 +349,8 @@ function WizardForm() {
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {step === 1 && <AccountStep />}
-        {step === 2 && <ProfileStep />}
+        {step === 1 && <AccountStep/>}
+        {step === 2 && <ProfileStep/>}
 
         <div>
           {step > 1 && (
@@ -429,8 +433,8 @@ function FormWithSubscription() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input {...register('subject')} placeholder="Subject" />
-      <textarea {...register('body')} placeholder="Email body" />
+      <input {...register('subject')} placeholder="Subject"/>
+      <textarea {...register('body')} placeholder="Email body"/>
       <button type="submit">Send</button>
     </form>
   )
@@ -545,7 +549,7 @@ function ProfileStep() {
             if (file) setPreview(URL.createObjectURL(file))
           }}
         />
-        {preview && <img src={preview} alt="Preview" style={{ maxWidth: '150px' }} />}
+        {preview && <img src={preview} alt="Preview" style={{ maxWidth: '150px' }}/>}
       </div>
     </>
   )
@@ -625,9 +629,9 @@ export function RegistrationWizard() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>Step {step} of 3</div>
 
-        {step === 1 && <AccountStep />}
-        {step === 2 && <ProfileStep />}
-        {step === 3 && <SettingsStep />}
+        {step === 1 && <AccountStep/>}
+        {step === 2 && <ProfileStep/>}
+        {step === 3 && <SettingsStep/>}
 
         <div>
           {step > 1 && (
@@ -689,9 +693,10 @@ export function RegistrationWizard() {
 function Child() {
   const { register } = useFormContext() // error!
 }
+
 function Parent() {
   const { register } = useForm()
-  return <Child />
+  return <Child/>
 }
 
 // ✅ Correct - wrap in FormProvider
@@ -699,7 +704,7 @@ function Parent() {
   const methods = useForm()
   return (
     <FormProvider {...methods}>
-      <Child />
+      <Child/>
     </FormProvider>
   )
 }
@@ -771,12 +776,6 @@ function useDebounce(value, delay) {
 ```
 
 **Why this is a mistake:** Without dependencies, the effect may execute incorrectly or cause leaks.
-
----
-
-## 📝 Exercises
-
-Go to the [`task.md`](./task.md) file for practical exercises.
 
 ---
 
