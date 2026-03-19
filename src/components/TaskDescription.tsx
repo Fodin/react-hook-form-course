@@ -63,6 +63,25 @@ export function TaskDescription({ taskNumber, level }: TaskDescriptionProps) {
         />
       )
     },
+    li: ({ children, node, ...props }) => {
+      const hasCheckbox = node?.children?.some(
+        (child: unknown) =>
+          typeof child === 'object' &&
+          child !== null &&
+          'tagName' in child &&
+          (child as { tagName: string }).tagName === 'input' &&
+          'properties' in child &&
+          (child as { properties: { type?: string } }).properties?.type === 'checkbox'
+      )
+      if (hasCheckbox) {
+        return (
+          <li {...props}>
+            <label className={styles.checkboxLabel}>{children}</label>
+          </li>
+        )
+      }
+      return <li {...props}>{children}</li>
+    },
   }
 
   // Сбрасываем счётчик перед каждым рендером markdown

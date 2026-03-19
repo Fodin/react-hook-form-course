@@ -59,9 +59,22 @@
   width: 16px;
   height: 16px;
   accent-color: var(--clr-accent);
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
 }
 
-.content :global(li):has(> .checkbox) {
+.checkboxLabel {
+  display: inline;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkboxLabel:hover {
+  opacity: 0.8;
+}
+
+.content :global(li):has(> .checkboxLabel) {
   list-style: none;
   margin-left: -1.5em;
 }
