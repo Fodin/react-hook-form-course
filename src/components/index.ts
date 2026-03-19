@@ -1,6 +1,6 @@
 export { CodeExample } from './CodeExample'
 export { CodeHighlight } from './CodeHighlight'
-export { ExerciseHeader } from './ExerciseHeader'
+export { ExerciseLayout } from './ExerciseLayout'
 export { ExerciseRenderer } from './ExerciseRenderer'
 export { FormContainer } from './FormContainer'
 export { InterfaceDef } from './InterfaceDef'

@@ -1,4 +1,3 @@
-export { BasicFormExercise } from '../../src/exercises/01-basic-form/BasicFormExercise';
 export * from './Task1_1';
 export * from './Task1_2';
 export * from './Task1_3';

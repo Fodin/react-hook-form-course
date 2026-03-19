@@ -1,4 +1,6 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useContext, createContext } from 'react'
+import type { ReactNode } from 'react'
+import { createElement } from 'react'
 
 const PROGRESS_KEY = 'rhf-course-progress'
 
@@ -8,81 +10,45 @@ export interface TaskProgress {
   }
 }
 
-export function useProgress() {
-  const [progress, setProgress] = useState<TaskProgress>({})
+interface ProgressContextValue {
+  progress: TaskProgress
+  toggleTask: (levelId: string, taskId: string) => void
+  isTaskComplete: (levelId: string, taskId: string) => boolean
+  getLevelProgress: (levelId: string, totalTasks: number) => number
+  getTotalProgress: (levels: { id: string; tasks: number }[]) => number
+  resetProgress: () => void
+}
 
-  // Загрузка прогресса из localStorage
-  useEffect(() => {
+const ProgressContext = createContext<ProgressContextValue | null>(null)
+
+export function ProgressProvider({ children }: { children: ReactNode }) {
+  const [progress, setProgress] = useState<TaskProgress>(() => {
     try {
       const saved = localStorage.getItem(PROGRESS_KEY)
-      if (saved) {
-        setProgress(JSON.parse(saved))
-      }
-    } catch (error) {
-      console.error('Failed to load progress:', error)
+      return saved ? JSON.parse(saved) : {}
+    } catch {
+      return {}
     }
-  }, [])
+  })
 
-  // Сохранение прогресса в localStorage
-  const saveProgress = useCallback((newProgress: TaskProgress) => {
+  useEffect(() => {
     try {
-      localStorage.setItem(PROGRESS_KEY, JSON.stringify(newProgress))
-      setProgress(newProgress)
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress))
     } catch (error) {
       console.error('Failed to save progress:', error)
     }
+  }, [progress])
+
+  const toggleTask = useCallback((levelId: string, taskId: string) => {
+    setProgress(prev => ({
+      ...prev,
+      [levelId]: {
+        ...(prev[levelId] || {}),
+        [taskId]: !prev[levelId]?.[taskId],
+      },
+    }))
   }, [])
 
-  // Отметить задание как выполненное
-  const markTaskComplete = useCallback(
-    (levelId: string, taskId: string) => {
-      setProgress(prev => {
-        const newProgress = {
-          ...prev,
-          [levelId]: {
-            ...(prev[levelId] || {}),
-            [taskId]: true,
-          },
-        }
-        saveProgress(newProgress)
-        return newProgress
-      })
-    },
-    [saveProgress]
-  )
-
-  // Снять отметку с задания
-  const markTaskIncomplete = useCallback(
-    (levelId: string, taskId: string) => {
-      setProgress(prev => {
-        const newProgress = {
-          ...prev,
-          [levelId]: {
-            ...(prev[levelId] || {}),
-            [taskId]: false,
-          },
-        }
-        saveProgress(newProgress)
-        return newProgress
-      })
-    },
-    [saveProgress]
-  )
-
-  // Переключить статус задания
-  const toggleTask = useCallback(
-    (levelId: string, taskId: string) => {
-      const isComplete = progress[levelId]?.[taskId] || false
-      if (isComplete) {
-        markTaskIncomplete(levelId, taskId)
-      } else {
-        markTaskComplete(levelId, taskId)
-      }
-    },
-    [progress, markTaskComplete, markTaskIncomplete]
-  )
-
-  // Проверить, выполнено ли задание
   const isTaskComplete = useCallback(
     (levelId: string, taskId: string) => {
       return progress[levelId]?.[taskId] || false
@@ -90,7 +56,6 @@ export function useProgress() {
     [progress]
   )
 
-  // Получить процент выполнения уровня
   const getLevelProgress = useCallback(
     (levelId: string, totalTasks: number) => {
       const levelData = progress[levelId] || {}
@@ -100,7 +65,6 @@ export function useProgress() {
     [progress]
   )
 
-  // Получить общий процент выполнения курса
   const getTotalProgress = useCallback(
     (levels: { id: string; tasks: number }[]) => {
       const totalTasks = levels.reduce((sum, level) => sum + level.tasks, 0)
@@ -113,20 +77,30 @@ export function useProgress() {
     [progress]
   )
 
-  // Сбросить весь прогресс
   const resetProgress = useCallback(() => {
-    localStorage.removeItem(PROGRESS_KEY)
     setProgress({})
   }, [])
 
-  return {
-    progress,
-    markTaskComplete,
-    markTaskIncomplete,
-    toggleTask,
-    isTaskComplete,
-    getLevelProgress,
-    getTotalProgress,
-    resetProgress,
+  return createElement(
+    ProgressContext.Provider,
+    {
+      value: {
+        progress,
+        toggleTask,
+        isTaskComplete,
+        getLevelProgress,
+        getTotalProgress,
+        resetProgress,
+      },
+    },
+    children
+  )
+}
+
+export function useProgress() {
+  const context = useContext(ProgressContext)
+  if (!context) {
+    throw new Error('useProgress must be used within ProgressProvider')
   }
+  return context
 }

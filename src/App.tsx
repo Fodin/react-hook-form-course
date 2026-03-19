@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-
 
 import { ExerciseRenderer } from './components/ExerciseRenderer'
 import { LevelSidebar } from './components/LevelSidebar'
-import { ThemeProvider, LanguageProvider, useLanguage } from './hooks'
+import { ThemeProvider, LanguageProvider, ProgressProvider, useLanguage } from './hooks'
 import { useAppLevels } from './hooks/useAppLevels'
 
 import styles from './App.module.css'
@@ -33,26 +33,14 @@ function LevelPage() {
         <LevelSidebar levels={levels} currentLevel={levelId || '0'} />
       </aside>
       <main className={styles.main}>
-        <ExerciseRenderer level={levelId || '0'} taskId={taskId} />
+        <ExerciseRenderer level={levelId || '0'} />
       </main>
     </div>
   )
 }
 
-// Получить первое задание для уровня
 function getDefaultTask(levelId: string): string {
-  const defaultTasks: Record<string, string> = {
-    '0': '0.1',
-    '1': '1.1',
-    '2': '2.1',
-    '3': '3.1',
-    '4': '4.1',
-    '5': '5.1',
-    '6': '6.1',
-    '7': '7.1',
-    '8': '8.1',
-  }
-  return defaultTasks[levelId] || '0.1'
+  return `${levelId}.1`
 }
 
 function AppContent() {
@@ -71,7 +59,9 @@ export default function App() {
     <BrowserRouter>
       <ThemeProvider>
         <LanguageProvider>
-          <AppContent />
+          <ProgressProvider>
+            <AppContent />
+          </ProgressProvider>
         </LanguageProvider>
       </ThemeProvider>
     </BrowserRouter>

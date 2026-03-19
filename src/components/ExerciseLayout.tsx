@@ -1,59 +1,50 @@
 import { useState } from 'react'
 
-import { Task0_1, Task0_2 } from ".."
+import type { LevelConfig } from '../exercises/exercisesConfig'
+import { useTheme, useLanguage, useProgress, useExerciseNavigation } from '../hooks'
 
-import { Task0_1_Solution, Task0_2_Solution } from './Solution'
-import { TheoryBlock, FormContainer, TaskDescription } from '../../components'
-import solutionStyles from '../../components/SolutionButton.module.css'
-import taskStyles from '../../components/TaskButtons.module.css'
-import { useTheme, useLanguage, useProgress, useExerciseNavigation } from '../../hooks'
+import { FormContainer } from './FormContainer'
+import { TaskDescription } from './TaskDescription'
+import { TheoryBlock } from './TheoryBlock'
+import solutionStyles from './SolutionButton.module.css'
+import taskStyles from './TaskButtons.module.css'
 
-interface SetupExerciseProps {
-  initialTask?: string
+interface ExerciseLayoutProps {
+  config: LevelConfig
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function SetupExercise(_props: SetupExerciseProps) {
+export function ExerciseLayout({ config }: ExerciseLayoutProps) {
   const { theme } = useTheme()
   const { t } = useLanguage()
   const { isTaskComplete, toggleTask } = useProgress()
   const isDark = theme === 'dark'
 
+  const { levelId, navKey, descKey, tasks } = config
+  const taskIds = tasks.map(task => task.id)
+  const defaultTask = taskIds[0]
+
   const { currentTask, changeTask } = useExerciseNavigation({
-    levelId: '0',
-    defaultTask: '0.1',
-    validTasks: ['0.1', '0.2'],
+    levelId,
+    defaultTask,
+    validTasks: taskIds,
   })
 
   const [showSolution, setShowSolution] = useState(false)
 
-  const tasks: Record<string, React.ReactElement> = {
-    '0.1': <Task0_1 />,
-    '0.2': <Task0_2 />,
-  }
-
-  const solutions: Record<string, React.ReactElement> = {
-    '0.1': <Task0_1_Solution />,
-    '0.2': <Task0_2_Solution />,
-  }
-
-  const taskList = [
-    { id: '0.1', name: t('task.0.1') || 'Первая форма' },
-    { id: '0.2', name: t('task.0.2') || 'Вывод данных' },
-  ]
+  const currentTaskEntry = tasks.find(task => task.id === currentTask)
 
   return (
     <div>
       <header style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
-          {t('nav.level')} 0: {t('nav.setup')}
+          {t('nav.level')} {levelId}: {t(navKey)}
         </h1>
-        <p style={{ color: 'var(--text-muted)' }}>{t('level.0.desc')}</p>
+        <p style={{ color: isDark ? '#8b949e' : '#6c757d' }}>{t(descKey)}</p>
       </header>
 
       <div className={taskStyles.container}>
-        {taskList.map(task => {
-          const completed = isTaskComplete('0', task.id)
+        {tasks.map(task => {
+          const completed = isTaskComplete(levelId, task.id)
           const isActive = currentTask === task.id
           const buttonClass = `${taskStyles.button} ${
             isActive
@@ -73,9 +64,9 @@ export function SetupExercise(_props: SetupExerciseProps) {
               <input
                 type="checkbox"
                 checked={completed}
-                onChange={() => toggleTask('0', task.id)}
+                onChange={() => toggleTask(levelId, task.id)}
                 className={taskStyles.checkbox}
-                title={completed ? 'Отметить как не выполненное' : 'Отметить как выполненное'}
+                title={completed ? t('task.markIncomplete') : t('task.markComplete')}
               />
             </div>
           )
@@ -94,16 +85,16 @@ export function SetupExercise(_props: SetupExerciseProps) {
       </div>
 
       {showSolution ? (
-        solutions[currentTask]
+        currentTaskEntry?.solution
       ) : (
         <FormContainer taskFile={`Task${currentTask.replace('.', '_')}.tsx`}>
-          {tasks[currentTask]}
+          {currentTaskEntry?.component}
         </FormContainer>
       )}
 
-      <TaskDescription taskNumber={currentTask} level="0" />
+      <TaskDescription taskNumber={currentTask} level={levelId} />
 
-      <TheoryBlock level="0" />
+      <TheoryBlock level={levelId} />
     </div>
   )
 }
