@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { useLanguage } from '../../src/hooks/useLanguage'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 4.3: Checkbox
@@ -8,15 +8,12 @@ import { useLanguage } from '../../src/hooks/useLanguage'
 
 // TODO: Определите интерфейс SkillsForm
 // TODO: Define SkillsForm interface
-// interface SkillsForm { ... }
 
 // TODO: Инициализируйте useForm<SkillsForm>
 // TODO: Initialize useForm<SkillsForm>
-// const { register, handleSubmit } = useForm<SkillsForm>()
 
 // TODO: Создайте функцию onSubmit
 // TODO: Create onSubmit function
-// const onSubmit = (data: SkillsForm) => { ... }
 
 export function Task4_3() {
   const { t } = useLanguage()

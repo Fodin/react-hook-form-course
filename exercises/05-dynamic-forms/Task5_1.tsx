@@ -1,5 +1,5 @@
 import { useForm, useFieldArray } from 'react-hook-form'
-import { useLanguage } from '../../src/hooks/useLanguage'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 5.1: useFieldArray
@@ -8,19 +8,15 @@ import { useLanguage } from '../../src/hooks/useLanguage'
 
 // TODO: Определите интерфейс EmailsForm
 // TODO: Define EmailsForm interface
-// interface EmailsForm { ... }
 
 // TODO: Инициализируйте useForm с defaultValues
 // TODO: Initialize useForm with defaultValues
-// const { control, handleSubmit } = useForm<EmailsForm>({ defaultValues: { emails: [...] } })
 
 // TODO: Инициализируйте useFieldArray
 // TODO: Initialize useFieldArray
-// const { fields, append, remove } = useFieldArray({ control, name: 'emails' })
 
 // TODO: Создайте функцию onSubmit
 // TODO: Create onSubmit function
-// const onSubmit = (data: EmailsForm) => { ... }
 
 export function Task5_1() {
   const { t } = useLanguage()

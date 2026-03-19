@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { useLanguage } from '../../src/hooks/useLanguage'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 6.1: Dirty / Touched
@@ -8,15 +8,12 @@ import { useLanguage } from '../../src/hooks/useLanguage'
 
 // TODO: Определите интерфейс ProfileForm
 // TODO: Define ProfileForm interface
-// interface ProfileForm { ... }
 
 // TODO: Инициализируйте useForm<ProfileForm>
 // TODO: Initialize useForm<ProfileForm>
-// const { register, handleSubmit, formState } = useForm<ProfileForm>()
 
 // TODO: Создайте функцию onSubmit
 // TODO: Create onSubmit function
-// const onSubmit = (data: ProfileForm) => { ... }
 
 export function Task6_1() {
   const { t } = useLanguage()

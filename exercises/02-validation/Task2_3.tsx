@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { useLanguage } from '../../src/hooks/useLanguage'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 2.3: Custom валидация
@@ -8,15 +8,12 @@ import { useLanguage } from '../../src/hooks/useLanguage'
 
 // TODO: Определите интерфейс PasswordForm
 // TODO: Define PasswordForm interface
-// interface PasswordForm { ... }
 
 // TODO: Инициализируйте useForm<PasswordForm>
 // TODO: Initialize useForm<PasswordForm>
-// const { register, handleSubmit } = useForm<PasswordForm>()
 
 // TODO: Создайте функцию onSubmit
 // TODO: Create onSubmit function
-// const onSubmit = (data: PasswordForm) => { ... }
 
 export function Task2_3() {
   const { t } = useLanguage()

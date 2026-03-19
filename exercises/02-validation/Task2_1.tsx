@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { useLanguage } from '../../src/hooks/useLanguage'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 2.1: Built-in валидация
@@ -8,15 +8,12 @@ import { useLanguage } from '../../src/hooks/useLanguage'
 
 // TODO: Определите интерфейс RegistrationForm
 // TODO: Define RegistrationForm interface
-// interface RegistrationForm { ... }
 
 // TODO: Инициализируйте useForm<RegistrationForm>
 // TODO: Initialize useForm<RegistrationForm>
-// const { register, handleSubmit } = useForm<RegistrationForm>()
 
 // TODO: Создайте функцию onSubmit
 // TODO: Create onSubmit function
-// const onSubmit = (data: RegistrationForm) => { ... }
 
 export function Task2_1() {
   const { t } = useLanguage()

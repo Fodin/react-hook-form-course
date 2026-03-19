@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { useLanguage } from '../../src/hooks/useLanguage'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 1.4: formState
@@ -8,15 +8,12 @@ import { useLanguage } from '../../src/hooks/useLanguage'
 
 // TODO: Определите интерфейс LoginForm
 // TODO: Define LoginForm interface
-// interface LoginForm { ... }
 
 // TODO: Инициализируйте useForm<LoginForm>
 // TODO: Initialize useForm<LoginForm>
-// const { register, handleSubmit, formState } = useForm<LoginForm>()
 
 // TODO: Создайте функцию onSubmit
 // TODO: Create onSubmit function
-// const onSubmit = (data: LoginForm) => { ... }
 
 export function Task1_4() {
   const { t } = useLanguage()

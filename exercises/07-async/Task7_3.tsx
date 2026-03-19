@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
-import { useLanguage } from '../../src/hooks/useLanguage'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 7.3: Submit loading
@@ -9,20 +9,15 @@ import { useLanguage } from '../../src/hooks/useLanguage'
 
 // TODO: Определите интерфейс ContactForm
 // TODO: Define ContactForm interface
-// interface ContactForm { ... }
 
 // TODO: Инициализируйте useForm<ContactForm>
 // TODO: Initialize useForm<ContactForm>
-// const { register, handleSubmit } = useForm<ContactForm>()
 
 // TODO: Создайте состояния для error и success
 // TODO: Create error and success states
-// const [error, setError] = useState<string | null>(null)
-// const [success, setSuccess] = useState(false)
 
 // TODO: Создайте функцию onSubmit
 // TODO: Create onSubmit function
-// const onSubmit = async (data: ContactForm) => { ... }
 
 export function Task7_3() {
   const { t } = useLanguage()

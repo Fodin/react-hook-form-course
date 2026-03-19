@@ -1,4 +1,4 @@
-import { useLanguage } from '../../src/hooks/useLanguage'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 8.6: useFormState и тестирование

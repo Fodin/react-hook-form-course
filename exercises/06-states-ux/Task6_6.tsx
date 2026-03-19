@@ -1,4 +1,4 @@
-import { useLanguage } from '../../src/hooks/useLanguage'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 6.6: setFocus, resetField, getFieldState

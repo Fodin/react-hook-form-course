@@ -1,4 +1,4 @@
-import { useLanguage } from '../../src/hooks/useLanguage'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 7.5: Async defaultValues и isLoading

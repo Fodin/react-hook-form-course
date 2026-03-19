@@ -21,6 +21,6 @@
       "exercises/*": ["./src/exercises/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "exercises"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

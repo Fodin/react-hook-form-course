@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { useLanguage } from '../../src/hooks/useLanguage'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 2.2: Pattern валидация
@@ -8,15 +8,12 @@ import { useLanguage } from '../../src/hooks/useLanguage'
 
 // TODO: Определите интерфейс PatternForm
 // TODO: Define PatternForm interface
-// interface PatternForm { ... }
 
 // TODO: Инициализируйте useForm<PatternForm>
 // TODO: Initialize useForm<PatternForm>
-// const { register, handleSubmit } = useForm<PatternForm>()
 
 // TODO: Создайте функцию onSubmit
 // TODO: Create onSubmit function
-// const onSubmit = (data: PatternForm) => { ... }
 
 export function Task2_2() {
   const { t } = useLanguage()

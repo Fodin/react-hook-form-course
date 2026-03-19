@@ -1,4 +1,4 @@
-import { useLanguage } from '../../src/hooks/useLanguage'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 3.5: Zod vs Yup

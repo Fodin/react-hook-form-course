@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { useLanguage } from '../../src/hooks/useLanguage'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 1.3: setValue и getValues
@@ -8,15 +8,12 @@ import { useLanguage } from '../../src/hooks/useLanguage'
 
 // TODO: Определите интерфейс ProductForm
 // TODO: Define ProductForm interface
-// interface ProductForm { ... }
 
 // TODO: Инициализируйте useForm<ProductForm>
 // TODO: Initialize useForm<ProductForm>
-// const { register, handleSubmit, setValue, getValues } = useForm<ProductForm>()
 
 // TODO: Создайте функцию onSubmit
 // TODO: Create onSubmit function
-// const onSubmit = (data: ProductForm) => { ... }
 
 export function Task1_3() {
   const { t } = useLanguage()

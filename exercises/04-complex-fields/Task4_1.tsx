@@ -1,5 +1,5 @@
 import { Controller, useForm } from 'react-hook-form'
-import { useLanguage } from '../../src/hooks/useLanguage'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 4.1: Controller
@@ -8,19 +8,15 @@ import { useLanguage } from '../../src/hooks/useLanguage'
 
 // TODO: Определите интерфейс CountryForm
 // TODO: Define CountryForm interface
-// interface CountryForm { ... }
 
 // TODO: Создайте кастомный компонент Select
 // TODO: Create custom Select component
-// const Select = ({ value, onChange, options }) => { ... }
 
 // TODO: Инициализируйте useForm<CountryForm>
 // TODO: Initialize useForm<CountryForm>
-// const { control, handleSubmit } = useForm<CountryForm>()
 
 // TODO: Создайте функцию onSubmit
 // TODO: Create onSubmit function
-// const onSubmit = (data: CountryForm) => { ... }
 
 export function Task4_1() {
   const { t } = useLanguage()

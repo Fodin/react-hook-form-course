@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { useLanguage } from '../../src/hooks/useLanguage'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 4.4: Загрузка файлов
@@ -8,15 +8,12 @@ import { useLanguage } from '../../src/hooks/useLanguage'
 
 // TODO: Определите интерфейс AvatarForm
 // TODO: Define AvatarForm interface
-// interface AvatarForm { ... }
 
 // TODO: Инициализируйте useForm<AvatarForm>
 // TODO: Initialize useForm<AvatarForm>
-// const { register, handleSubmit } = useForm<AvatarForm>()
 
 // TODO: Создайте функцию onSubmit
 // TODO: Create onSubmit function
-// const onSubmit = (data: AvatarForm) => { ... }
 
 export function Task4_4() {
   const { t } = useLanguage()

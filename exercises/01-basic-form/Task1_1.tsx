@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { useLanguage } from '../../src/hooks/useLanguage'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 1.1: Форма регистрации
@@ -8,18 +8,15 @@ import { useLanguage } from '../../src/hooks/useLanguage'
 
 // TODO: Определите интерфейс RegistrationForm
 // TODO: Define RegistrationForm interface
-// interface RegistrationForm { ... }
 
 export function Task1_1() {
   const { t } = useLanguage()
 
   // TODO: Инициализируйте useForm<RegistrationForm>
   // TODO: Initialize useForm<RegistrationForm>
-  // const { register, handleSubmit } = useForm<RegistrationForm>()
 
   // TODO: Создайте функцию onSubmit
   // TODO: Create onSubmit function
-  // const onSubmit = (data: RegistrationForm) => { ... }
 
   return (
     <div className="exercise-container">
