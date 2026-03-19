@@ -635,7 +635,7 @@ const { fields, append, remove } = useFieldArray({ control, name: 'emails' })
     </div>
   ))
 }
-;<button type="button" onClick={() => append({ value: '' })}>
+<button type="button" onClick={() => append({ value: '' })}>
   + Добавить
 </button>
 ```

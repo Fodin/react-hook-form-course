@@ -95,7 +95,7 @@ const onSubmit = (data: FormData) => {
   console.log(data) // { email: 'test@example.com', password: '123' }
 }
 
-;<form onSubmit={handleSubmit(onSubmit)}>
+<form onSubmit={handleSubmit(onSubmit)}>
   <input {...register('email')} />
   <input {...register('password')} />
   <button type="submit">Отправить</button>

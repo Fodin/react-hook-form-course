@@ -41,6 +41,7 @@ export const translations = {
     'task.3.3': 'Сложные схемы',
     'task.3.4': 'refine и сообщения',
     'task.3.5': 'Zod vs Yup',
+    'task.3.6': 'superRefine',
 
     // Задания уровня 4
     'task.4.1': 'Controller',
@@ -61,12 +62,14 @@ export const translations = {
     'task.6.3': 'Focus management',
     'task.6.4': 'Accessibility',
     'task.6.5': 'Performance',
+    'task.6.6': 'setFocus и resetField',
 
     // Задания уровня 7
     'task.7.1': 'Async валидация',
     'task.7.2': 'Загрузка данных',
     'task.7.3': 'Submit loading',
     'task.7.4': 'Debounce',
+    'task.7.5': 'Async defaultValues',
 
     // Задания уровня 8
     'task.8.1': 'UI библиотека',
@@ -74,6 +77,7 @@ export const translations = {
     'task.8.3': 'FormContext',
     'task.8.4': 'localStorage',
     'task.8.5': 'Финальный проект',
+    'task.8.6': 'useFormState и тесты',
 
     // Задания
     'task.title': 'Задание',
@@ -166,6 +170,7 @@ export const translations = {
     'task.3.3': 'Complex Schemas',
     'task.3.4': 'refine and Messages',
     'task.3.5': 'Zod vs Yup',
+    'task.3.6': 'superRefine',
 
     // Tasks Level 4
     'task.4.1': 'Controller',
@@ -186,12 +191,14 @@ export const translations = {
     'task.6.3': 'Focus Management',
     'task.6.4': 'Accessibility',
     'task.6.5': 'Performance',
+    'task.6.6': 'setFocus & resetField',
 
     // Tasks Level 7
     'task.7.1': 'Async Validation',
     'task.7.2': 'Data Loading',
     'task.7.3': 'Submit Loading',
     'task.7.4': 'Debounce',
+    'task.7.5': 'Async defaultValues',
 
     // Tasks Level 8
     'task.8.1': 'UI Library',
@@ -199,6 +206,7 @@ export const translations = {
     'task.8.3': 'FormContext',
     'task.8.4': 'localStorage',
     'task.8.5': 'Final Project',
+    'task.8.6': 'useFormState & Tests',
 
     // Tasks
     'task.title': 'Task',

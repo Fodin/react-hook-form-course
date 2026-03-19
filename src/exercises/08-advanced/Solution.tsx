@@ -1,5 +1,6 @@
-import { useState, useEffect, createContext } from 'react'
-import { useForm, FormProvider, useFormContext, Controller } from 'react-hook-form'
+import { useState, useEffect, useRef, createContext } from 'react'
+import { useForm, useFormState, FormProvider, useFormContext, Controller } from 'react-hook-form'
+import type { Control } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
@@ -560,6 +561,97 @@ export function Task8_5_Solution() {
           )}
         </div>
       </form>
+    </div>
+  )
+}
+
+// ============================================
+// Задание 8.6: useFormState и тестирование — Решение
+// ============================================
+
+interface LoginTestForm {
+  email: string
+  password: string
+}
+
+function SubmitButton({ control }: { control: Control<LoginTestForm> }) {
+  const { isSubmitting, isValid } = useFormState({ control })
+  const renderCount = useRef(0)
+  renderCount.current++
+
+  return (
+    <div>
+      <button type="submit" disabled={!isValid || isSubmitting}>
+        {isSubmitting ? 'Отправка...' : 'Войти'}
+      </button>
+      <small style={{ display: 'block', marginTop: '0.5rem', color: '#6c757d' }}>
+        SubmitButton renders: {renderCount.current}
+      </small>
+    </div>
+  )
+}
+
+export function Task8_6_Solution() {
+  const renderCount = useRef(0)
+  renderCount.current++
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<LoginTestForm>({
+    defaultValues: { email: '', password: '' },
+    mode: 'onChange',
+  })
+
+  const onSubmit = async (data: LoginTestForm) => {
+    await new Promise(r => setTimeout(r, 1000))
+    console.log('Login:', data)
+  }
+
+  return (
+    <div className="exercise-container">
+      <h2>✅ Задание 8.6: useFormState и тестирование</h2>
+
+      <div style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '1rem' }}>
+        🔄 Рендеров формы: {renderCount.current}
+      </div>
+
+      <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: '400px' }}>
+        <div className="form-group">
+          <label htmlFor="login-email">Email *</label>
+          <input
+            id="login-email"
+            type="email"
+            {...register('email', {
+              required: 'Обязательно',
+              pattern: { value: /^\S+@\S+$/, message: 'Неверный email' },
+            })}
+          />
+          {errors.email && <span className="error">{errors.email.message}</span>}
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="login-password">Пароль *</label>
+          <input
+            id="login-password"
+            type="password"
+            {...register('password', {
+              required: 'Обязательно',
+              minLength: { value: 6, message: 'Минимум 6 символов' },
+            })}
+          />
+          {errors.password && <span className="error">{errors.password.message}</span>}
+        </div>
+
+        <SubmitButton control={control} />
+      </form>
+
+      <p style={{ fontSize: '0.875rem', color: '#6c757d', marginTop: '1rem' }}>
+        💡 SubmitButton использует useFormState и ререндерится только при изменении isValid/isSubmitting,
+        а не при каждом вводе текста.
+      </p>
     </div>
   )
 }

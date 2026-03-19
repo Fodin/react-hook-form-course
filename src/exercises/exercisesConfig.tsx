@@ -20,7 +20,8 @@ import {
   Task3_2_Solution,
   Task3_3_Solution,
   Task3_4_Solution,
-  Task3_5_Solution
+  Task3_5_Solution,
+  Task3_6_Solution
 } from './03-schema-validation/Solution';
 import {
   Task4_1_Solution,
@@ -40,20 +41,23 @@ import {
   Task6_2_Solution,
   Task6_3_Solution,
   Task6_4_Solution,
-  Task6_5_Solution
+  Task6_5_Solution,
+  Task6_6_Solution
 } from './06-states-ux/Solution';
 import {
   Task7_1_Solution,
   Task7_2_Solution,
   Task7_3_Solution,
-  Task7_4_Solution
+  Task7_4_Solution,
+  Task7_5_Solution
 } from './07-async/Solution';
 import {
   Task8_1_Solution,
   Task8_2_Solution,
   Task8_3_Solution,
   Task8_4_Solution,
-  Task8_5_Solution
+  Task8_5_Solution,
+  Task8_6_Solution
 } from './08-advanced/Solution';
 
 function TaskStub({ id }: { id: string }) {
@@ -126,6 +130,7 @@ export const exercisesConfig: LevelConfig[] = [
       task('3.3', 'task.3.3', <Task3_3_Solution/>),
       task('3.4', 'task.3.4', <Task3_4_Solution/>),
       task('3.5', 'task.3.5', <Task3_5_Solution/>),
+      task('3.6', 'task.3.6', <Task3_6_Solution/>),
     ],
   },
   {
@@ -161,6 +166,7 @@ export const exercisesConfig: LevelConfig[] = [
       task('6.3', 'task.6.3', <Task6_3_Solution/>),
       task('6.4', 'task.6.4', <Task6_4_Solution/>),
       task('6.5', 'task.6.5', <Task6_5_Solution/>),
+      task('6.6', 'task.6.6', <Task6_6_Solution/>),
     ],
   },
   {
@@ -172,6 +178,7 @@ export const exercisesConfig: LevelConfig[] = [
       task('7.2', 'task.7.2', <Task7_2_Solution/>),
       task('7.3', 'task.7.3', <Task7_3_Solution/>),
       task('7.4', 'task.7.4', <Task7_4_Solution/>),
+      task('7.5', 'task.7.5', <Task7_5_Solution/>),
     ],
   },
   {
@@ -184,6 +191,7 @@ export const exercisesConfig: LevelConfig[] = [
       task('8.3', 'task.8.3', <Task8_3_Solution/>),
       task('8.4', 'task.8.4', <Task8_4_Solution/>),
       task('8.5', 'task.8.5', <Task8_5_Solution/>),
+      task('8.6', 'task.8.6', <Task8_6_Solution/>),
     ],
   },
 ];

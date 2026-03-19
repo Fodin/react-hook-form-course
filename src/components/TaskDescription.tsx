@@ -43,6 +43,7 @@ export function TaskDescription({ taskNumber, level }: TaskDescriptionProps) {
       '3.3': '/src/exercises/03-schema-validation/task-3.3.md',
       '3.4': '/src/exercises/03-schema-validation/task-3.4.md',
       '3.5': '/src/exercises/03-schema-validation/task-3.5.md',
+      '3.6': '/src/exercises/03-schema-validation/task-3.6.md',
     },
     '4': {
       '4.1': '/src/exercises/04-complex-fields/task-4.1.md',
@@ -63,12 +64,14 @@ export function TaskDescription({ taskNumber, level }: TaskDescriptionProps) {
       '6.3': '/src/exercises/06-states-ux/task-6.3.md',
       '6.4': '/src/exercises/06-states-ux/task-6.4.md',
       '6.5': '/src/exercises/06-states-ux/task-6.5.md',
+      '6.6': '/src/exercises/06-states-ux/task-6.6.md',
     },
     '7': {
       '7.1': '/src/exercises/07-async/task-7.1.md',
       '7.2': '/src/exercises/07-async/task-7.2.md',
       '7.3': '/src/exercises/07-async/task-7.3.md',
       '7.4': '/src/exercises/07-async/task-7.4.md',
+      '7.5': '/src/exercises/07-async/task-7.5.md',
     },
     '8': {
       '8.1': '/src/exercises/08-advanced/task-8.1.md',
@@ -76,6 +79,7 @@ export function TaskDescription({ taskNumber, level }: TaskDescriptionProps) {
       '8.3': '/src/exercises/08-advanced/task-8.3.md',
       '8.4': '/src/exercises/08-advanced/task-8.4.md',
       '8.5': '/src/exercises/08-advanced/task-8.5.md',
+      '8.6': '/src/exercises/08-advanced/task-8.6.md',
     },
   }
 

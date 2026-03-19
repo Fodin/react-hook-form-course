@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -331,6 +331,95 @@ export function Task7_4_Solution() {
 
         <p style={{ fontSize: '0.875rem', color: '#6c757d', marginTop: '1rem' }}>
           💡 Откройте консоль разработчика, чтобы увидеть сообщения о сохранении
+        </p>
+      </form>
+    </div>
+  )
+}
+
+// ============================================
+// Задание 7.5: Async defaultValues и isLoading — Решение
+// ============================================
+
+interface UserProfileForm {
+  name: string
+  email: string
+  bio: string
+}
+
+const fetchUser = async (): Promise<UserProfileForm> => {
+  await new Promise(r => setTimeout(r, 1500))
+  return { name: 'John Doe', email: 'john@example.com', bio: 'Разработчик' }
+}
+
+export function Task7_5_Solution() {
+  const [externalUser, setExternalUser] = useState<UserProfileForm | null>(null)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isLoading },
+  } = useForm<UserProfileForm>({
+    defaultValues: fetchUser,
+    values: externalUser ?? undefined,
+  })
+
+  const onSubmit = (data: UserProfileForm) => {
+    console.log('Updated:', data)
+  }
+
+  const handleRefresh = async () => {
+    const user = await fetchUser()
+    setExternalUser({ ...user, name: 'Jane Doe (обновлено)' })
+  }
+
+  if (isLoading) {
+    return (
+      <div className="exercise-container">
+        <h2>✅ Задание 7.5: Async defaultValues</h2>
+        <div style={{ padding: '2rem', textAlign: 'center' }}>
+          <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>⏳</div>
+          <div style={{ color: '#6c757d' }}>Загрузка данных пользователя...</div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="exercise-container">
+      <h2>✅ Задание 7.5: Async defaultValues</h2>
+
+      <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: '400px' }}>
+        <div className="form-group">
+          <label>Имя *</label>
+          <input {...register('name', { required: 'Обязательно' })} />
+          {errors.name && <span className="error">{errors.name.message}</span>}
+        </div>
+
+        <div className="form-group">
+          <label>Email *</label>
+          <input type="email" {...register('email', {
+            required: 'Обязательно',
+            pattern: { value: /^\S+@\S+$/, message: 'Неверный email' },
+          })} />
+          {errors.email && <span className="error">{errors.email.message}</span>}
+        </div>
+
+        <div className="form-group">
+          <label>О себе *</label>
+          <textarea {...register('bio', { required: 'Обязательно' })} rows={4} style={{ width: '100%' }} />
+          {errors.bio && <span className="error">{errors.bio.message}</span>}
+        </div>
+
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button type="submit">Сохранить</button>
+          <button type="button" onClick={handleRefresh} style={{ background: '#17a2b8', color: '#fff', border: 'none' }}>
+            🔄 Обновить данные
+          </button>
+        </div>
+
+        <p style={{ fontSize: '0.875rem', color: '#6c757d', marginTop: '1rem' }}>
+          💡 Данные загружены через async defaultValues. Кнопка «Обновить» использует values для синхронизации.
         </p>
       </form>
     </div>

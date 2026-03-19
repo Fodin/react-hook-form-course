@@ -99,7 +99,7 @@ function TextField({ label, error, ...props }: any) {
 }
 
 // Использование с Controller
-;<Controller
+<Controller
   name="email"
   control={control}
   render={({ field, fieldState: { error } }) => (
@@ -174,7 +174,7 @@ function SelectForm() {
 ### Select с валидацией
 
 ```tsx
-;<select
+<select
   {...register('country', {
     required: 'Выберите страну',
   })}
@@ -594,50 +594,53 @@ const { control } = useForm()
 
 ---
 
-### ❌ Ошибка 2: Checkbox без checked
+### ❌ Ошибка 2: Controller для нативного checkbox
 
 ```tsx
-// ❌ Неправильно - checkbox не контролируемый
-<input type="checkbox" {...register('agree')} />
-
-// ✅ Правильно - с checked для Controller
+// Избыточно — Controller для обычного HTML checkbox
 <Controller
   name="agree"
   control={control}
   render={({ field }) => (
-    <input
-      type="checkbox"
-      checked={field.value}
-      onChange={field.onChange}
-    />
+    <input type="checkbox" checked={field.value} onChange={field.onChange} />
   )}
 />
+
+// ✅ Правильно — register работает с нативным checkbox
+<input type="checkbox" {...register('agree')} />
 ```
 
-**Почему это ошибка:** Checkbox требует явного указания `checked` для корректной работы в контролируемом режиме.
+**Почему это ошибка:** `register` автоматически обрабатывает нативные чекбоксы (устанавливает `checked`, возвращает `boolean`). `Controller` нужен только для сторонних UI-компонентов (Material UI, Ant Design и т.д.), которые не предоставляют нативный `ref`.
 
 ---
 
-### ❌ Ошибка 3: File без preventDefault
+### ❌ Ошибка 3: Перезапись onChange от register
 
 ```tsx
-// ❌ Неправильно - форма отправляется при выборе файла
-<input type="file" {...register('avatar')} />
+// ❌ Неправильно — свой onChange перезаписывает обработчик register
+<input
+  type="file"
+  {...register('avatar')}
+  onChange={(e) => {
+    const file = e.target.files?.[0]
+    // register.onChange не вызовется — RHF не получит значение
+  }}
+/>
 
-// ✅ Правильно - отменяем стандартное поведение
-<form onSubmit={handleSubmit(onSubmit)}>
-  <input
-    type="file"
-    {...register('avatar')}
-    onChange={(e) => {
-      const file = e.target.files?.[0]
-      // обработка файла
-    }}
-  />
-</form>
+// ✅ Правильно — вызываем onChange от register, добавляя свою логику
+const avatarRegister = register('avatar')
+<input
+  type="file"
+  {...avatarRegister}
+  onChange={(e) => {
+    avatarRegister.onChange(e)  // Сначала передаём событие в RHF
+    const file = e.target.files?.[0]
+    // Дополнительная обработка (preview и т.д.)
+  }}
+/>
 ```
 
-**Почему это ошибка:** При загрузке файлов важно не отправлять форму автоматически, а обрабатывать файл отдельно.
+**Почему это ошибка:** Если поставить `onChange` после `{...register()}`, он перезапишет обработчик RHF. Нужно вызвать `register.onChange` явно.
 
 ---
 

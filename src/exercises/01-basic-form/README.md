@@ -58,12 +58,13 @@ useForm<FormData>({
 
 **Режимы валидации:**
 
-| mode         | Описание                                     |
-| ------------ | -------------------------------------------- |
-| `'onSubmit'` | Валидация только при отправке (по умолчанию) |
-| `'onChange'` | Валидация при каждом изменении               |
-| `'onBlur'`   | Валидация при потере фокуса                  |
-| `'all'`      | Валидация при изменении и потере фокуса      |
+| mode          | Описание                                                                  |
+| ------------- | ------------------------------------------------------------------------- |
+| `'onSubmit'`  | Валидация только при отправке (по умолчанию)                              |
+| `'onChange'`  | Валидация при каждом изменении                                            |
+| `'onBlur'`    | Валидация при потере фокуса                                               |
+| `'onTouched'` | Валидация после первого blur, затем при каждом change. Оптимальный баланс UX |
+| `'all'`       | Валидация при изменении и потере фокуса                                   |
 
 ---
 
@@ -135,7 +136,85 @@ setValueAs: value => value.replace(/\D/g, '')
 
 ---
 
-## 3. Различные типы полей
+## 3. `handleSubmit` — обработка отправки формы
+
+### Базовое использование
+
+```tsx
+const { handleSubmit } = useForm<FormData>()
+
+const onSubmit = (data: FormData) => {
+  console.log('Valid data:', data)
+}
+
+<form onSubmit={handleSubmit(onSubmit)}>
+```
+
+### Два callback: `onValid` и `onInvalid`
+
+`handleSubmit` принимает **два** аргумента:
+
+1. **`onValid`** (обязательный) — вызывается, когда форма прошла валидацию
+2. **`onInvalid`** (опциональный) — вызывается, когда есть ошибки валидации
+
+```tsx
+const { handleSubmit } = useForm<FormData>()
+
+const onValid = (data: FormData) => {
+  console.log('Success:', data)
+}
+
+const onInvalid = (errors: FieldErrors<FormData>) => {
+  console.log('Validation errors:', errors)
+}
+
+<form onSubmit={handleSubmit(onValid, onInvalid)}>
+```
+
+**Когда полезен `onInvalid`?**
+
+- Логирование ошибок валидации в аналитику
+- Показ toast-уведомления при неуспешной отправке
+- Фокусировка на определённом элементе UI
+- Отправка данных об ошибках на сервер для мониторинга
+
+**Пример с аналитикой:**
+
+```tsx
+handleSubmit(
+  (data) => {
+    // Form is valid — send data
+    api.submitForm(data)
+  },
+  (errors) => {
+    // Form has errors — log to analytics
+    analytics.track('form_validation_failed', {
+      fields: Object.keys(errors),
+    })
+  }
+)
+```
+
+### Асинхронная отправка
+
+`handleSubmit` корректно обрабатывает асинхронные функции. Пока промис не разрешится, `isSubmitting` будет `true`:
+
+```tsx
+const onSubmit = async (data: FormData) => {
+  await api.sendData(data) // isSubmitting === true
+  // isSubmitting === false after resolve/reject
+}
+
+<form onSubmit={handleSubmit(onSubmit)}>
+  <button disabled={isSubmitting}>
+    {isSubmitting ? 'Отправка...' : 'Отправить'}
+  </button>
+</form>
+```
+
+---
+
+## 4. Различные типы полей
 
 ### Текстовые поля
 
@@ -304,67 +383,35 @@ interface FormData {
 **Множественный выбор (массив строк):**
 
 Когда нужно выбрать несколько опций из списка (например, навыки, интересы).
+React Hook Form автоматически собирает значения в массив, если несколько чекбоксов зарегистрированы с одним именем:
 
 ```tsx
 interface FormData {
   skills: string[]  // Массив выбранных значений: ['react', 'typescript']
 }
 
-const { watch, setValue } = useForm<FormData>({
+const { register } = useForm<FormData>({
   defaultValues: {
-    skills: []  // Важно! Инициализируем пустым массивом
+    skills: []  // Инициализируем пустым массивом
   }
 })
 
-const skills = watch('skills') || []  // Получаем текущий массив выбранных
+// Все чекбоксы используют одно имя — RHF соберёт отмеченные value в массив
+<input type="checkbox" value="react" {...register('skills')} />
+<label>React</label>
 
-// Чекбокс для React
-<input
-  type="checkbox"
-  value="react"
-  checked={skills.includes('react')}  // Отмечен, если 'react' есть в массиве
-  onChange={(e) => {
-    if (e.target.checked) {
-      // Добавляем в массив
-      setValue('skills', [...skills, 'react'])
-    } else {
-      // Удаляем из массива
-      setValue('skills', skills.filter(s => s !== 'react'))
-    }
-  }}
-/>
+<input type="checkbox" value="typescript" {...register('skills')} />
+<label>TypeScript</label>
 
-// Аналогично для других навыков
-<input
-  type="checkbox"
-  value="typescript"
-  checked={skills.includes('typescript')}
-  onChange={(e) => {
-    if (e.target.checked) {
-      setValue('skills', [...skills, 'typescript'])
-    } else {
-      setValue('skills', skills.filter(s => s !== 'typescript'))
-    }
-  }}
-/>
+<input type="checkbox" value="nodejs" {...register('skills')} />
+<label>Node.js</label>
 ```
 
-**Почему не используем `{...register}` для множественных чекбоксов?**
-
-React Hook Form не поддерживает автоматическую работу с массивами чекбоксов через `register`. Нужно вручную управлять массивом через `setValue`.
-
-**Зачем используется массив?**
-
-Когда пользователь может выбрать **несколько** опций, нам нужно хранить их все. Например:
-
-- Навыки: `['react', 'typescript', 'nodejs']`
-- Интересы: `['sports', 'music']`
-
-Одиночный boolean не подходит, так как хранит только true/false.
+При отправке `skills` будет содержать массив отмеченных значений, например `['react', 'typescript']`.
 
 ---
 
-## 4. `formState` — состояние формы
+## 5. `formState` — состояние формы
 
 ### Получение состояния
 
@@ -496,7 +543,7 @@ const {
 
 ---
 
-## 5. `watch` — отслеживание значений
+## 6. `watch` — отслеживание значений
 
 ### Зачем нужен `watch`?
 
@@ -607,7 +654,7 @@ function PasswordForm() {
 
 ---
 
-## 6. `setValue` и `getValues`
+## 7. `setValue` и `getValues`
 
 ### `setValue` — установка значения
 
@@ -678,7 +725,7 @@ function ProductForm() {
 
 ---
 
-## 7. `reset` — сброс формы
+## 8. `reset` — сброс формы
 
 ```tsx
 const { reset } = useForm()
@@ -917,35 +964,43 @@ setValue('email', 'test@example.com')
 
 ---
 
-### ❌ Ошибка 4: getValues вызывает лишний ререндер
+### ❌ Ошибка 4: getValues в JSX для отображения данных
 
 ```tsx
-// ❌ Неправильно - getValues в теле компонента
+// ❌ Неправильно - значение не будет обновляться в UI
 const values = getValues()
 <p>{values.email}</p>
 
-// ✅ Правильно - getValues только в обработчиках
+// ✅ Правильно - watch подписывается на изменения и обновляет UI
+const email = watch('email')
+<p>{email}</p>
+
+// ✅ Также правильно - getValues в обработчиках (не в JSX)
 const onSubmit = () => {
   const values = getValues()
   console.log(values)
 }
 ```
 
-**Почему это ошибка:** `getValues()` в теле компонента вызывает ререндер. Используйте `watch` для реактивного чтения или `getValues` только в обработчиках.
+**Почему это ошибка:** `getValues()` читает текущее значение **без подписки** на изменения — компонент не будет перерисовываться при вводе. Для отображения данных в UI используйте `watch`, а `getValues` — только в обработчиках событий.
 
 ---
 
-### ❌ Ошибка 5: formState не деструктуризируется правильно
+### ❌ Ошибка 5: Условный доступ к formState
 
 ```tsx
-// ❌ Неправильно - formState не отслеживает изменения
+// ❌ Неправильно - условный доступ не подписывает Proxy
 const { formState } = useForm()
-<p>{formState.errors.email}</p>
+if (someCondition) {
+  console.log(formState.errors) // Proxy не подпишется
+}
 
-// ✅ Правильно - деструктуризация из formState
+// ✅ Правильно - деструктуризация в render-фазе подписывает Proxy
 const { formState: { errors, isDirty, isValid } } = useForm()
 <p>{errors.email?.message}</p>
 ```
+
+**Почему это важно:** RHF использует Proxy для отслеживания, какие свойства `formState` вы читаете. Деструктуризация в render-фазе гарантирует подписку и ререндер при изменении.
 
 **Почему это ошибка:** `formState` — это Proxy объект. Нужно деструктуризировать конкретные свойства для правильной подписки на изменения.
 

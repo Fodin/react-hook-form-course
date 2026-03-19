@@ -303,7 +303,7 @@ useForm({
 ### Базовое отображение
 
 ```tsx
-;<input {...register('email', { required: 'Обязательно' })} />
+<input {...register('email', { required: 'Обязательно' })} />
 {
   errors.email && <span className="error">{errors.email.message}</span>
 }
@@ -339,8 +339,14 @@ useForm({
 
 ### Несколько ошибок для одного поля
 
+По умолчанию RHF показывает только **первую** ошибку поля. Чтобы показать **все** ошибки одновременно, используйте `criteriaMode: 'all'`:
+
 ```tsx
-;<input
+const { register, formState: { errors } } = useForm({
+  criteriaMode: 'all'  // Собирать все ошибки, а не только первую
+})
+
+<input
   {...register('password', {
     validate: {
       minLength: v => v.length >= 8 || 'Минимум 8 символов',
@@ -350,16 +356,16 @@ useForm({
   })}
 />
 
-{
-  errors.password && (
-    <div style={{ color: '#dc3545', fontSize: '0.875rem' }}>
-      {Object.entries(errors.password).map(([key, value]) => (
-        <div key={key}>{typeof value === 'string' ? value : value?.message}</div>
-      ))}
-    </div>
-  )
-}
+{errors.password?.types && (
+  <div style={{ color: '#dc3545', fontSize: '0.875rem' }}>
+    {Object.entries(errors.password.types).map(([key, message]) => (
+      <div key={key}>{message}</div>
+    ))}
+  </div>
+)}
 ```
+
+> **Важно:** при `criteriaMode: 'all'` все ошибки доступны через `errors.field.types` (объект), а не через `errors.field.message` (строка).
 
 ---
 
@@ -367,22 +373,13 @@ useForm({
 
 ```tsx
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
 
-// Схема валидации
-const schema = z.object({
-  username: z.string().min(3, 'Минимум 3 символа').max(20, 'Максимум 20 символов'),
-  email: z.string().email('Неверный формат email'),
-  age: z.number().min(18, 'Минимум 18 лет').max(120, 'Максимум 120 лет'),
-  password: z
-    .string()
-    .min(6, 'Минимум 6 символов')
-    .regex(/[A-Z]/, 'Должна быть заглавная буква')
-    .regex(/\d/, 'Должна быть цифра'),
-})
-
-type FormData = z.infer<typeof schema>
+interface FormData {
+  username: string
+  email: string
+  age: number
+  password: string
+}
 
 export function RegistrationForm() {
   const {
@@ -390,7 +387,6 @@ export function RegistrationForm() {
     handleSubmit,
     formState: { errors, isValid, isSubmitting },
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
     mode: 'onChange',
   })
 
@@ -402,25 +398,44 @@ export function RegistrationForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
         <label>Username</label>
-        <input {...register('username')} />
+        <input {...register('username', {
+          required: 'Обязательное поле',
+          minLength: { value: 3, message: 'Минимум 3 символа' },
+          maxLength: { value: 20, message: 'Максимум 20 символов' },
+        })} />
         {errors.username && <span className="error">{errors.username.message}</span>}
       </div>
 
       <div>
         <label>Email</label>
-        <input type="email" {...register('email')} />
+        <input type="email" {...register('email', {
+          required: 'Обязательное поле',
+          pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Неверный формат email' },
+        })} />
         {errors.email && <span className="error">{errors.email.message}</span>}
       </div>
 
       <div>
         <label>Age</label>
-        <input type="number" {...register('age', { valueAsNumber: true })} />
+        <input type="number" {...register('age', {
+          valueAsNumber: true,
+          required: 'Обязательное поле',
+          min: { value: 18, message: 'Минимум 18 лет' },
+          max: { value: 120, message: 'Максимум 120 лет' },
+        })} />
         {errors.age && <span className="error">{errors.age.message}</span>}
       </div>
 
       <div>
         <label>Password</label>
-        <input type="password" {...register('password')} />
+        <input type="password" {...register('password', {
+          required: 'Обязательное поле',
+          minLength: { value: 6, message: 'Минимум 6 символов' },
+          validate: {
+            uppercase: v => /[A-Z]/.test(v) || 'Должна быть заглавная буква',
+            number: v => /\d/.test(v) || 'Должна быть цифра',
+          },
+        })} />
         {errors.password && <span className="error">{errors.password.message}</span>}
       </div>
 

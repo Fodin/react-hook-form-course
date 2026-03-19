@@ -46,7 +46,7 @@ function MyForm() {
 
 ```tsx
 // Показывать ошибку только после того, как поле затронуто
-;<input {...register('email', { required: 'Обязательно' })} />
+<input {...register('email', { required: 'Обязательно' })} />
 {
   touchedFields.email && errors.email && <span className="error">{errors.email.message}</span>
 }
@@ -55,6 +55,34 @@ function MyForm() {
 {
   dirtyFields.email && errors.email && <span className="error">{errors.email.message}</span>
 }
+```
+
+### getFieldState — состояние конкретного поля
+
+Метод `getFieldState` позволяет получить состояние отдельного поля: `isDirty`, `isTouched` и `error`. Это удобно, когда нужно проверить состояние поля императивно (например, в обработчике событий), а не через `formState.dirtyFields` / `formState.touchedFields`.
+
+```tsx
+const { getFieldState, formState } = useForm({
+  defaultValues: { email: '', name: '' },
+})
+
+// Получить состояние поля
+const { isDirty, isTouched, invalid, error } = getFieldState('email', formState)
+
+console.log(isDirty) // true, если поле было изменено
+console.log(isTouched) // true, если поле потеряло фокус
+console.log(invalid) // true, если поле невалидно
+console.log(error) // объект ошибки или undefined
+```
+
+> **Важно:** Второй аргумент `formState` обязателен. Без него RHF не сможет отследить подписку на состояние, и компонент не будет ререндериться при изменениях.
+
+```tsx
+// ❌ Неправильно — без formState компонент не обновится
+const { isDirty } = getFieldState('email')
+
+// ✅ Правильно — передаём formState
+const { isDirty } = getFieldState('email', formState)
 ```
 
 ### Визуальная индикация
@@ -121,6 +149,56 @@ reset(values, {
 })
 ```
 
+### resetField — сброс конкретного поля
+
+Метод `resetField` позволяет сбросить одно конкретное поле, не затрагивая остальную форму. Это полезно, когда нужно очистить только одно поле (например, после выбора файла или при смене категории).
+
+```tsx
+const { resetField } = useForm({
+  defaultValues: { email: 'user@example.com', name: 'John' },
+})
+
+// Сброс к defaultValue
+resetField('email') // email вернётся к 'user@example.com'
+
+// Сброс к новому значению
+resetField('email', { defaultValue: 'new@example.com' })
+
+// С опциями — сохранить dirty/touched/error состояние
+resetField('email', {
+  keepDirty: true,
+  keepTouched: true,
+  keepError: true,
+  defaultValue: '',
+})
+```
+
+> **Разница между `reset` и `resetField`:** `reset` сбрасывает всю форму и все её состояния (`isDirty`, `touchedFields`, `errors` и т.д.). `resetField` работает точечно — сбрасывает только указанное поле.
+
+### isSubmitSuccessful — отслеживание успешной отправки
+
+`isSubmitSuccessful` — это свойство `formState`, которое становится `true` после того, как `onSubmit` (onValid callback) выполнился без ошибок. Это удобный способ показать success-сообщение или сбросить форму после успешной отправки.
+
+```tsx
+const {
+  handleSubmit,
+  reset,
+  formState: { isSubmitSuccessful },
+} = useForm()
+
+// Показать сообщение об успехе
+{isSubmitSuccessful && <div role="status">Форма успешно отправлена!</div>}
+
+// Сброс формы после успешной отправки
+useEffect(() => {
+  if (isSubmitSuccessful) {
+    reset()
+  }
+}, [isSubmitSuccessful, reset])
+```
+
+> **Подводный камень:** Если `onSubmit` выбросит исключение, `isSubmitSuccessful` останется `false`. Если вы делаете API-запросы в `onSubmit`, убедитесь что ошибки обрабатываются корректно.
+
 ### Отслеживание изменений
 
 ```tsx
@@ -148,32 +226,39 @@ useEffect(() => {
 
 При ошибке валидации пользователь должен сразу понять, где проблема. Автоматический фокус на первом ошибочном поле улучшает UX.
 
-### Ручная установка фокуса
+### setFocus — программная установка фокуса
+
+RHF предоставляет метод `setFocus` для программной установки фокуса на поле по имени. Это удобнее, чем работать с DOM напрямую, потому что RHF уже знает о всех зарегистрированных полях.
 
 ```tsx
 import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
 
 function MyForm() {
   const {
     register,
     handleSubmit,
+    setFocus,
     formState: { errors },
   } = useForm()
 
+  // Фокус на первое поле при монтировании
   useEffect(() => {
+    setFocus('email')
+  }, [setFocus])
+
+  // Фокус на первое поле с ошибкой после неудачного submit
+  const onInvalid = (errors) => {
     const firstError = Object.keys(errors)[0]
-    if (firstError) {
-      const element = document.getElementById(firstError)
-      element?.focus()
-    }
-  }, [errors])
+    if (firstError) setFocus(firstError)
+  }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input id="email" {...register('email')} />
+    <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
+      <input {...register('email', { required: 'Обязательно' })} />
       {errors.email && <span className="error">{errors.email.message}</span>}
 
-      <input id="password" {...register('password')} />
+      <input {...register('password', { required: 'Обязательно' })} />
       {errors.password && <span className="error">{errors.password.message}</span>}
 
       <button type="submit">Отправить</button>
@@ -196,26 +281,46 @@ const { register } = useForm({
 })
 ```
 
-### Кастомный хук для фокуса
+### setFocus с опциями
+
+`setFocus` принимает второй аргумент — объект с опцией `shouldSelect`. Если `shouldSelect: true`, текст в поле будет выделен:
 
 ```tsx
-function useFocusOnError(errors: any) {
+// Просто фокус
+setFocus('email')
+
+// Фокус + выделение текста в поле
+setFocus('email', { shouldSelect: true })
+```
+
+> **Важно:** `setFocus` работает только с полями, зарегистрированными через `register`. Для полей через `Controller` фокус зависит от реализации компонента.
+
+### Кастомный хук для фокуса
+
+С `setFocus` можно написать лаконичный хук, не прибегая к DOM:
+
+```tsx
+import { UseFormSetFocus, FieldErrors, FieldValues } from 'react-hook-form'
+
+function useFocusOnError<T extends FieldValues>(
+  errors: FieldErrors<T>,
+  setFocus: UseFormSetFocus<T>,
+) {
   useEffect(() => {
-    const firstError = Object.keys(errors)[0]
+    const firstError = Object.keys(errors)[0] as keyof T
     if (firstError) {
-      const element = document.getElementById(firstError)
-      element?.focus()
-      element?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      setFocus(firstError as any)
     }
-  }, [errors])
+  }, [errors, setFocus])
 }
 
 // Использование
 function MyForm() {
   const {
+    setFocus,
     formState: { errors },
   } = useForm()
-  useFocusOnError(errors)
+  useFocusOnError(errors, setFocus)
   // ...
 }
 ```
@@ -305,7 +410,7 @@ function AccessibleForm() {
 ### Проблема с watch()
 
 ```tsx
-// ❌ Плохо: watch() вызывает ре-рендер при любом изменении
+// ❌ Плохо: watch() вызывает ререндер при любом изменении
 const values = watch()
 console.log('Render', values)
 
@@ -376,6 +481,29 @@ const { register } = useForm({ shouldUnregister: true })
 }
 ```
 
+### delayError — задержка появления ошибок
+
+Опция `delayError` в `useForm` задерживает отображение ошибок на указанное количество миллисекунд. Это улучшает UX при валидации в реальном времени (`mode: 'onChange'`), потому что пользователь не видит мелькающие ошибки пока печатает.
+
+```tsx
+const { register, formState: { errors } } = useForm({
+  mode: 'onChange',
+  delayError: 500, // Ошибка появится через 500ms после прекращения ввода
+})
+```
+
+Без `delayError` при `mode: 'onChange'` пользователь увидит ошибку "Минимум 6 символов" уже после первого введённого символа. С `delayError: 500` ошибка появится только если пользователь перестал печатать на 500ms — то есть когда он, скорее всего, закончил ввод.
+
+> **Когда использовать:** `delayError` полезен в сочетании с `mode: 'onChange'` или `mode: 'all'`. При `mode: 'onBlur'` или `mode: 'onSubmit'` в нём нет необходимости, потому что ошибки и так не появляются во время ввода.
+
+```tsx
+// Типичная комбинация для лучшего UX
+const { register } = useForm({
+  mode: 'onChange', // Валидация при каждом изменении
+  delayError: 300, // Но ошибки показываем с задержкой
+})
+```
+
 ### Сравнение производительности
 
 ```tsx
@@ -398,7 +526,7 @@ const MemoizedField = memo(({ control, name }) => {
 ## Полный пример: Форма с отличным UX
 
 ```tsx
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -412,27 +540,43 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 export function UXForm() {
-  const [submitCount, setSubmitCount] = useState(0)
-
   const {
     register,
     handleSubmit,
     reset,
+    setFocus,
+    resetField,
+    getFieldState,
     watch,
-    formState: { errors, isDirty, isSubmitting, isSubmitted, touchedFields, dirtyFields },
+    formState,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     mode: 'onChange',
+    delayError: 500, // Ошибки появляются с задержкой для лучшего UX
     shouldFocusError: true,
   })
 
-  // Автофокус на первой ошибке
+  const {
+    errors,
+    isDirty,
+    isSubmitting,
+    isSubmitSuccessful,
+    touchedFields,
+    dirtyFields,
+    submitCount,
+  } = formState
+
+  // Фокус на первое поле при монтировании
   useEffect(() => {
-    const firstError = Object.keys(errors)[0]
-    if (firstError) {
-      document.getElementById(firstError)?.focus()
+    setFocus('name')
+  }, [setFocus])
+
+  // Сброс формы после успешной отправки
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset()
     }
-  }, [errors])
+  }, [isSubmitSuccessful, reset])
 
   // Индикатор силы пароля
   const password = watch('password', '')
@@ -447,11 +591,20 @@ export function UXForm() {
   const onSubmit = async (data: FormData) => {
     await new Promise(r => setTimeout(r, 1000))
     console.log('Submitted:', data)
-    setSubmitCount(c => c + 1)
+  }
+
+  // Фокус на первое ошибочное поле при неудачной отправке
+  const onInvalid = (errors: any) => {
+    const firstError = Object.keys(errors)[0] as keyof FormData
+    if (firstError) setFocus(firstError)
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} aria-label="Форма регистрации" noValidate>
+    <form
+      onSubmit={handleSubmit(onSubmit, onInvalid)}
+      aria-label="Форма регистрации"
+      noValidate
+    >
       {/* Статус бар */}
       <div style={{ marginBottom: '1rem', padding: '0.5rem', background: '#f0f0f0' }}>
         <span>Изменена: {isDirty ? '✅' : '❌'}</span>
@@ -478,16 +631,23 @@ export function UXForm() {
         )}
       </div>
 
-      {/* Поле Email */}
+      {/* Поле Email с кнопкой сброса через resetField */}
       <div>
         <label htmlFor="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          {...register('email')}
-          aria-invalid={!!errors.email}
-          aria-describedby={errors.email ? 'email-error' : undefined}
-        />
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <input
+            id="email"
+            type="email"
+            {...register('email')}
+            aria-invalid={!!errors.email}
+            aria-describedby={errors.email ? 'email-error' : undefined}
+          />
+          {getFieldState('email', formState).isDirty && (
+            <button type="button" onClick={() => resetField('email')}>
+              Сбросить
+            </button>
+          )}
+        </div>
         {touchedFields.email && errors.email && (
           <span id="email-error" className="error" role="alert">
             {errors.email.message}
@@ -529,12 +689,12 @@ export function UXForm() {
           disabled={!isDirty}
           style={{ marginLeft: '0.5rem' }}
         >
-          Сбросить
+          Сбросить всё
         </button>
       </div>
 
-      {/* Сообщение об успехе */}
-      {isSubmitted && Object.keys(errors).length === 0 && (
+      {/* Сообщение об успехе через isSubmitSuccessful */}
+      {isSubmitSuccessful && (
         <div
           role="status"
           aria-live="polite"
@@ -546,7 +706,7 @@ export function UXForm() {
             borderRadius: '4px',
           }}
         >
-          ✅ Форма успешно отправлена!
+          Форма успешно отправлена!
         </div>
       )}
     </form>
@@ -591,28 +751,30 @@ reset({ name: 'John', email: 'john@example.com' })
 
 ---
 
-### ❌ Ошибка 3: Нет focus management
+### ❌ Ошибка 3: Работа с фокусом через DOM вместо setFocus
 
 ```tsx
-// ❌ Неправильно - ошибки не видны пользователю
-const onSubmit = data => {
-  /* ... */
-}
-
-// ✅ Правильно - фокус на первой ошибке
+// ❌ Неправильно - обращение к DOM напрямую
 useEffect(() => {
   const firstError = Object.keys(errors)[0]
   if (firstError) {
     document.getElementById(firstError)?.focus()
   }
 }, [errors])
+
+// ✅ Правильно - использовать setFocus из RHF
+const { setFocus } = useForm()
+const onInvalid = (errors) => {
+  const firstError = Object.keys(errors)[0]
+  if (firstError) setFocus(firstError)
+}
 ```
 
-**Почему это ошибка:** Пользователь может не увидеть ошибки, если фокус не установлен на проблемном поле.
+**Почему это ошибка:** `setFocus` уже знает о всех зарегистрированных полях и не требует привязки к `id`. Кроме того, `shouldFocusError: true` (включён по умолчанию) автоматически фокусирует первое ошибочное поле при submit.
 
 ---
 
-### ❌ Ошибка 4: watch() вызывает лишние ре-рендеры
+### ❌ Ошибка 4: watch() вызывает лишние ререндеры
 
 ```tsx
 // ❌ Неправильно - watch всех полей
@@ -623,7 +785,7 @@ console.log('Render', values)
 const name = useWatch({ name: 'name' })
 ```
 
-**Почему это ошибка:** `watch()` подписывается на все изменения формы, вызывая ре-рендер всего компонента.
+**Почему это ошибка:** `watch()` подписывается на все изменения формы, вызывая ререндер всего компонента.
 
 ---
 
@@ -655,5 +817,8 @@ const name = useWatch({ name: 'name' })
 
 - [formState документация](https://react-hook-form.com/docs/useform/formstate)
 - [reset документация](https://react-hook-form.com/docs/useform/reset)
+- [resetField документация](https://react-hook-form.com/docs/useform/resetfield)
+- [setFocus документация](https://react-hook-form.com/docs/useform/setfocus)
+- [getFieldState документация](https://react-hook-form.com/docs/useform/getfieldstate)
 - [useWatch документация](https://react-hook-form.com/docs/usewatch)
 - [ARIA для форм](https://www.w3.org/WAI/tutorials/forms/)

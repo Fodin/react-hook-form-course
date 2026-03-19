@@ -67,7 +67,7 @@ function FormTextField({ label, error, ...props }: any) {
 }
 
 // Использование с Controller
-;<Controller
+<Controller
   name="email"
   control={control}
   render={({ field, fieldState: { error } }) => (
@@ -199,7 +199,7 @@ function useDebounce<T>(value: T, delay: number): T {
 
 // Использование
 function SearchForm() {
-  const { watch } = useForm()
+  const { register, watch } = useForm()
   const query = watch('search')
   const debouncedQuery = useDebounce(query, 500)
 
@@ -402,7 +402,7 @@ function PersistentForm() {
 
 ```tsx
 function FormWithSubscription() {
-  const { register, reset, watch } = useForm({
+  const { register, handleSubmit, reset, watch } = useForm({
     defaultValues: { subject: '', body: '' },
   })
 
@@ -651,6 +651,337 @@ export function RegistrationWizard() {
 
 ---
 
+## Часть 6: useFormState — изоляция ререндеров
+
+### Проблема
+
+Когда вы читаете `formState` через `useForm`, **весь компонент** ререндерится при изменении любого подписанного свойства. В больших формах это может быть проблемой производительности — например, кнопка отправки ререндерится при каждом изменении ошибок в любом поле.
+
+### Решение: useFormState
+
+Хук `useFormState` позволяет подписаться на `formState` в **отдельном компоненте**, изолируя ререндеры:
+
+```tsx
+import { useForm, useFormState } from 'react-hook-form'
+
+// Этот компонент ререндерится ТОЛЬКО когда меняются isSubmitting или isValid
+function SubmitButton({ control }: { control: Control }) {
+  const { isSubmitting, isValid } = useFormState({ control })
+
+  return (
+    <button type="submit" disabled={!isValid || isSubmitting}>
+      {isSubmitting ? 'Отправка...' : 'Отправить'}
+    </button>
+  )
+}
+
+// Этот компонент ререндерится ТОЛЬКО когда меняются errors
+function ErrorSummary({ control }: { control: Control }) {
+  const { errors } = useFormState({ control })
+
+  if (Object.keys(errors).length === 0) return null
+
+  return (
+    <div style={{ color: 'red' }}>
+      {Object.entries(errors).map(([field, error]) => (
+        <p key={field}>{error?.message as string}</p>
+      ))}
+    </div>
+  )
+}
+
+// Родительский компонент НЕ подписан на formState — не ререндерится
+function MyForm() {
+  const { register, handleSubmit, control } = useForm({
+    mode: 'onChange',
+  })
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register('email', { required: 'Обязательно' })} />
+      <input {...register('name', { required: 'Обязательно' })} />
+
+      <ErrorSummary control={control} />
+      <SubmitButton control={control} />
+    </form>
+  )
+}
+```
+
+### Опции useFormState
+
+| Опция | Тип | Описание |
+|-------|-----|----------|
+| `control` | `Control` | Объект `control` из `useForm`. Необязателен внутри `FormProvider` |
+| `name` | `string \| string[]` | Подписка на конкретные поля (фильтрация ререндеров) |
+| `disabled` | `boolean` | Отключает подписку |
+| `exact` | `boolean` | Точное совпадение имени поля (без вложенных) |
+
+### useFormState vs formState из useForm
+
+```tsx
+// ❌ Весь компонент ререндерится при любом изменении formState
+function App() {
+  const { register, formState: { errors, isSubmitting } } = useForm()
+  // ...всё ререндерится
+}
+
+// ✅ Только SubmitButton ререндерится при изменении isSubmitting
+function SubmitButton({ control }) {
+  const { isSubmitting } = useFormState({ control })
+  return <button disabled={isSubmitting}>Send</button>
+}
+```
+
+---
+
+## Часть 7: subscribe — подписка без ререндеров
+
+### Проблема
+
+Иногда нужно **реагировать** на изменения формы, но **не ререндерить** компонент. Например: логирование, аналитика, синхронизация с внешним хранилищем, автосохранение.
+
+### Метод subscribe
+
+Метод `subscribe` возвращаемый из `useForm` позволяет подписаться на изменения `formState` и значений формы **без вызова ререндера**:
+
+```tsx
+import { useForm } from 'react-hook-form'
+import { useEffect } from 'react'
+
+function MyForm() {
+  const { register, handleSubmit, subscribe } = useForm({
+    defaultValues: { email: '', name: '' },
+  })
+
+  // Subscribe to isDirty changes — no re-renders
+  useEffect(() => {
+    const unsubscribe = subscribe({
+      formState: { isDirty: true },
+      callback: ({ formState, values }) => {
+        console.log('isDirty:', formState.isDirty)
+        console.log('Current values:', values)
+      },
+    })
+
+    return unsubscribe
+  }, [subscribe])
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register('email')} />
+      <input {...register('name')} />
+      <button type="submit">Отправить</button>
+    </form>
+  )
+}
+```
+
+### Параметры subscribe
+
+```tsx
+const unsubscribe = subscribe({
+  // Какие свойства formState отслеживать
+  formState: {
+    isDirty: true,
+    isValid: true,
+    errors: true,
+    // ...любые свойства FormState
+  },
+
+  // Фильтр по именам полей (необязательно)
+  name: ['email', 'password'],
+
+  // Точное совпадение имени (необязательно)
+  exact: true,
+
+  // Callback вызывается при изменениях
+  callback: ({ formState, values, name, type }) => {
+    // formState — текущее состояние формы (только подписанные свойства)
+    // values — текущие значения всех полей
+    // name — имя изменённого поля
+    // type — тип события ('change', 'blur' и т.д.)
+  },
+})
+
+// Не забудьте отписаться при размонтировании
+```
+
+### Практические примеры
+
+**Автосохранение без ререндеров:**
+
+```tsx
+function AutoSaveForm() {
+  const { register, handleSubmit, subscribe } = useForm()
+
+  useEffect(() => {
+    const unsubscribe = subscribe({
+      formState: { isDirty: true },
+      callback: ({ values, formState }) => {
+        if (formState.isDirty) {
+          // Save to localStorage without re-rendering
+          localStorage.setItem('draft', JSON.stringify(values))
+        }
+      },
+    })
+    return unsubscribe
+  }, [subscribe])
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register('title')} />
+      <textarea {...register('content')} />
+      <button type="submit">Опубликовать</button>
+    </form>
+  )
+}
+```
+
+**Аналитика:**
+
+```tsx
+useEffect(() => {
+  const unsubscribe = subscribe({
+    formState: { errors: true },
+    callback: ({ formState }) => {
+      // Track validation errors for analytics
+      const errorFields = Object.keys(formState.errors || {})
+      if (errorFields.length > 0) {
+        analytics.track('form_validation_error', { fields: errorFields })
+      }
+    },
+  })
+  return unsubscribe
+}, [subscribe])
+```
+
+### subscribe vs useFormState vs watch
+
+| | Ререндер | Использование |
+|---|---|---|
+| `watch` / `useWatch` | Да | Отображение значений в JSX |
+| `useFormState` | Да (изолировано) | Отображение formState в JSX (кнопки, ошибки) |
+| `subscribe` | Нет | Side-effects: логи, аналитика, localStorage |
+
+---
+
+## Часть 8: Тестирование форм
+
+### Подход к тестированию
+
+Формы на React Hook Form тестируются как обычные React-компоненты с помощью `@testing-library/react`. Ключевой принцип — **тестировать поведение пользователя**, а не внутреннее состояние формы.
+
+### Базовый тест: отправка формы
+
+```tsx
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { vi } from 'vitest'
+
+// Component under test
+function LoginForm({ onSubmit }: { onSubmit: (data: any) => void }) {
+  const { register, handleSubmit, formState: { errors } } = useForm()
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <label>
+        Email
+        <input {...register('email', { required: 'Обязательно' })} />
+      </label>
+      {errors.email && <span role="alert">{errors.email.message}</span>}
+
+      <label>
+        Password
+        <input type="password" {...register('password', { required: 'Обязательно' })} />
+      </label>
+      {errors.password && <span role="alert">{errors.password.message}</span>}
+
+      <button type="submit">Войти</button>
+    </form>
+  )
+}
+
+// Tests
+test('submits form with valid data', async () => {
+  const onSubmit = vi.fn()
+  render(<LoginForm onSubmit={onSubmit} />)
+
+  await userEvent.type(screen.getByLabelText('Email'), 'test@example.com')
+  await userEvent.type(screen.getByLabelText('Password'), 'secret123')
+  await userEvent.click(screen.getByRole('button', { name: /войти/i }))
+
+  await waitFor(() => {
+    expect(onSubmit).toHaveBeenCalledWith(
+      { email: 'test@example.com', password: 'secret123' },
+      expect.anything() // second arg is the event
+    )
+  })
+})
+
+test('shows validation errors for empty fields', async () => {
+  render(<LoginForm onSubmit={vi.fn()} />)
+
+  await userEvent.click(screen.getByRole('button', { name: /войти/i }))
+
+  await waitFor(() => {
+    const alerts = screen.getAllByRole('alert')
+    expect(alerts).toHaveLength(2)
+  })
+})
+```
+
+### Тестирование async валидации
+
+```tsx
+test('shows error for taken username', async () => {
+  // Mock API
+  vi.spyOn(global, 'fetch').mockResolvedValue({
+    ok: true,
+    json: async () => ({ available: false }),
+  } as Response)
+
+  render(<RegistrationForm onSubmit={vi.fn()} />)
+
+  await userEvent.type(screen.getByLabelText('Username'), 'admin')
+  await userEvent.tab() // trigger onBlur
+
+  await waitFor(() => {
+    expect(screen.getByText(/занято/i)).toBeInTheDocument()
+  })
+
+  vi.restoreAllMocks()
+})
+```
+
+### Тестирование формы с defaultValues
+
+```tsx
+test('loads and displays default values', async () => {
+  render(
+    <EditForm
+      defaultValues={{ name: 'Иван', email: 'ivan@example.com' }}
+      onSubmit={vi.fn()}
+    />
+  )
+
+  expect(screen.getByLabelText('Name')).toHaveValue('Иван')
+  expect(screen.getByLabelText('Email')).toHaveValue('ivan@example.com')
+})
+```
+
+### Best Practices тестирования
+
+1. **Используйте `userEvent` вместо `fireEvent`** — `userEvent` точнее имитирует реальное поведение пользователя (focus, keydown, input, keyup, blur).
+
+2. **Оборачивайте проверки в `waitFor`** — валидация в RHF асинхронна, даже для синхронных правил.
+
+3. **Ищите элементы по роли и лейблу** — `getByRole`, `getByLabelText` вместо `getByTestId`.
+
+4. **Не тестируйте внутреннее состояние RHF** — тестируйте то, что видит пользователь (ошибки, disabled-состояние кнопки, отправленные данные).
+
+---
+
 ## Частые ошибки новичков
 
 ### ❌ Ошибка 1: Controller без field.onChange
@@ -785,3 +1116,6 @@ function useDebounce(value, delay) {
 - [Controller документация](https://react-hook-form.com/docs/useform/controller)
 - [FormProvider документация](https://react-hook-form.com/docs/formprovider)
 - [useFormContext документация](https://react-hook-form.com/docs/useformcontext)
+- [useFormState документация](https://react-hook-form.com/docs/useformstate)
+- [subscribe документация](https://react-hook-form.com/docs/useform/subscribe)
+- [Testing документация](https://react-hook-form.com/advanced-usage#TestingForm)

@@ -133,7 +133,85 @@ const { register, handleSubmit } = useForm({
 
 ## Часть 2: Загрузка данных (Edit Mode)
 
-### Базовая загрузка данных
+### Async defaultValues и isLoading
+
+React Hook Form позволяет передавать в `defaultValues` **асинхронную функцию**. Это избавляет от необходимости вручную управлять состоянием загрузки и вызывать `reset`:
+
+```tsx
+function EditForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { isLoading, isDirty },
+  } = useForm({
+    defaultValues: async () => {
+      const response = await fetch('/api/user/1')
+      return response.json()
+    },
+  })
+
+  // isLoading === true пока async defaultValues не разрешится
+  if (isLoading) return <div>Загрузка данных...</div>
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register('name')} />
+      <input {...register('email')} />
+
+      <button type="submit" disabled={!isDirty}>
+        Сохранить {isDirty && '*'}
+      </button>
+    </form>
+  )
+}
+```
+
+> **`isLoading`** — свойство `formState`, которое равно `true` только когда `defaultValues` является async функцией и данные ещё загружаются. Это **не** то же самое, что `isSubmitting` — `isLoading` относится только к начальной загрузке значений формы.
+>
+> **Важно:** `isLoading` не станет `true`, если `defaultValues` — обычный объект. Он работает **только** с async функцией в `defaultValues`.
+
+### Опция values — синхронизация с внешним состоянием
+
+Если данные формы приходят из внешнего источника (например, из SWR, React Query или Redux), используйте опцию `values`. Форма будет автоматически обновляться при изменении `values`:
+
+```tsx
+import useSWR from 'swr'
+
+const fetcher = (url: string) => fetch(url).then(res => res.json())
+
+function EditForm() {
+  const { data, isLoading: isDataLoading } = useSWR('/api/user/1', fetcher)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isDirty },
+  } = useForm({
+    values: data, // Форма обновится при изменении data
+  })
+
+  if (isDataLoading) return <div>Загрузка...</div>
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register('name')} />
+      <input {...register('email')} />
+
+      <button type="submit" disabled={!isDirty}>
+        Сохранить {isDirty && '*'}
+      </button>
+    </form>
+  )
+}
+```
+
+> **Разница между `values` и async `defaultValues`:**
+> - `defaultValues` (async) — загружает данные **один раз** при инициализации формы.
+> - `values` — **синхронизирует** форму с внешним состоянием. Каждый раз когда `values` меняется, форма обновляется (аналогично вызову `reset(values)`). Это полезно когда данные могут обновляться из внешнего источника (кэш, WebSocket и т.д.).
+
+### Загрузка данных через reset (классический подход)
+
+До появления async `defaultValues` и `values` использовался паттерн с `useEffect` + `reset`:
 
 ```tsx
 function EditForm() {
@@ -388,7 +466,7 @@ function SubmitWithNotification() {
 
 ```tsx
 function AutoSaveForm() {
-  const { watch } = useForm()
+  const { register, watch } = useForm()
   const values = watch()
   const [saved, setSaved] = useState(false)
 
@@ -436,7 +514,7 @@ function useDebounce<T>(value: T, delay: number): T {
 
 // Использование
 function SearchForm() {
-  const { watch } = useForm()
+  const { register, watch } = useForm()
   const searchQuery = watch('query')
   const debouncedQuery = useDebounce(searchQuery, 500)
 
@@ -459,7 +537,7 @@ function SearchForm() {
 
 ```tsx
 function DraftForm() {
-  const { watch } = useForm()
+  const { register, watch } = useForm()
   const values = watch()
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
 
@@ -525,8 +603,6 @@ const checkUsername = async (username: string): Promise<boolean> => {
 export function AsyncRegistrationForm() {
   const [checking, setChecking] = useState(false)
   const [available, setAvailable] = useState<boolean | null>(null)
-  const [submitting, setSubmitting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
   const {
@@ -534,7 +610,7 @@ export function AsyncRegistrationForm() {
     handleSubmit,
     setError,
     clearErrors,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     mode: 'onChange',
@@ -564,9 +640,6 @@ export function AsyncRegistrationForm() {
   )
 
   const onSubmit = async (data: FormData) => {
-    setSubmitting(true)
-    setError(null)
-
     try {
       await new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -584,8 +657,6 @@ export function AsyncRegistrationForm() {
       setError('root', {
         message: err instanceof Error ? err.message : 'Ошибка отправки',
       })
-    } finally {
-      setSubmitting(false)
     }
   }
 
@@ -597,9 +668,9 @@ export function AsyncRegistrationForm() {
         </div>
       )}
 
-      {error && (
+      {errors.root && (
         <div style={{ padding: '1rem', background: '#f8d7da', marginBottom: '1rem' }}>
-          ❌ {error}
+          ❌ {errors.root.message}
         </div>
       )}
 
@@ -624,8 +695,8 @@ export function AsyncRegistrationForm() {
         {errors.password && <span className="error">{errors.password.message}</span>}
       </div>
 
-      <button type="submit" disabled={submitting}>
-        {submitting ? '⏳ Регистрация...' : 'Зарегистрироваться'}
+      <button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? '⏳ Регистрация...' : 'Зарегистрироваться'}
       </button>
     </form>
   )
@@ -761,3 +832,6 @@ useEffect(() => {
 
 - [Валидация в RHF](https://react-hook-form.com/docs/useform/register#rules)
 - [setError документация](https://react-hook-form.com/docs/useform/seterror)
+- [Async defaultValues](https://react-hook-form.com/docs/useform#defaultValues)
+- [values опция](https://react-hook-form.com/docs/useform#values)
+- [formState: isLoading](https://react-hook-form.com/docs/useform/formstate#isLoading)
