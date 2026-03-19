@@ -1,6 +1,5 @@
-import { exercisesConfigMap } from '../exercises/exercisesConfig'
-
 import { ExerciseLayout } from './ExerciseLayout'
+import { exercisesConfigMap } from '../exercises/exercisesConfig'
 
 interface ExerciseRendererProps {
   level: string

@@ -6,12 +6,5 @@
   margin-bottom: 0.5rem;
   font-size: 0.85rem;
   font-weight: 500;
-}
-
-.codeExampleLabelLight {
-  color: #495057;
-}
-
-.codeExampleLabelDark {
-  color: #8b949e;
+  color: var(--clr-text-secondary);
 }

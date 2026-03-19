@@ -12,25 +12,25 @@
   font-weight: 600;
   font-family: inherit;
   transition: all 0.2s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--clr-shadow);
 }
 
 .buttonShow {
-  background: #646cff;
+  background: var(--clr-accent);
 }
 
 .buttonShow:hover {
-  background: #535bf2;
+  background: var(--clr-accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.4);
+  box-shadow: 0 4px 12px var(--clr-shadow-accent);
 }
 
 .buttonHide {
-  background: #4caf50;
+  background: var(--clr-success);
 }
 
 .buttonHide:hover {
-  background: #45a049;
+  background: var(--clr-success-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+  box-shadow: 0 4px 12px var(--clr-shadow-success);
 }

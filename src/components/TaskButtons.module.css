@@ -22,68 +22,34 @@
   font-family: inherit;
 }
 
-/* Active buttons - Light theme */
-.buttonActiveLight {
-  background: #646cff;
+.buttonActive {
+  background: var(--clr-accent);
   color: #fff;
-  border-color: #646cff;
+  border-color: var(--clr-accent);
   font-weight: 600;
 }
 
-.buttonActiveLight:hover {
-  background: #535bf2;
-  border-color: #535bf2;
+.buttonActive:hover {
+  background: var(--clr-accent-hover);
+  border-color: var(--clr-accent-hover);
   color: #fff;
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.3);
+  box-shadow: 0 4px 12px var(--clr-shadow-accent);
 }
 
-/* Active buttons - Dark theme */
-.buttonActiveDark {
-  background: #646cff;
-  color: #fff;
-  border-color: #646cff;
-  font-weight: 600;
-}
-
-.buttonActiveDark:hover {
-  background: #747bff;
-  border-color: #747bff;
-  color: #fff;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.4);
-}
-
-/* Inactive buttons - Light theme */
-.buttonInactiveLight {
-  background: #ffffff;
-  color: #213547;
-  border-color: #30363d;
+.buttonInactive {
+  background: var(--clr-bg-surface);
+  color: var(--clr-text);
+  border-color: var(--clr-border-strong);
   font-weight: 400;
 }
 
-.buttonInactiveLight:hover {
-  background: #f6f8fa;
-  border-color: #646cff;
-  color: #646cff;
+.buttonInactive:hover {
+  background: var(--clr-bg-tertiary);
+  border-color: var(--clr-accent);
+  color: var(--clr-accent);
   transform: scale(1.05);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Inactive buttons - Dark theme */
-.buttonInactiveDark {
-  background: #161b22;
-  color: #e6edf3;
-  border-color: #30363d;
-  font-weight: 400;
-}
-
-.buttonInactiveDark:hover {
-  background: #21262d;
-  border-color: #646cff;
-  color: #646cff;
-  transform: scale(1.05);
-  box-shadow: 0 2px 8px rgba(100, 108, 255, 0.2);
+  box-shadow: 0 2px 8px var(--clr-shadow);
 }
 
 /* Completed task styling */
@@ -96,5 +62,5 @@
   width: 20px;
   height: 20px;
   cursor: pointer;
-  accent-color: #646cff;
+  accent-color: var(--clr-accent);
 }

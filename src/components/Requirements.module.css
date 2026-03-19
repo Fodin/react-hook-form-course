@@ -8,25 +8,11 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-}
-
-.requirementsTitleLight {
-  color: #495057;
-}
-
-.requirementsTitleDark {
-  color: #8b949e;
+  color: var(--clr-text-secondary);
 }
 
 .requirementsList {
   margin: 0;
   padding-left: 1.5rem;
-}
-
-.requirementsListLight {
-  color: #213547;
-}
-
-.requirementsListDark {
-  color: #e6edf3;
+  color: var(--clr-text);
 }

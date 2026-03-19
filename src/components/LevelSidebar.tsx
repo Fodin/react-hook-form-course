@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 
 import { exercisesConfigMap } from '../exercises/exercisesConfig'
-import { useLanguage, useTheme, useProgress } from '../hooks'
+import { useLanguage, useProgress } from '../hooks'
 import { LanguageToggle } from './LanguageToggle'
 import { ThemeToggle } from './ThemeToggle'
 import type { TranslationKey } from '../translations'
@@ -20,10 +20,8 @@ interface LevelSidebarProps {
 }
 
 export function LevelSidebar({ levels, currentLevel }: LevelSidebarProps) {
-  const { theme } = useTheme()
   const { t } = useLanguage()
   const { getLevelProgress } = useProgress()
-  const isDark = theme === 'dark'
 
   return (
     <div>
@@ -39,15 +37,7 @@ export function LevelSidebar({ levels, currentLevel }: LevelSidebarProps) {
               to={`/level/${level.id}`}
               className={`
                 ${styles.button}
-                ${
-                  currentLevel === level.id
-                    ? isDark
-                      ? styles.buttonActiveDark
-                      : styles.buttonActiveLight
-                    : isDark
-                      ? styles.buttonInactiveDark
-                      : styles.buttonInactiveLight
-                }
+                ${currentLevel === level.id ? styles.buttonActive : styles.buttonInactive}
               `}
             >
               {isCompleted && <span className={styles.checkmark}>✓</span>}
@@ -63,7 +53,7 @@ export function LevelSidebar({ levels, currentLevel }: LevelSidebarProps) {
         })}
       </nav>
 
-      <div className={`${styles.toggles} ${isDark ? styles.togglesDark : styles.togglesLight}`}>
+      <div className={styles.toggles}>
         <ThemeToggle />
         <LanguageToggle />
       </div>

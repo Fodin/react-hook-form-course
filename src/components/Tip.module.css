@@ -1,19 +1,9 @@
 .tip {
   padding: 1rem;
   border-radius: 8px;
-  border: 1px solid;
-}
-
-.tipLight {
-  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-  border-color: #bae6fd;
-  color: #0c4a6e;
-}
-
-.tipDark {
-  background: linear-gradient(135deg, #1c2128 0%, #161b22 100%);
-  border-color: #30363d;
-  color: #58a6ff;
+  border: 1px solid var(--clr-border-tip);
+  background: linear-gradient(135deg, var(--clr-bg-tip-from) 0%, var(--clr-bg-tip-to) 100%);
+  color: var(--clr-text-tip);
 }
 
 .tipHeader {

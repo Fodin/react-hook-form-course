@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { useTheme, useLanguage } from '../hooks'
+import { useLanguage } from '../hooks'
 
 import styles from './FormContainer.module.css'
 
@@ -14,9 +14,7 @@ interface FormContainerProps {
  * Автоматически обнаруживает форму и показывает/скрывает плейсхолдер.
  */
 export function FormContainer({ children, taskFile }: FormContainerProps) {
-  const { theme } = useTheme()
   const { t } = useLanguage()
-  const isDark = theme === 'dark'
   const containerRef = useRef<HTMLDivElement>(null)
   const [hasForm, setHasForm] = useState(false)
   const [formStats, setFormStats] = useState({ inputs: 0, buttons: 0, hasValidation: false })
@@ -59,21 +57,17 @@ export function FormContainer({ children, taskFile }: FormContainerProps) {
       {children}
 
       {!hasForm && (
-        <div
-          className={`${styles.placeholder} ${isDark ? styles.placeholderDark : styles.placeholderLight}`}
-        >
+        <div className={styles.placeholder}>
           <div className={styles.placeholderIcon}>✏️</div>
           <div className={styles.placeholderTitle}>{t('task.placeholder')}</div>
-          <div className={`${styles.placeholderText} ${isDark ? styles.placeholderTextDark : ''}`}>
+          <div className={styles.placeholderText}>
             {t('task.openFile')} <code>{taskFile}</code> {t('task.andComplete')}
           </div>
         </div>
       )}
 
       {hasForm && (
-        <div
-          className={`${styles.successMessage} ${isDark ? styles.successMessageDark : styles.successMessageLight}`}
-        >
+        <div className={styles.successMessage}>
           <div className={styles.successHeader}>
             <span>✅</span> {t('task.formReady')}
           </div>

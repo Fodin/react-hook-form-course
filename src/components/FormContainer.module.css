@@ -3,19 +3,9 @@
   padding: 2rem;
   text-align: center;
   border-radius: 12px;
-  border: 2px dashed;
-}
-
-.placeholderLight {
-  background: #f0f9ff;
-  border-color: #646cff;
-  color: #6c757d;
-}
-
-.placeholderDark {
-  background: #1c2128;
-  border-color: #30363d;
-  color: #8b949e;
+  border: 2px dashed var(--clr-accent);
+  background: var(--clr-bg-tip-from);
+  color: var(--clr-text-muted);
 }
 
 .placeholderIcon {
@@ -33,21 +23,19 @@
 }
 
 .placeholderText code {
-  background: #eaeef2;
+  background: var(--clr-bg-hover);
   padding: 0.2rem 0.5rem;
   border-radius: 4px;
   font-weight: 600;
-}
-
-.placeholderTextDark code {
-  background: #30363d;
 }
 
 .successMessage {
   margin-top: 1rem;
   padding: 1rem;
   border-radius: 8px;
-  border: 1px solid;
+  border: 1px solid var(--clr-success-border);
+  background: var(--clr-success-bg);
+  color: var(--clr-success-text);
   font-weight: 600;
   display: flex;
   flex-direction: column;
@@ -73,16 +61,4 @@
   align-items: center;
   gap: 0.25rem;
   opacity: 0.85;
-}
-
-.successMessageLight {
-  background: #d4edda;
-  border-color: #c3e6cb;
-  color: #155724;
-}
-
-.successMessageDark {
-  background: #0c2d1b;
-  border-color: #1e5c3a;
-  color: #7ee787;
 }

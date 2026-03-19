@@ -1,11 +1,9 @@
-import { useLanguage, useTheme } from '../hooks'
+import { useLanguage } from '../hooks'
 
 import styles from './LanguageToggle.module.css'
 
 export function LanguageToggle() {
   const { language, setLanguage } = useLanguage()
-  const { theme } = useTheme()
-  const isDark = theme === 'dark'
 
   const toggleLanguage = () => {
     setLanguage(language === 'ru' ? 'en' : 'ru')
@@ -14,7 +12,7 @@ export function LanguageToggle() {
   return (
     <button
       onClick={toggleLanguage}
-      className={`${styles.button} ${isDark ? styles.buttonDark : styles.buttonLight}`}
+      className={styles.button}
       title={`Switch to ${language === 'ru' ? 'English' : 'Русский'}`}
     >
       {language === 'en' ? '🇷🇺 RU' : '🇬🇧 EN'}

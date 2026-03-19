@@ -30,23 +30,14 @@ export function CodeHighlight({
   // Мемоизируем рендеринг для производительности
   const highlightedCode = useMemo(() => {
     if (inline) {
-      return (
-        <code
-          className={`
-          ${styles.inlineCode}
-          ${isDark ? styles.inlineCodeDark : styles.inlineCodeLight}
-        `}
-        >
-          {code}
-        </code>
-      )
+      return <code className={styles.inlineCode}>{code}</code>
     }
 
     return (
       <SyntaxHighlighter
         language={language}
         style={isDark ? githubDarkStyle : githubLightStyle}
-        className={`${styles.codeContainer} ${isDark ? styles.codeContainerDark : styles.codeContainerLight}`}
+        className={styles.codeContainer}
       >
         {code}
       </SyntaxHighlighter>

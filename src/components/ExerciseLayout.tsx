@@ -1,11 +1,11 @@
 import { useState } from 'react'
 
 import type { LevelConfig } from '../exercises/exercisesConfig'
-import { useTheme, useLanguage, useProgress, useExerciseNavigation } from '../hooks'
-
+import { useLanguage, useProgress, useExerciseNavigation } from '../hooks'
 import { FormContainer } from './FormContainer'
 import { TaskDescription } from './TaskDescription'
 import { TheoryBlock } from './TheoryBlock'
+
 import solutionStyles from './SolutionButton.module.css'
 import taskStyles from './TaskButtons.module.css'
 
@@ -14,10 +14,8 @@ interface ExerciseLayoutProps {
 }
 
 export function ExerciseLayout({ config }: ExerciseLayoutProps) {
-  const { theme } = useTheme()
   const { t } = useLanguage()
   const { isTaskComplete, toggleTask } = useProgress()
-  const isDark = theme === 'dark'
 
   const { levelId, navKey, descKey, tasks } = config
   const taskIds = tasks.map(task => task.id)
@@ -39,7 +37,7 @@ export function ExerciseLayout({ config }: ExerciseLayoutProps) {
         <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
           {t('nav.level')} {levelId}: {t(navKey)}
         </h1>
-        <p style={{ color: isDark ? '#8b949e' : '#6c757d' }}>{t(descKey)}</p>
+        <p style={{ color: 'var(--clr-text-muted)' }}>{t(descKey)}</p>
       </header>
 
       <div className={taskStyles.container}>
@@ -47,13 +45,7 @@ export function ExerciseLayout({ config }: ExerciseLayoutProps) {
           const completed = isTaskComplete(levelId, task.id)
           const isActive = currentTask === task.id
           const buttonClass = `${taskStyles.button} ${
-            isActive
-              ? isDark
-                ? taskStyles.buttonActiveDark
-                : taskStyles.buttonActiveLight
-              : isDark
-                ? taskStyles.buttonInactiveDark
-                : taskStyles.buttonInactiveLight
+            isActive ? taskStyles.buttonActive : taskStyles.buttonInactive
           } ${completed ? taskStyles.buttonCompleted : ''}`
 
           return (

@@ -2,7 +2,7 @@ import ReactMarkdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
 import remarkGfm from 'remark-gfm'
 
-import { useTheme, useLanguage, useMarkdownLoader, useCollapsible } from '../hooks'
+import { useLanguage, useMarkdownLoader, useCollapsible } from '../hooks'
 import { ScrollToTop } from './ScrollToTop'
 
 import styles from './TheoryBlock.module.css'
@@ -15,9 +15,7 @@ interface TheoryBlockProps {
  * Компонент для отображения теории из README.md
  */
 export function TheoryBlock({ level }: TheoryBlockProps) {
-  const { theme } = useTheme()
   const { t } = useLanguage()
-  const isDark = theme === 'dark'
   const { isOpen, toggle } = useCollapsible({ initialState: true })
 
   const paths: Record<string, string> = {
@@ -39,23 +37,17 @@ export function TheoryBlock({ level }: TheoryBlockProps) {
   }
 
   return (
-    <section
-      className={`${styles.container} ${isDark ? styles.containerDark : styles.containerLight}`}
-    >
+    <section className={styles.container}>
       <div
-        className={`${styles.header} ${isDark ? styles.headerDark : styles.headerLight} ${isOpen ? (isDark ? styles.headerOpenDark : styles.headerOpenLight) : styles.headerClosed}`}
+        className={`${styles.header} ${isOpen ? styles.headerOpen : styles.headerClosed}`}
         onClick={toggle}
       >
-        <h2 className={`${styles.title} ${isDark ? styles.titleDark : styles.titleLight}`}>
-          {t('theory.title')}
-        </h2>
+        <h2 className={styles.title}>{t('theory.title')}</h2>
         <span className={styles.icon}>{isOpen ? '🔼' : '🔽'}</span>
       </div>
 
       {isOpen && (
-        <div
-          className={`${styles.content} ${isDark ? styles.contentDark : styles.contentLight} theory-content`}
-        >
+        <div className={`${styles.content} theory-content`}>
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[[rehypeHighlight, { detect: true, ignoreMissing: true }]]}

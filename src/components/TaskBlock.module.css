@@ -2,21 +2,10 @@
   margin-bottom: 2rem;
   padding: 1.5rem;
   border-radius: 12px;
-  border: 2px solid;
-}
-
-.containerLight {
-  background: #fff;
-  border-color: #e9ecef;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  color: #213547;
-}
-
-.containerDark {
-  background: #161b22;
-  border-color: #30363d;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  color: #e6edf3;
+  border: 2px solid var(--clr-border);
+  background: var(--clr-bg-surface);
+  box-shadow: 0 2px 8px var(--clr-shadow);
+  color: var(--clr-text);
 }
 
 .header {
@@ -25,15 +14,7 @@
   gap: 0.75rem;
   margin-bottom: 1.25rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid;
-}
-
-.headerLight {
-  border-bottom-color: #f0f0f0;
-}
-
-.headerDark {
-  border-bottom-color: #30363d;
+  border-bottom: 2px solid var(--clr-border);
 }
 
 .taskNumber {
@@ -43,7 +24,7 @@
   min-width: 2.5rem;
   height: 2.5rem;
   padding: 0 0.75rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--clr-badge-from) 0%, var(--clr-badge-to) 100%);
   color: #fff;
   border-radius: 8px;
   font-weight: 700;
@@ -54,14 +35,7 @@
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-}
-
-.taskTitleLight {
-  color: #213547;
-}
-
-.taskTitleDark {
-  color: #e6edf3;
+  color: var(--clr-text);
 }
 
 .content {
@@ -71,13 +45,5 @@
 .footer {
   margin-top: 1.5rem;
   padding-top: 1rem;
-  border-top: 1px dashed;
-}
-
-.footerLight {
-  border-top-color: #e9ecef;
-}
-
-.footerDark {
-  border-top-color: #30363d;
+  border-top: 1px dashed var(--clr-border);
 }

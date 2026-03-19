@@ -3,7 +3,7 @@ import ReactMarkdown, { type Components } from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
 import remarkGfm from 'remark-gfm'
 
-import { useTheme, useLanguage, useMarkdownLoader, useCollapsible } from '../hooks'
+import { useLanguage, useMarkdownLoader, useCollapsible } from '../hooks'
 
 import styles from './TaskDescription.module.css'
 
@@ -30,9 +30,7 @@ function saveChecked(taskNumber: string, checked: Record<number, boolean>) {
 }
 
 export function TaskDescription({ taskNumber, level }: TaskDescriptionProps) {
-  const { theme } = useTheme()
   const { t } = useLanguage()
-  const isDark = theme === 'dark'
   const { isOpen, toggle } = useCollapsible({ initialState: true })
   const [checked, setChecked] = useState(() => loadChecked(taskNumber))
   const indexRef = useRef(0)
@@ -141,21 +139,16 @@ export function TaskDescription({ taskNumber, level }: TaskDescriptionProps) {
   }
 
   return (
-    <div className={`${styles.container} ${isDark ? styles.containerDark : styles.containerLight}`}>
-      <div
-        className={`${styles.header} ${isDark ? styles.headerDark : styles.headerLight}`}
-        onClick={toggle}
-      >
-        <span className={`${styles.title} ${isDark ? styles.titleDark : styles.titleLight}`}>
+    <div className={styles.container}>
+      <div className={styles.header} onClick={toggle}>
+        <span className={styles.title}>
           {t('task.description')} {taskNumber}
         </span>
         <span className={styles.icon}>{isOpen ? '🔼' : '🔽'}</span>
       </div>
 
       {isOpen && (
-        <div
-          className={`${styles.content} ${isDark ? styles.contentDark : styles.contentLight} theory-content`}
-        >
+        <div className={`${styles.content} theory-content`}>
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[[rehypeHighlight, { detect: true, ignoreMissing: true }]]}
