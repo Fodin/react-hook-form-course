@@ -1,6 +1,12 @@
 import { useState, useEffect, useRef, createContext } from 'react'
-import { useForm, useFormState, FormProvider, useFormContext, Controller } from 'react-hook-form'
-import type { Control } from 'react-hook-form'
+import {
+  useForm,
+  useFormState,
+  FormProvider,
+  useFormContext,
+  Controller,
+  Control,
+} from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
@@ -649,8 +655,8 @@ export function Task8_6_Solution() {
       </form>
 
       <p style={{ fontSize: '0.875rem', color: '#6c757d', marginTop: '1rem' }}>
-        💡 SubmitButton использует useFormState и ререндерится только при изменении isValid/isSubmitting,
-        а не при каждом вводе текста.
+        💡 SubmitButton использует useFormState и ререндерится только при изменении
+        isValid/isSubmitting, а не при каждом вводе текста.
       </p>
     </div>
   )

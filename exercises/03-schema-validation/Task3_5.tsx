@@ -22,7 +22,6 @@ export function Task3_5() {
 
       {/* TODO: Напишите ваши ответы ниже */}
       {/* TODO: Write your answers below */}
-
     </div>
   )
 }

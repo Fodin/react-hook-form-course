@@ -34,7 +34,6 @@ export function Task8_3() {
 
       {/* TODO: Оберните форму в FormProvider */}
       {/* TODO: Wrap form in FormProvider */}
-
     </div>
   )
 }

@@ -34,7 +34,6 @@ export function Task6_2() {
 
       {/* TODO: Создайте форму ниже */}
       {/* TODO: Create form below */}
-
     </div>
   )
 }

@@ -1,6 +1,6 @@
-import { useForm } from 'react-hook-form';
-import { useEffect } from 'react';
-import { useLanguage } from 'src/hooks';
+import { useForm } from 'react-hook-form'
+import { useEffect } from 'react'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 8.2: Кастомные хуки
@@ -26,7 +26,7 @@ import { useLanguage } from 'src/hooks';
 // TODO: Create onSubmit function
 
 export function Task8_2() {
-  const { t } = useLanguage();
+  const { t } = useLanguage()
 
   return (
     <div className="exercise-container">
@@ -34,7 +34,6 @@ export function Task8_2() {
 
       {/* TODO: Создайте форму ниже */}
       {/* TODO: Create form below */}
-
     </div>
-  );
+  )
 }

@@ -86,3 +86,15 @@
 .contentDark {
   background: #0d1117;
 }
+
+.checkbox {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  accent-color: #646cff;
+}
+
+.content :global(li):has(> .checkbox) {
+  list-style: none;
+  margin-left: -1.5em;
+}

@@ -88,7 +88,7 @@ const userSchema = z.object({
 type UserForm = z.infer<typeof userSchema>
 
 export function Task6_2_Solution() {
-  const { register, handleSubmit, reset, watch } = useForm<UserForm>({
+  const { register, handleSubmit, reset } = useForm<UserForm>({
     resolver: zodResolver(userSchema),
     defaultValues: { username: '', email: '', role: 'user' },
   })
@@ -186,7 +186,6 @@ export function Task6_3_Solution() {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors },
   } = useForm<FocusForm>({
     resolver: zodResolver(focusSchema),
@@ -390,7 +389,8 @@ function FieldStatus({ control, name }: { control: Control<LoginForm>; name: key
   const { dirtyFields, touchedFields } = useFormState({ control })
   return (
     <span style={{ fontSize: '0.75rem', color: '#6c757d' }}>
-      {dirtyFields[name] ? ' 📝' : ''}{touchedFields[name] ? ' 👆' : ''}
+      {dirtyFields[name] ? ' 📝' : ''}
+      {touchedFields[name] ? ' 👆' : ''}
     </span>
   )
 }
@@ -445,9 +445,18 @@ export function Task6_6_Solution() {
           <label>
             Username * <FieldStatus control={control} name="username" />
           </label>
-          <input {...register('username', { required: 'Обязательно', minLength: { value: 3, message: 'Мин. 3' } })} />
+          <input
+            {...register('username', {
+              required: 'Обязательно',
+              minLength: { value: 3, message: 'Мин. 3' },
+            })}
+          />
           {errors.username && <span className="error">{errors.username.message}</span>}
-          <button type="button" onClick={() => handleShowState('username')} style={{ fontSize: '0.75rem', marginTop: '0.25rem' }}>
+          <button
+            type="button"
+            onClick={() => handleShowState('username')}
+            style={{ fontSize: '0.75rem', marginTop: '0.25rem' }}
+          >
             📊 getFieldState
           </button>
         </div>
@@ -456,13 +465,22 @@ export function Task6_6_Solution() {
           <label>
             Email * <FieldStatus control={control} name="email" />
           </label>
-          <input {...register('email', { required: 'Обязательно', pattern: { value: /^\S+@\S+$/, message: 'Неверный email' } })} />
+          <input
+            {...register('email', {
+              required: 'Обязательно',
+              pattern: { value: /^\S+@\S+$/, message: 'Неверный email' },
+            })}
+          />
           {errors.email && <span className="error">{errors.email.message}</span>}
           <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.25rem' }}>
             <button type="button" onClick={handleResetEmail} style={{ fontSize: '0.75rem' }}>
               🗑️ resetField
             </button>
-            <button type="button" onClick={() => handleShowState('email')} style={{ fontSize: '0.75rem' }}>
+            <button
+              type="button"
+              onClick={() => handleShowState('email')}
+              style={{ fontSize: '0.75rem' }}
+            >
               📊 getFieldState
             </button>
           </div>
@@ -472,7 +490,13 @@ export function Task6_6_Solution() {
           <label>
             Password * <FieldStatus control={control} name="password" />
           </label>
-          <input type="password" {...register('password', { required: 'Обязательно', minLength: { value: 6, message: 'Мин. 6' } })} />
+          <input
+            type="password"
+            {...register('password', {
+              required: 'Обязательно',
+              minLength: { value: 6, message: 'Мин. 6' },
+            })}
+          />
           {errors.password && <span className="error">{errors.password.message}</span>}
         </div>
 
@@ -484,8 +508,8 @@ export function Task6_6_Solution() {
         </div>
 
         <p style={{ fontSize: '0.875rem', color: '#6c757d', marginTop: '1rem' }}>
-          💡 При загрузке фокус ставится на username через setFocus.
-          Кнопки 📊 показывают getFieldState для каждого поля.
+          💡 При загрузке фокус ставится на username через setFocus. Кнопки 📊 показывают
+          getFieldState для каждого поля.
         </p>
       </form>
     </div>

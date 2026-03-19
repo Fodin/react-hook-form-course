@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -398,28 +398,40 @@ export function Task7_5_Solution() {
 
         <div className="form-group">
           <label>Email *</label>
-          <input type="email" {...register('email', {
-            required: 'Обязательно',
-            pattern: { value: /^\S+@\S+$/, message: 'Неверный email' },
-          })} />
+          <input
+            type="email"
+            {...register('email', {
+              required: 'Обязательно',
+              pattern: { value: /^\S+@\S+$/, message: 'Неверный email' },
+            })}
+          />
           {errors.email && <span className="error">{errors.email.message}</span>}
         </div>
 
         <div className="form-group">
           <label>О себе *</label>
-          <textarea {...register('bio', { required: 'Обязательно' })} rows={4} style={{ width: '100%' }} />
+          <textarea
+            {...register('bio', { required: 'Обязательно' })}
+            rows={4}
+            style={{ width: '100%' }}
+          />
           {errors.bio && <span className="error">{errors.bio.message}</span>}
         </div>
 
         <div style={{ display: 'flex', gap: '0.5rem' }}>
           <button type="submit">Сохранить</button>
-          <button type="button" onClick={handleRefresh} style={{ background: '#17a2b8', color: '#fff', border: 'none' }}>
+          <button
+            type="button"
+            onClick={handleRefresh}
+            style={{ background: '#17a2b8', color: '#fff', border: 'none' }}
+          >
             🔄 Обновить данные
           </button>
         </div>
 
         <p style={{ fontSize: '0.875rem', color: '#6c757d', marginTop: '1rem' }}>
-          💡 Данные загружены через async defaultValues. Кнопка «Обновить» использует values для синхронизации.
+          💡 Данные загружены через async defaultValues. Кнопка «Обновить» использует values для
+          синхронизации.
         </p>
       </form>
     </div>

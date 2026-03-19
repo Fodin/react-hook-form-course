@@ -24,14 +24,18 @@ const categories = [
 function CustomSelect({ value, onChange, options, placeholder }: any) {
   return (
     <div style={{ position: 'relative' }}>
-      <select 
-        value={value || ''} 
-        onChange={(e) => onChange(e.target.value || null)}
+      <select
+        value={value || ''}
+        onChange={e => onChange(e.target.value || null)}
         style={{ width: '100%', padding: '0.5rem' }}
       >
-        <option value="" disabled>{placeholder}</option>
+        <option value="" disabled>
+          {placeholder}
+        </option>
         {options.map((opt: any) => (
-          <option key={opt.value} value={opt.value}>{opt.label}</option>
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
         ))}
       </select>
     </div>
@@ -39,11 +43,11 @@ function CustomSelect({ value, onChange, options, placeholder }: any) {
 }
 
 export function Task4_1_Solution() {
-  const { 
-    register, 
+  const {
+    register,
     control,
-    handleSubmit, 
-    formState: { errors } 
+    handleSubmit,
+    formState: { errors },
   } = useForm<CategoryForm>({
     resolver: zodResolver(categorySchema),
   })
@@ -55,14 +59,14 @@ export function Task4_1_Solution() {
   return (
     <div className="exercise-container">
       <h2>✅ Задание 4.1: Controller</h2>
-      
+
       <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: '400px' }}>
         <div className="form-group">
           <label>Название товара *</label>
           <input type="text" {...register('name')} />
           {errors.name && <span className="error">{errors.name.message}</span>}
         </div>
-        
+
         <div className="form-group">
           <label>Категория *</label>
           <Controller
@@ -70,16 +74,12 @@ export function Task4_1_Solution() {
             control={control}
             defaultValue=""
             render={({ field }) => (
-              <CustomSelect
-                {...field}
-                options={categories}
-                placeholder="Выберите категорию"
-              />
+              <CustomSelect {...field} options={categories} placeholder="Выберите категорию" />
             )}
           />
           {errors.category && <span className="error">{errors.category.message}</span>}
         </div>
-        
+
         <button type="submit">Сохранить</button>
       </form>
     </div>
@@ -98,10 +98,10 @@ const profileSchema = z.object({
 type ProfileForm = z.infer<typeof profileSchema>
 
 export function Task4_2_Solution() {
-  const { 
-    register, 
-    handleSubmit, 
-    formState: { errors } 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
   } = useForm<ProfileForm>({
     resolver: zodResolver(profileSchema),
   })
@@ -113,7 +113,7 @@ export function Task4_2_Solution() {
   return (
     <div className="exercise-container">
       <h2>✅ Задание 4.2: Radio и Select</h2>
-      
+
       <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: '400px' }}>
         <div className="form-group">
           <label>Пол *</label>
@@ -133,7 +133,7 @@ export function Task4_2_Solution() {
           </div>
           {errors.gender && <span className="error">{errors.gender.message}</span>}
         </div>
-        
+
         <div className="form-group">
           <label>Страна *</label>
           <select {...register('country')}>
@@ -146,7 +146,7 @@ export function Task4_2_Solution() {
           </select>
           {errors.country && <span className="error">{errors.country.message}</span>}
         </div>
-        
+
         <button type="submit">Сохранить</button>
       </form>
     </div>
@@ -167,12 +167,12 @@ type SkillsForm = z.infer<typeof skillsSchema>
 const allSkills = ['React', 'Vue', 'Angular', 'Svelte']
 
 export function Task4_3_Solution() {
-  const { 
-    register, 
-    handleSubmit, 
+  const {
+    register,
+    handleSubmit,
     watch,
     setValue,
-    formState: { errors } 
+    formState: { errors },
   } = useForm<SkillsForm>({
     resolver: zodResolver(skillsSchema),
     defaultValues: {
@@ -186,7 +186,10 @@ export function Task4_3_Solution() {
     if (checked) {
       setValue('skills', [...selectedSkills, skill])
     } else {
-      setValue('skills', selectedSkills.filter(s => s !== skill))
+      setValue(
+        'skills',
+        selectedSkills.filter(s => s !== skill)
+      )
     }
   }
 
@@ -197,29 +200,26 @@ export function Task4_3_Solution() {
   return (
     <div className="exercise-container">
       <h2>✅ Задание 4.3: Checkbox</h2>
-      
+
       <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: '400px' }}>
         <div className="form-group">
           <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <input 
-              type="checkbox" 
-              {...register('agree')} 
-            />
-            Я согласен с правилами обработки данных *
+            <input type="checkbox" {...register('agree')} />Я согласен с правилами обработки данных
+            *
           </label>
           {errors.agree && <span className="error">{errors.agree.message}</span>}
         </div>
-        
+
         <div className="form-group">
           <label>Навыки *</label>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            {allSkills.map((skill) => (
+            {allSkills.map(skill => (
               <label key={skill} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <input
                   type="checkbox"
                   value={skill}
                   checked={selectedSkills.includes(skill)}
-                  onChange={(e) => handleSkillChange(skill, e.target.checked)}
+                  onChange={e => handleSkillChange(skill, e.target.checked)}
                 />
                 {skill}
               </label>
@@ -227,12 +227,21 @@ export function Task4_3_Solution() {
           </div>
           {errors.skills && <span className="error">{errors.skills.message}</span>}
         </div>
-        
-        <div style={{ marginTop: '1rem', padding: '0.5rem', background: '#f5f5f5', borderRadius: '4px' }}>
+
+        <div
+          style={{
+            marginTop: '1rem',
+            padding: '0.5rem',
+            background: '#f5f5f5',
+            borderRadius: '4px',
+          }}
+        >
           Выбрано: {selectedSkills.join(', ') || 'ничего'}
         </div>
-        
-        <button type="submit" style={{ marginTop: '1rem' }}>Сохранить</button>
+
+        <button type="submit" style={{ marginTop: '1rem' }}>
+          Сохранить
+        </button>
       </form>
     </div>
   )
@@ -243,11 +252,12 @@ export function Task4_3_Solution() {
 // ============================================
 
 const fileSchema = z.object({
-  avatar: z.instanceof(FileList)
-    .refine((files) => files.length > 0, 'Выберите файл')
-    .refine((files) => files[0]?.size < 2000000, 'Максимум 2MB')
+  avatar: z
+    .instanceof(FileList)
+    .refine(files => files.length > 0, 'Выберите файл')
+    .refine(files => files[0]?.size < 2000000, 'Максимум 2MB')
     .refine(
-      (files) => ['image/jpeg', 'image/png', 'image/gif'].includes(files[0]?.type),
+      files => ['image/jpeg', 'image/png', 'image/gif'].includes(files[0]?.type),
       'Только JPG, PNG, GIF'
     ),
 })
@@ -255,11 +265,11 @@ const fileSchema = z.object({
 type FileForm = z.infer<typeof fileSchema>
 
 export function Task4_4_Solution() {
-  const { 
-    register, 
-    handleSubmit, 
+  const {
+    register,
+    handleSubmit,
     watch,
-    formState: { errors } 
+    formState: { errors },
   } = useForm<FileForm>({
     resolver: zodResolver(fileSchema),
   })
@@ -274,15 +284,15 @@ export function Task4_4_Solution() {
   return (
     <div className="exercise-container">
       <h2>✅ Задание 4.4: File Upload</h2>
-      
+
       <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: '400px' }}>
         <div className="form-group">
           <label>Аватар *</label>
-          <input 
-            type="file" 
+          <input
+            type="file"
             accept="image/jpeg,image/png,image/gif"
             {...register('avatar')}
-            onChange={(e) => {
+            onChange={e => {
               const file = e.target.files?.[0]
               if (file) {
                 setPreview(URL.createObjectURL(file))
@@ -291,18 +301,16 @@ export function Task4_4_Solution() {
           />
           {errors.avatar && <span className="error">{errors.avatar.message}</span>}
         </div>
-        
+
         {preview && (
           <div style={{ marginTop: '1rem' }}>
-            <img 
-              src={preview} 
-              alt="Preview" 
-              style={{ maxWidth: '200px', borderRadius: '8px' }} 
-            />
+            <img src={preview} alt="Preview" style={{ maxWidth: '200px', borderRadius: '8px' }} />
           </div>
         )}
-        
-        <button type="submit" style={{ marginTop: '1rem' }}>Загрузить</button>
+
+        <button type="submit" style={{ marginTop: '1rem' }}>
+          Загрузить
+        </button>
       </form>
     </div>
   )
@@ -320,10 +328,10 @@ const dateSchema = z.object({
 type DateForm = z.infer<typeof dateSchema>
 
 export function Task4_5_Solution() {
-  const { 
-    register, 
-    handleSubmit, 
-    formState: { errors } 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
   } = useForm<DateForm>({
     resolver: zodResolver(dateSchema),
   })
@@ -335,28 +343,20 @@ export function Task4_5_Solution() {
   return (
     <div className="exercise-container">
       <h2>✅ Задание 4.5: Дата и время</h2>
-      
+
       <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: '400px' }}>
         <div className="form-group">
           <label htmlFor="birthDate">Дата рождения *</label>
-          <input 
-            id="birthDate"
-            type="date" 
-            {...register('birthDate')} 
-          />
+          <input id="birthDate" type="date" {...register('birthDate')} />
           {errors.birthDate && <span className="error">{errors.birthDate.message}</span>}
         </div>
-        
+
         <div className="form-group">
           <label htmlFor="appointment">Запись на встречу *</label>
-          <input 
-            id="appointment"
-            type="datetime-local" 
-            {...register('appointment')} 
-          />
+          <input id="appointment" type="datetime-local" {...register('appointment')} />
           {errors.appointment && <span className="error">{errors.appointment.message}</span>}
         </div>
-        
+
         <button type="submit">Записаться</button>
       </form>
     </div>

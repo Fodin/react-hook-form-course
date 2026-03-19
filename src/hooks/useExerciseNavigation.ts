@@ -15,8 +15,7 @@ export function useExerciseNavigation({
   const navigate = useNavigate()
   const { taskId } = useParams<{ taskId: string }>()
 
-  const currentTask =
-    taskId && validTasks.includes(taskId) ? taskId : defaultTask
+  const currentTask = taskId && validTasks.includes(taskId) ? taskId : defaultTask
 
   const changeTask = useCallback(
     (task: string) => {

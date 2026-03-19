@@ -411,35 +411,34 @@ const paymentSchema = z.discriminatedUnion('method', [
   }),
   z.object({
     method: z.literal('crypto'),
-    walletAddress: z
-      .string()
-      .min(1, 'Обязательно')
-      .min(26, 'Минимум 26 символов'),
+    walletAddress: z.string().min(1, 'Обязательно').min(26, 'Минимум 26 символов'),
     network: z.enum(['ethereum', 'bitcoin', 'solana'], {
       errorMap: () => ({ message: 'Выберите сеть' }),
     }),
   }),
 ])
 
-const orderSchema = z.object({
-  amount: z.number().min(1, 'Минимум 1'),
-  payment: paymentSchema,
-}).superRefine((data, ctx) => {
-  if (data.payment.method === 'crypto' && data.amount < 10) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: 'Минимальная сумма для крипто — 10',
-      path: ['amount'],
-    })
-  }
-  if (data.payment.method === 'card' && data.amount > 100000) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: 'Максимум для карты — 100 000',
-      path: ['amount'],
-    })
-  }
-})
+const orderSchema = z
+  .object({
+    amount: z.number().min(1, 'Минимум 1'),
+    payment: paymentSchema,
+  })
+  .superRefine((data, ctx) => {
+    if (data.payment.method === 'crypto' && data.amount < 10) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Минимальная сумма для крипто — 10',
+        path: ['amount'],
+      })
+    }
+    if (data.payment.method === 'card' && data.amount > 100000) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Максимум для карты — 100 000',
+        path: ['amount'],
+      })
+    }
+  })
 
 type OrderForm = z.infer<typeof orderSchema>
 

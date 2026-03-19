@@ -5,7 +5,6 @@ import ts from 'react-syntax-highlighter/dist/esm/languages/hljs/typescript'
 import { useTheme } from '../hooks'
 import { githubLightStyle, githubDarkStyle } from '../styles'
 
-
 import styles from './CodeHighlight.module.css'
 
 // Регистрируем язык TypeScript

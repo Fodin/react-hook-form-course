@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useTheme } from '../../../src/hooks/useTheme'
+import { useTheme } from 'src/hooks'
 
 // ============================================
 // Задание 1.1: Форма регистрации — Решение

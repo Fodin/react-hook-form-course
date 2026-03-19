@@ -36,7 +36,14 @@ const importRules = {
 }
 
 export default tseslint.config(
-  { ignores: ['dist', 'exercises/**/Task*.tsx', 'exercises/**/Cheat.tsx', 'src/exercises/**/Solution.tsx'] },
+  {
+    ignores: [
+      'dist',
+      'exercises/**/Task*.tsx',
+      'exercises/**/Cheat.tsx',
+      'src/exercises/**/Solution.tsx',
+    ],
+  },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],

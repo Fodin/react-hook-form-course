@@ -1,6 +1,6 @@
-import { useForm } from 'react-hook-form';
-import { useEffect, useRef } from 'react';
-import { useLanguage } from 'src/hooks';
+import { useForm } from 'react-hook-form'
+import { useEffect, useRef } from 'react'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 6.3: Focus management
@@ -23,7 +23,7 @@ import { useLanguage } from 'src/hooks';
 // TODO: Create onSubmit function
 
 export function Task6_3() {
-  const { t } = useLanguage();
+  const { t } = useLanguage()
 
   return (
     <div className="exercise-container">
@@ -31,7 +31,6 @@ export function Task6_3() {
 
       {/* TODO: Создайте форму ниже */}
       {/* TODO: Create form below */}
-
     </div>
-  );
+  )
 }

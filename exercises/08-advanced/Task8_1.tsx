@@ -1,5 +1,5 @@
-import { Controller, useForm } from 'react-hook-form';
-import { useLanguage } from 'src/hooks';
+import { Controller, useForm } from 'react-hook-form'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 8.1: UI библиотека
@@ -22,7 +22,7 @@ import { useLanguage } from 'src/hooks';
 // TODO: Create onSubmit function
 
 export function Task8_1() {
-  const { t } = useLanguage();
+  const { t } = useLanguage()
 
   return (
     <div className="exercise-container">
@@ -30,7 +30,6 @@ export function Task8_1() {
 
       {/* TODO: Создайте форму ниже */}
       {/* TODO: Create form below */}
-
     </div>
-  );
+  )
 }

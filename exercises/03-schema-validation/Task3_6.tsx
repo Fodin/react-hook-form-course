@@ -34,7 +34,6 @@ export function Task3_6() {
 
       {/* TODO: Реализуйте форму оплаты здесь */}
       {/* TODO: Implement payment form here */}
-
     </div>
   )
 }

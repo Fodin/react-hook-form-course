@@ -23,7 +23,6 @@ export function Task0_1() {
 
       {/* TODO: Создайте форму с полями email и password и кнопкой "Войти" */}
       {/* TODO: Create form with email and password fields and "Войти" button */}
-
     </div>
   )
 }

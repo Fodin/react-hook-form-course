@@ -1,6 +1,6 @@
-import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
-import { useLanguage } from 'src/hooks';
+import { useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
+import { useLanguage } from 'src/hooks'
 
 // ============================================
 // Задание 7.2: Загрузка данных
@@ -26,7 +26,7 @@ import { useLanguage } from 'src/hooks';
 // TODO: Create onSubmit function
 
 export function Task7_2() {
-  const { t } = useLanguage();
+  const { t } = useLanguage()
 
   return (
     <div className="exercise-container">
@@ -34,7 +34,6 @@ export function Task7_2() {
 
       {/* TODO: Создайте форму ниже */}
       {/* TODO: Create form below */}
-
     </div>
-  );
+  )
 }

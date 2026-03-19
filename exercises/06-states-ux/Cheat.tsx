@@ -8,7 +8,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 // ============================================
 
 export function Task6_1_Solution() {
-  const { register, formState: { dirtyFields, touchedFields, isDirty } } = useForm<{ name: string; email: string }>()
+  const {
+    register,
+    formState: { dirtyFields, touchedFields, isDirty },
+  } = useForm<{ name: string; email: string }>()
 
   return (
     <div className="exercise-container">
@@ -19,10 +22,16 @@ export function Task6_1_Solution() {
           <input {...register('name')} />
           <div style={{ fontSize: '0.75rem', marginTop: '0.5rem', display: 'flex', gap: '1rem' }}>
             <span>
-              Dirty: <span style={{ color: dirtyFields.name ? '#28a745' : '#dc3545' }}>{dirtyFields.name ? '✅' : '❌'}</span>
+              Dirty:{' '}
+              <span style={{ color: dirtyFields.name ? '#28a745' : '#dc3545' }}>
+                {dirtyFields.name ? '✅' : '❌'}
+              </span>
             </span>
             <span>
-              Touched: <span style={{ color: touchedFields.name ? '#28a745' : '#6c757d' }}>{touchedFields.name ? '✅' : '❌'}</span>
+              Touched:{' '}
+              <span style={{ color: touchedFields.name ? '#28a745' : '#6c757d' }}>
+                {touchedFields.name ? '✅' : '❌'}
+              </span>
             </span>
           </div>
         </div>
@@ -32,22 +41,31 @@ export function Task6_1_Solution() {
           <input {...register('email')} />
           <div style={{ fontSize: '0.75rem', marginTop: '0.5rem', display: 'flex', gap: '1rem' }}>
             <span>
-              Dirty: <span style={{ color: dirtyFields.email ? '#28a745' : '#dc3545' }}>{dirtyFields.email ? '✅' : '❌'}</span>
+              Dirty:{' '}
+              <span style={{ color: dirtyFields.email ? '#28a745' : '#dc3545' }}>
+                {dirtyFields.email ? '✅' : '❌'}
+              </span>
             </span>
             <span>
-              Touched: <span style={{ color: touchedFields.email ? '#28a745' : '#6c757d' }}>{touchedFields.email ? '✅' : '❌'}</span>
+              Touched:{' '}
+              <span style={{ color: touchedFields.email ? '#28a745' : '#6c757d' }}>
+                {touchedFields.email ? '✅' : '❌'}
+              </span>
             </span>
           </div>
         </div>
 
-        <div style={{
-          marginTop: '1rem',
-          padding: '0.75rem',
-          background: isDirty ? '#fff3cd' : '#d4edda',
-          borderRadius: '4px',
-          fontWeight: 500
-        }}>
-          Форма изменена: <span style={{ color: isDirty ? '#856404' : '#155724' }}>{isDirty ? 'Да' : 'Нет'}</span>
+        <div
+          style={{
+            marginTop: '1rem',
+            padding: '0.75rem',
+            background: isDirty ? '#fff3cd' : '#d4edda',
+            borderRadius: '4px',
+            fontWeight: 500,
+          }}
+        >
+          Форма изменена:{' '}
+          <span style={{ color: isDirty ? '#856404' : '#155724' }}>{isDirty ? 'Да' : 'Нет'}</span>
         </div>
       </form>
     </div>
@@ -67,7 +85,7 @@ const userSchema = z.object({
 type UserForm = z.infer<typeof userSchema>
 
 export function Task6_2_Solution() {
-  const { register, handleSubmit, reset, watch } = useForm<UserForm>({
+  const { register, handleSubmit, reset } = useForm<UserForm>({
     resolver: zodResolver(userSchema),
     defaultValues: { username: '', email: '', role: 'user' },
   })
@@ -111,7 +129,11 @@ export function Task6_2_Solution() {
 
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
           <button type="submit">Сохранить</button>
-          <button type="button" onClick={handleFill} style={{ background: '#17a2b8', color: '#fff', border: 'none' }}>
+          <button
+            type="button"
+            onClick={handleFill}
+            style={{ background: '#17a2b8', color: '#fff', border: 'none' }}
+          >
             📝 Заполнить
           </button>
           <button type="button" onClick={handleReset}>
@@ -120,15 +142,19 @@ export function Task6_2_Solution() {
         </div>
 
         {lastSubmitted && (
-          <div style={{
-            marginTop: '1rem',
-            padding: '1rem',
-            background: '#d4edda',
-            borderRadius: '8px',
-            border: '1px solid #c3e6cb'
-          }}>
+          <div
+            style={{
+              marginTop: '1rem',
+              padding: '1rem',
+              background: '#d4edda',
+              borderRadius: '8px',
+              border: '1px solid #c3e6cb',
+            }}
+          >
             <strong>Последняя отправка:</strong>
-            <pre style={{ marginTop: '0.5rem', marginBottom: 0 }}>{JSON.stringify(lastSubmitted, null, 2)}</pre>
+            <pre style={{ marginTop: '0.5rem', marginBottom: 0 }}>
+              {JSON.stringify(lastSubmitted, null, 2)}
+            </pre>
           </div>
         )}
       </form>
@@ -140,19 +166,25 @@ export function Task6_2_Solution() {
 // Задание 6.3: Focus management — Решение
 // ============================================
 
-const focusSchema = z.object({
-  email: z.string().email('Неверный email'),
-  password: z.string().min(6, 'Минимум 6 символов'),
-  confirm: z.string(),
-}).refine((data) => data.password === data.confirm, {
-  message: 'Пароли не совпадают',
-  path: ['confirm'],
-})
+const focusSchema = z
+  .object({
+    email: z.string().email('Неверный email'),
+    password: z.string().min(6, 'Минимум 6 символов'),
+    confirm: z.string(),
+  })
+  .refine(data => data.password === data.confirm, {
+    message: 'Пароли не совпадают',
+    path: ['confirm'],
+  })
 
 type FocusForm = z.infer<typeof focusSchema>
 
 export function Task6_3_Solution() {
-  const { register, handleSubmit, setError, formState: { errors } } = useForm<FocusForm>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FocusForm>({
     resolver: zodResolver(focusSchema),
   })
 
@@ -212,7 +244,11 @@ const a11ySchema = z.object({
 type A11yForm = z.infer<typeof a11ySchema>
 
 export function Task6_4_Solution() {
-  const { register, handleSubmit, formState: { errors, isSubmitted } } = useForm<A11yForm>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitted },
+  } = useForm<A11yForm>({
     resolver: zodResolver(a11ySchema),
   })
 
@@ -238,7 +274,7 @@ export function Task6_4_Solution() {
               background: '#f8d7da',
               borderRadius: '4px',
               marginBottom: '1rem',
-              color: '#721c24'
+              color: '#721c24',
             }}
           >
             <strong>Имеются ошибки в форме</strong>
@@ -293,7 +329,7 @@ export function Task6_5_Solution() {
   const values = watch()
 
   useEffect(() => {
-    setRenderCount((c) => c + 1)
+    setRenderCount(c => c + 1)
   }, [values])
 
   return (
@@ -305,20 +341,22 @@ export function Task6_5_Solution() {
           <input {...register('text')} placeholder="Введите текст..." />
         </div>
 
-        <div style={{
-          padding: '1rem',
-          background: '#17a2b8',
-          color: '#fff',
-          borderRadius: '8px',
-          marginTop: '1rem',
-          fontWeight: 600
-        }}>
+        <div
+          style={{
+            padding: '1rem',
+            background: '#17a2b8',
+            color: '#fff',
+            borderRadius: '8px',
+            marginTop: '1rem',
+            fontWeight: 600,
+          }}
+        >
           🔄 Рендеров формы: {renderCount}
         </div>
 
         <p style={{ fontSize: '0.875rem', color: '#6c757d', marginTop: '1rem' }}>
-          💡 Совет: используйте <code>useWatch</code> для подписки на отдельные поля
-          вместо <code>watch()</code> для всех полей
+          💡 Совет: используйте <code>useWatch</code> для подписки на отдельные поля вместо{' '}
+          <code>watch()</code> для всех полей
         </p>
       </form>
     </div>

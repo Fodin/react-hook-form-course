@@ -32,7 +32,6 @@ export function Task0_2() {
 
       {/* TODO: Добавьте кнопку "Очистить" для сброса данных */}
       {/* TODO: Add "Clear" button to reset displayed data */}
-
     </div>
   )
 }

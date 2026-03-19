@@ -48,12 +48,16 @@ const uiSchema = z.object({
 type UIForm = z.infer<typeof uiSchema>
 
 export function Task8_1_Solution() {
-  const { control, handleSubmit, formState: { errors, isSubmitting } } = useForm<UIForm>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<UIForm>({
     resolver: zodResolver(uiSchema),
   })
 
   const onSubmit = async (data: UIForm) => {
-    await new Promise((r) => setTimeout(r, 1000))
+    await new Promise(r => setTimeout(r, 1000))
     console.log('Submitted:', data)
   }
 
@@ -65,12 +69,7 @@ export function Task8_1_Solution() {
           name="name"
           control={control}
           render={({ field }) => (
-            <TextField
-              {...field}
-              id="name"
-              label="Name"
-              error={errors.name?.message}
-            />
+            <TextField {...field} id="name" label="Name" error={errors.name?.message} />
           )}
         />
 
@@ -113,7 +112,7 @@ function useFormPersist<T extends Record<string, any>>(name: string, defaultValu
 
   const clear = () => {
     localStorage.removeItem(`form-${name}`)
-    setStored(defaultValues || {} as T)
+    setStored(defaultValues || ({} as T))
   }
 
   return { stored, save, clear }
@@ -165,7 +164,11 @@ export function Task8_2_Solution() {
 
         <div style={{ display: 'flex', gap: '0.5rem' }}>
           <button type="submit">Сохранить</button>
-          <button type="button" onClick={clear} style={{ background: '#dc3545', color: '#fff', border: 'none' }}>
+          <button
+            type="button"
+            onClick={clear}
+            style={{ background: '#dc3545', color: '#fff', border: 'none' }}
+          >
             Очистить localStorage
           </button>
         </div>
@@ -261,14 +264,14 @@ export function Task8_3_Solution() {
 
           <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
             {step > 1 && (
-              <button type="button" onClick={() => setStep((s) => s - 1)}>
+              <button type="button" onClick={() => setStep(s => s - 1)}>
                 ← Назад
               </button>
             )}
             {step < 2 ? (
               <button
                 type="button"
-                onClick={() => setStep((s) => s + 1)}
+                onClick={() => setStep(s => s + 1)}
                 style={{ background: '#646cff', color: '#fff', border: 'none' }}
               >
                 Далее →
@@ -357,7 +360,7 @@ const finalSchema = z
     newsletter: z.boolean().optional(),
     notifications: z.boolean().optional(),
   })
-  .refine((data) => data.password === data.confirm, {
+  .refine(data => data.password === data.confirm, {
     message: 'Пароли не совпадают',
     path: ['confirm'],
   })
@@ -369,7 +372,14 @@ export function Task8_5_Solution() {
   const [submitted, setSubmitted] = useState<FinalForm | null>(null)
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
 
-  const { register, handleSubmit, trigger, watch, setValue, formState: { errors } } = useForm<FinalForm>({
+  const {
+    register,
+    handleSubmit,
+    trigger,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<FinalForm>({
     resolver: zodResolver(finalSchema),
     mode: 'onChange',
   })
@@ -379,13 +389,13 @@ export function Task8_5_Solution() {
       step === 1
         ? (['email', 'password', 'confirm'] as const)
         : step === 2
-        ? (['firstName', 'lastName'] as const)
-        : []
+          ? (['firstName', 'lastName'] as const)
+          : []
     const valid = await trigger(fields)
-    if (valid) setStep((s) => s + 1)
+    if (valid) setStep(s => s + 1)
   }
 
-  const onPrev = () => setStep((s) => s - 1)
+  const onPrev = () => setStep(s => s - 1)
 
   const onSubmit = (data: FinalForm) => {
     setSubmitted(data)
@@ -406,7 +416,14 @@ export function Task8_5_Solution() {
     return (
       <div className="exercise-container">
         <h2>🎉 Регистрация завершена!</h2>
-        <div style={{ padding: '1.5rem', background: '#d1e7dd', borderRadius: '8px', marginTop: '1rem' }}>
+        <div
+          style={{
+            padding: '1.5rem',
+            background: '#d1e7dd',
+            borderRadius: '8px',
+            marginTop: '1rem',
+          }}
+        >
           <h3>Данные формы:</h3>
           <pre style={{ marginTop: '1rem', overflow: 'auto' }}>
             {JSON.stringify(submitted, null, 2)}
@@ -429,7 +446,15 @@ export function Task8_5_Solution() {
     <div className="exercise-container">
       <h2>✅ Задание 8.5: Финальный Проект — Регистрация</h2>
 
-      <div style={{ marginBottom: '1rem', padding: '0.5rem', background: '#f0f0ff', borderRadius: '4px', display: 'inline-block' }}>
+      <div
+        style={{
+          marginBottom: '1rem',
+          padding: '0.5rem',
+          background: '#f0f0ff',
+          borderRadius: '4px',
+          display: 'inline-block',
+        }}
+      >
         Шаг {step} из 3
       </div>
 
@@ -476,7 +501,7 @@ export function Task8_5_Solution() {
                 type="file"
                 accept="image/*"
                 {...register('avatar')}
-                onChange={(e) => {
+                onChange={e => {
                   const file = e.target.files?.[0]
                   if (file) {
                     setAvatarPreview(URL.createObjectURL(file))
@@ -508,7 +533,7 @@ export function Task8_5_Solution() {
                 <input
                   type="checkbox"
                   checked={watch('notifications')}
-                  onChange={(e) => setValue('notifications', e.target.checked)}
+                  onChange={e => setValue('notifications', e.target.checked)}
                 />
                 Уведомления
               </label>
@@ -523,7 +548,11 @@ export function Task8_5_Solution() {
             </button>
           )}
           {step < 3 ? (
-            <button type="button" onClick={onNext} style={{ background: '#646cff', color: '#fff', border: 'none' }}>
+            <button
+              type="button"
+              onClick={onNext}
+              style={{ background: '#646cff', color: '#fff', border: 'none' }}
+            >
               Далее →
             </button>
           ) : (

@@ -32,7 +32,6 @@ export function Task7_5() {
 
       {/* TODO: Реализуйте форму здесь */}
       {/* TODO: Implement form here */}
-
     </div>
   )
 }

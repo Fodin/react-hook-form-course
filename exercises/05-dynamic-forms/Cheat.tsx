@@ -8,15 +8,24 @@ import { zodResolver } from '@hookform/resolvers/zod'
 // ============================================
 
 const emailsSchema = z.object({
-  emails: z.array(z.object({
-    value: z.string().email('Неверный email'),
-  })).min(1, 'Минимум один email'),
+  emails: z
+    .array(
+      z.object({
+        value: z.string().email('Неверный email'),
+      })
+    )
+    .min(1, 'Минимум один email'),
 })
 
 type EmailsForm = z.infer<typeof emailsSchema>
 
 export function Task5_1_Solution() {
-  const { control, register, handleSubmit, formState: { errors } } = useForm<EmailsForm>({
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<EmailsForm>({
     resolver: zodResolver(emailsSchema),
     defaultValues: { emails: [{ value: '' }] },
   })
@@ -32,7 +41,10 @@ export function Task5_1_Solution() {
       <h2>✅ Задание 5.1: useFieldArray</h2>
       <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: '500px' }}>
         {fields.map((field, index) => (
-          <div key={field.id} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem', alignItems: 'center' }}>
+          <div
+            key={field.id}
+            style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem', alignItems: 'center' }}
+          >
             <input
               {...register(`emails.${index}.value` as const)}
               placeholder="Email"
@@ -85,21 +97,31 @@ export function Task5_1_Solution() {
 
 type ContactMethod = 'email' | 'phone' | 'telegram'
 
-const conditionalSchema = z.object({
-  contactMethod: z.enum(['email', 'phone', 'telegram']),
-  email: z.string().email('Неверный email').optional(),
-  phone: z.string().min(10, 'Минимум 10 цифр').optional(),
-  telegram: z.string().min(1, 'Обязательно').optional(),
-}).refine((data) => {
-  if (data.contactMethod === 'email') return !!data.email
-  if (data.contactMethod === 'phone') return !!data.phone
-  return !!data.telegram
-}, { message: 'Заполните контакт', path: ['email'] })
+const conditionalSchema = z
+  .object({
+    contactMethod: z.enum(['email', 'phone', 'telegram']),
+    email: z.string().email('Неверный email').optional(),
+    phone: z.string().min(10, 'Минимум 10 цифр').optional(),
+    telegram: z.string().min(1, 'Обязательно').optional(),
+  })
+  .refine(
+    data => {
+      if (data.contactMethod === 'email') return !!data.email
+      if (data.contactMethod === 'phone') return !!data.phone
+      return !!data.telegram
+    },
+    { message: 'Заполните контакт', path: ['email'] }
+  )
 
 type ConditionalForm = z.infer<typeof conditionalSchema>
 
 export function Task5_2_Solution() {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<ConditionalForm>({
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<ConditionalForm>({
     resolver: zodResolver(conditionalSchema),
   })
 
@@ -171,7 +193,13 @@ const dependentSchema = z.object({
 type DependentForm = z.infer<typeof dependentSchema>
 
 export function Task5_3_Solution() {
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<DependentForm>({
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<DependentForm>({
     resolver: zodResolver(dependentSchema),
   })
 
@@ -190,7 +218,7 @@ export function Task5_3_Solution() {
           <label>Страна *</label>
           <select
             {...register('country')}
-            onChange={(e) => {
+            onChange={e => {
               setValue('country', e.target.value)
               setValue('city', '')
             }}
@@ -207,7 +235,7 @@ export function Task5_3_Solution() {
           <label>Город *</label>
           <select {...register('city')} disabled={!country}>
             <option value="">Выберите город</option>
-            {cities.map((city) => (
+            {cities.map(city => (
               <option key={city} value={city}>
                 {city}
               </option>
@@ -216,7 +244,9 @@ export function Task5_3_Solution() {
           {errors.city && <span className="error">{errors.city.message}</span>}
         </div>
 
-        <button type="submit" disabled={!country}>Отправить</button>
+        <button type="submit" disabled={!country}>
+          Отправить
+        </button>
       </form>
     </div>
   )
@@ -237,17 +267,20 @@ type WizardForm = z.infer<typeof wizardSchema>
 
 export function Task5_4_Solution() {
   const [step, setStep] = useState(1)
-  const { register, handleSubmit, trigger, formState: { errors } } = useForm<WizardForm>()
+  const {
+    register,
+    handleSubmit,
+    trigger,
+    formState: { errors },
+  } = useForm<WizardForm>()
 
   const onNext = async () => {
-    const fields = step === 1
-      ? ['name' as const, 'email' as const]
-      : ['address' as const]
+    const fields = step === 1 ? ['name' as const, 'email' as const] : ['address' as const]
     const isValid = await trigger(fields)
-    if (isValid) setStep((s) => s + 1)
+    if (isValid) setStep(s => s + 1)
   }
 
-  const onPrev = () => setStep((s) => s - 1)
+  const onPrev = () => setStep(s => s - 1)
 
   const onSubmit = (data: WizardForm) => {
     console.log('Order:', data)
@@ -257,7 +290,15 @@ export function Task5_4_Solution() {
     <div className="exercise-container">
       <h2>✅ Задание 5.4: Wizard (multi-step)</h2>
 
-      <div style={{ marginBottom: '1rem', padding: '0.5rem', background: '#f0f0ff', borderRadius: '4px', display: 'inline-block' }}>
+      <div
+        style={{
+          marginBottom: '1rem',
+          padding: '0.5rem',
+          background: '#f0f0ff',
+          borderRadius: '4px',
+          display: 'inline-block',
+        }}
+      >
         Шаг {step} из 3
       </div>
 

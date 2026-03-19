@@ -1,4 +1,5 @@
-import ReactMarkdown from 'react-markdown'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import ReactMarkdown, { type Components } from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
 import remarkGfm from 'remark-gfm'
 
@@ -11,14 +12,63 @@ interface TaskDescriptionProps {
   level: string
 }
 
-/**
- * Компонент для отображения описания задания
- */
+function getStorageKey(taskNumber: string) {
+  return `task-checklist-${taskNumber}`
+}
+
+function loadChecked(taskNumber: string): Record<number, boolean> {
+  try {
+    const raw = localStorage.getItem(getStorageKey(taskNumber))
+    return raw ? JSON.parse(raw) : {}
+  } catch {
+    return {}
+  }
+}
+
+function saveChecked(taskNumber: string, checked: Record<number, boolean>) {
+  localStorage.setItem(getStorageKey(taskNumber), JSON.stringify(checked))
+}
+
 export function TaskDescription({ taskNumber, level }: TaskDescriptionProps) {
   const { theme } = useTheme()
   const { t } = useLanguage()
   const isDark = theme === 'dark'
   const { isOpen, toggle } = useCollapsible({ initialState: true })
+  const [checked, setChecked] = useState(() => loadChecked(taskNumber))
+  const indexRef = useRef(0)
+
+  useEffect(() => {
+    setChecked(loadChecked(taskNumber))
+  }, [taskNumber])
+
+  const handleToggle = useCallback(
+    (index: number) => {
+      setChecked(prev => {
+        const next = { ...prev, [index]: !prev[index] }
+        saveChecked(taskNumber, next)
+        return next
+      })
+    },
+    [taskNumber]
+  )
+
+  const components: Components = {
+    input: ({ type, ...props }) => {
+      if (type !== 'checkbox') return <input type={type} {...props} />
+      const index = indexRef.current++
+      return (
+        <input
+          type="checkbox"
+          checked={checked[index]}
+          onChange={() => handleToggle(index)}
+          className={styles.checkbox}
+        />
+      )
+    },
+  }
+
+  // Сбрасываем счётчик перед каждым рендером markdown
+  indexRef.current = 0
 
   const paths: Record<string, Record<string, string>> = {
     '0': {
@@ -109,6 +159,7 @@ export function TaskDescription({ taskNumber, level }: TaskDescriptionProps) {
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[[rehypeHighlight, { detect: true, ignoreMissing: true }]]}
+            components={components}
           >
             {content}
           </ReactMarkdown>
