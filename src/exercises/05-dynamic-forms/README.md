@@ -190,11 +190,7 @@ function ConditionalForm() {
 ```tsx
 const { register } = useForm({ shouldUnregister: true })
 
-< input
-{...
-  register('email', { required: true })
-}
-/>
+<input {...register('email', { required: true })} />
 ```
 
 **Решение 2:** Кастомная валидация
@@ -642,7 +638,7 @@ const { fields, append, remove } = useFieldArray({ control, name: 'emails' })
     </div>
   ))
 }
-<button type="button" onClick={() => append({ value: '' })}>
+;<button type="button" onClick={() => append({ value: '' })}>
   + Добавить
 </button>
 ```

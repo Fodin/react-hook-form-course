@@ -10,10 +10,10 @@ that uses hooks to provide a simple and efficient API.
 Let's compare with alternatives:
 
 | Library             | Size   | Performance | API              |
-|---------------------|--------|-------------|------------------|
-| **React Hook Form** | ~12 KB | ⭐⭐⭐⭐⭐       | Hooks            |
-| Formik              | ~16 KB | ⭐⭐⭐         | Components/Hooks |
-| Redux Form          | ~23 KB | ⭐⭐          | Redux            |
+| ------------------- | ------ | ----------- | ---------------- |
+| **React Hook Form** | ~12 KB | ⭐⭐⭐⭐⭐  | Hooks            |
+| Formik              | ~16 KB | ⭐⭐⭐      | Components/Hooks |
+| Redux Form          | ~23 KB | ⭐⭐        | Redux            |
 
 **React Hook Form Advantages:**
 
@@ -35,21 +35,14 @@ Let's compare with alternatives:
 ```tsx
 // ❌ Controlled component (many rerenders)
 const [value, setValue] = useState('')
-< input
-value = { value }
-onChange = {(e)
-=>
-setValue(e.target.value)
-}
+<input
+  value={value}
+  onChange={(e) => setValue(e.target.value)}
 />
 
 // ✅ Uncontrolled component (minimal rerenders)
 const { register } = useForm()
-< input
-{...
-  register('fieldName')
-}
-/>
+<input {...register('fieldName')} />
 ```
 
 In the controlled approach, each change triggers a rerender. In the uncontrolled approach, React
@@ -104,8 +97,8 @@ function MyForm() {
 
 ```tsx
 const onSubmit = (data: FormData) => {
-    console.log(data) // { email: 'test@example.com', password: '123' }
-  }
+  console.log(data) // { email: 'test@example.com', password: '123' }
+}
 
 ;<form onSubmit={handleSubmit(onSubmit)}>
   <input {...register('email')} />
@@ -212,7 +205,7 @@ export function FirstForm() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor="email">Email</label>
-          <input id="email" type="email" {...register('email')} placeholder="Enter email"/>
+          <input id="email" type="email" {...register('email')} placeholder="Enter email" />
         </div>
 
         <div>

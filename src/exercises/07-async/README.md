@@ -173,8 +173,8 @@ function EditForm() {
 > async функцией и данные ещё загружаются. Это **не** то же самое, что `isSubmitting` — `isLoading`
 > относится только к начальной загрузке значений формы.
 >
-> **Важно:** `isLoading` не станет `true`, если `defaultValues` — обычный объект. Он работает *
-*только** с async функцией в `defaultValues`.
+> **Важно:** `isLoading` не станет `true`, если `defaultValues` — обычный объект. Он работает \*
+> \*только\*\* с async функцией в `defaultValues`.
 
 ### Опция values — синхронизация с внешним состоянием
 
@@ -213,8 +213,10 @@ function EditForm() {
 ```
 
 > **Разница между `values` и async `defaultValues`:**
+>
 > - `defaultValues` (async) — загружает данные **один раз** при инициализации формы.
 > - `values` — **синхронизирует** форму с внешним состоянием. Каждый раз когда `values` меняется,
+
     форма обновляется (аналогично вызову `reset(values)`). Это полезно когда данные могут
     обновляться из внешнего источника (кэш, WebSocket и т.д.).
 
@@ -724,10 +726,8 @@ export function AsyncRegistrationForm() {
 
 // ✅ Правильно - показываем состояние
 const { formState: { isSubmitting } } = useForm()
-< button
-type = "submit"
-disabled = { isSubmitting } >
-  { isSubmitting ? '⏳ Отправка...' : 'Отправить' }
+<button type="submit" disabled={isSubmitting}>
+  {isSubmitting ? '⏳ Отправка...' : 'Отправить'}
 </button>
 ```
 

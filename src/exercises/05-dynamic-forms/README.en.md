@@ -39,7 +39,7 @@ function DynamicForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       {fields.map((field, index) => (
         <div key={field.id}>
-          <input {...register(`emails.${index}.value`)} placeholder="Email"/>
+          <input {...register(`emails.${index}.value`)} placeholder="Email" />
           <button type="button" onClick={() => remove(index)}>
             ✕
           </button>
@@ -169,11 +169,11 @@ function ConditionalForm() {
         <option value="telegram">Telegram</option>
       </select>
 
-      {contactMethod === 'email' && <input {...register('email')} placeholder="Email"/>}
+      {contactMethod === 'email' && <input {...register('email')} placeholder="Email" />}
 
-      {contactMethod === 'phone' && <input {...register('phone')} placeholder="Phone"/>}
+      {contactMethod === 'phone' && <input {...register('phone')} placeholder="Phone" />}
 
-      {contactMethod === 'telegram' && <input {...register('telegram')} placeholder="@username"/>}
+      {contactMethod === 'telegram' && <input {...register('telegram')} placeholder="@username" />}
 
       <button type="submit">Submit</button>
     </form>
@@ -190,11 +190,7 @@ function ConditionalForm() {
 ```tsx
 const { register } = useForm({ shouldUnregister: true })
 
-< input
-{...
-  register('email', { required: true })
-}
-/>
+<input {...register('email', { required: true })} />
 ```
 
 **Solution 2:** Custom validation
@@ -302,7 +298,7 @@ function WizardForm() {
       {step === 1 && (
         <>
           <h2>Step 1: Account</h2>
-          <input {...register('email', { required: true })} placeholder="Email"/>
+          <input {...register('email', { required: true })} placeholder="Email" />
           <input
             {...register('password', { required: true })}
             type="password"
@@ -317,8 +313,8 @@ function WizardForm() {
       {step === 2 && (
         <>
           <h2>Step 2: Profile</h2>
-          <input {...register('firstName', { required: true })} placeholder="First Name"/>
-          <input {...register('lastName', { required: true })} placeholder="Last Name"/>
+          <input {...register('firstName', { required: true })} placeholder="First Name" />
+          <input {...register('lastName', { required: true })} placeholder="Last Name" />
           <div>
             <button type="button" onClick={onPrev}>
               ← Back
@@ -333,7 +329,7 @@ function WizardForm() {
       {step === 3 && (
         <>
           <h2>Step 3: Confirmation</h2>
-          <textarea {...register('comments')} placeholder="Comment"/>
+          <textarea {...register('comments')} placeholder="Comment" />
           <div>
             <button type="button" onClick={onPrev}>
               ← Back
@@ -513,7 +509,7 @@ export function OrderWizard() {
 
           {fields.map((field, index) => (
             <div key={field.id} style={{ marginBottom: '1rem' }}>
-              <input {...register(`items.${index}.name` as const)} placeholder="Name"/>
+              <input {...register(`items.${index}.name` as const)} placeholder="Name" />
               <input
                 type="number"
                 {...register(`items.${index}.quantity` as const, { valueAsNumber: true })}
@@ -550,13 +546,13 @@ export function OrderWizard() {
         <div>
           <h2>Shipping Address</h2>
 
-          <input {...register('address.city')} placeholder="City"/>
+          <input {...register('address.city')} placeholder="City" />
           {errors.address?.city && <span className="error">{errors.address.city.message}</span>}
 
-          <input {...register('address.street')} placeholder="Street"/>
+          <input {...register('address.street')} placeholder="Street" />
           {errors.address?.street && <span className="error">{errors.address.street.message}</span>}
 
-          <input {...register('address.zip')} placeholder="Zip Code"/>
+          <input {...register('address.zip')} placeholder="Zip Code" />
           {errors.address?.zip && <span className="error">{errors.address.zip.message}</span>}
 
           <div>
@@ -575,7 +571,7 @@ export function OrderWizard() {
         <div>
           <h2>Confirmation</h2>
 
-          <textarea {...register('comments')} placeholder="Order comment"/>
+          <textarea {...register('comments')} placeholder="Order comment" />
 
           <div>
             <button type="button" onClick={() => setStep(3)}>

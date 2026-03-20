@@ -13,7 +13,7 @@ user-friendly forms.
 ### What are Dirty and Touched?
 
 | State     | Description       | When it Changes        |
-|-----------|-------------------|------------------------|
+| --------- | ----------------- | ---------------------- |
 | `dirty`   | Field was changed | When value changes     |
 | `touched` | Field was touched | On blur                |
 | `isDirty` | Form was changed  | When any field changes |
@@ -137,17 +137,13 @@ useEffect(() => {
 }, [values])
 
 // Reset button active only if form is dirty
-< button
-type = "button"
-onClick = {()
-=>
-reset()
-}
-disabled = {!
-isDirty
-}>
-Reset
-< /button>
+<button
+  type="button"
+  onClick={() => reset()}
+  disabled={!isDirty}
+>
+  Reset
+</button>
 ```
 
 ---
@@ -280,7 +276,7 @@ function AccessibleForm() {
 ### Main ARIA Attributes
 
 | Attribute          | Description               | Example                          |
-|--------------------|---------------------------|----------------------------------|
+| ------------------ | ------------------------- | -------------------------------- |
 | `aria-label`       | Text label                | `aria-label="Login form"`        |
 | `aria-invalid`     | Field is invalid          | `aria-invalid={!!errors.email}`  |
 | `aria-describedby` | Link to description       | `aria-describedby="email-error"` |
@@ -366,7 +362,7 @@ function MyForm() {
   return (
     <form>
       <input {...register('price', { valueAsNumber: true })} />
-      <PriceDisplay control={control}/>
+      <PriceDisplay control={control} />
     </form>
   )
 }

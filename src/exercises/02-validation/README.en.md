@@ -291,7 +291,7 @@ useForm({
 ### Recommendations for Mode Selection
 
 | Mode       | When to Use                        |
-|------------|------------------------------------|
+| ---------- | ---------------------------------- |
 | `onSubmit` | Simple forms, minimal noise        |
 | `onChange` | Forms with instant feedback        |
 | `onBlur`   | When you need to check after input |

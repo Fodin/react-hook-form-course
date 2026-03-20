@@ -291,7 +291,7 @@ useForm({
 ### Рекомендации по выбору режима
 
 | Режим      | Когда использовать                 |
-|------------|------------------------------------|
+| ---------- | ---------------------------------- |
 | `onSubmit` | Простые формы, минимальный шум     |
 | `onChange` | Формы с мгновенной обратной связью |
 | `onBlur`   | Когда нужно проверить после ввода  |
@@ -304,7 +304,7 @@ useForm({
 ### Базовое отображение
 
 ```tsx
-<input {...register('email', { required: 'Обязательно' })} />
+;<input {...register('email', { required: 'Обязательно' })} />
 {
   errors.email && <span className="error">{errors.email.message}</span>
 }
@@ -401,44 +401,55 @@ export function RegistrationForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
         <label>Username</label>
-        <input {...register('username', {
-          required: 'Обязательное поле',
-          minLength: { value: 3, message: 'Минимум 3 символа' },
-          maxLength: { value: 20, message: 'Максимум 20 символов' },
-        })} />
+        <input
+          {...register('username', {
+            required: 'Обязательное поле',
+            minLength: { value: 3, message: 'Минимум 3 символа' },
+            maxLength: { value: 20, message: 'Максимум 20 символов' },
+          })}
+        />
         {errors.username && <span className="error">{errors.username.message}</span>}
       </div>
 
       <div>
         <label>Email</label>
-        <input type="email" {...register('email', {
-          required: 'Обязательное поле',
-          pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Неверный формат email' },
-        })} />
+        <input
+          type="email"
+          {...register('email', {
+            required: 'Обязательное поле',
+            pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Неверный формат email' },
+          })}
+        />
         {errors.email && <span className="error">{errors.email.message}</span>}
       </div>
 
       <div>
         <label>Age</label>
-        <input type="number" {...register('age', {
-          valueAsNumber: true,
-          required: 'Обязательное поле',
-          min: { value: 18, message: 'Минимум 18 лет' },
-          max: { value: 120, message: 'Максимум 120 лет' },
-        })} />
+        <input
+          type="number"
+          {...register('age', {
+            valueAsNumber: true,
+            required: 'Обязательное поле',
+            min: { value: 18, message: 'Минимум 18 лет' },
+            max: { value: 120, message: 'Максимум 120 лет' },
+          })}
+        />
         {errors.age && <span className="error">{errors.age.message}</span>}
       </div>
 
       <div>
         <label>Password</label>
-        <input type="password" {...register('password', {
-          required: 'Обязательное поле',
-          minLength: { value: 6, message: 'Минимум 6 символов' },
-          validate: {
-            uppercase: v => /[A-Z]/.test(v) || 'Должна быть заглавная буква',
-            number: v => /\d/.test(v) || 'Должна быть цифра',
-          },
-        })} />
+        <input
+          type="password"
+          {...register('password', {
+            required: 'Обязательное поле',
+            minLength: { value: 6, message: 'Минимум 6 символов' },
+            validate: {
+              uppercase: v => /[A-Z]/.test(v) || 'Должна быть заглавная буква',
+              number: v => /\d/.test(v) || 'Должна быть цифра',
+            },
+          })}
+        />
         {errors.password && <span className="error">{errors.password.message}</span>}
       </div>
 

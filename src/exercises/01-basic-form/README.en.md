@@ -60,7 +60,7 @@ useForm<FormData>({
 **Validation modes:**
 
 | mode         | Description                         |
-|--------------|-------------------------------------|
+| ------------ | ----------------------------------- |
 | `'onSubmit'` | Validation only on submit (default) |
 | `'onChange'` | Validation on every change          |
 | `'onBlur'`   | Validation on blur                  |
@@ -149,7 +149,7 @@ useForm<FormData>({
 ### Textarea
 
 ```tsx
-<textarea {...register('bio')} rows={4} cols={50}/>
+<textarea {...register('bio')} rows={4} cols={50} />
 ```
 
 ### Select
@@ -188,20 +188,17 @@ useForm<FormData>({
 const { watch, setValue } = useForm()
 const skills = watch('skills') || []
 
-  < input
-type = "checkbox"
-value = "react"
-checked = { skills.includes('react') }
-onChange = {(e)
-=>
-{
-  if (e.target.checked) {
-    setValue('skills', [...skills, 'react'])
-  } else {
-    setValue('skills', skills.filter(s => s !== 'react'))
-  }
-}
-}
+<input
+  type="checkbox"
+  value="react"
+  checked={skills.includes('react')}
+  onChange={(e) => {
+    if (e.target.checked) {
+      setValue('skills', [...skills, 'react'])
+    } else {
+      setValue('skills', skills.filter(s => s !== 'react'))
+    }
+  }}
 />
 ```
 
@@ -494,12 +491,12 @@ export function RegistrationForm() {
 
         <div>
           <label>About</label>
-          <textarea {...register('bio')} rows={4}/>
+          <textarea {...register('bio')} rows={4} />
         </div>
 
         <div>
           <label>Website</label>
-          <input type="url" {...register('website')} placeholder="https://..."/>
+          <input type="url" {...register('website')} placeholder="https://..." />
         </div>
 
         <div style={{ marginTop: '1rem' }}>
@@ -550,13 +547,11 @@ cause issues with validation and data submission.
 ```tsx
 // ❌ Wrong - undefined before first render
 const value = watch('field')
-  < p > { value.length }
-</p> // Error!
+<p>{value.length}</p> // Error!
 
 // ✅ Correct - with default value
 const value = watch('field', '')
-  < p > { value.length }
-</p> // Works!
+<p>{value.length}</p> // Works!
 ```
 
 **Why this is a mistake:** `watch` returns `undefined` until the field is registered. You need to
@@ -571,11 +566,7 @@ specify a default value.
 setValue('email', 'test@example.com')
 
 // ✅ Correct - first register, then setValue
-< input
-{...
-  register('email')
-}
-/>
+<input {...register('email')} />
 setValue('email', 'test@example.com')
 ```
 
@@ -589,8 +580,7 @@ registered via `register`.
 ```tsx
 // ❌ Wrong - getValues in component body
 const values = getValues()
-  < p > { values.email }
-</p>
+<p>{values.email}</p>
 
 // ✅ Correct - getValues only in handlers
 const onSubmit = () => {
@@ -609,13 +599,11 @@ reactive reading or `getValues` only in handlers.
 ```tsx
 // ❌ Wrong - formState doesn't track changes
 const { formState } = useForm()
-< p > { formState.errors.email }
-</p>
+<p>{formState.errors.email}</p>
 
 // ✅ Correct - destructure from formState
 const { formState: { errors, isDirty, isValid } } = useForm()
-< p > { errors.email?.message }
-</p>
+<p>{errors.email?.message}</p>
 ```
 
 **Why this is a mistake:** `formState` is a Proxy object. You need to destructure specific

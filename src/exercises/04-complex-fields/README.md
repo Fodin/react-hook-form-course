@@ -77,10 +77,10 @@ function MyForm() {
   name="category"
   control={control}
   render={({
-             field, // { onChange, onBlur, value, name, ref }
-             fieldState, // { invalid, isTouched, isDirty, error }
-             formState, // { errors, isSubmitting, isValid }
-           }) => <Select {...field} onChange={selected => field.onChange(selected?.value)}/>}
+    field, // { onChange, onBlur, value, name, ref }
+    fieldState, // { invalid, isTouched, isDirty, error }
+    formState, // { errors, isSubmitting, isValid }
+  }) => <Select {...field} onChange={selected => field.onChange(selected?.value)} />}
 />
 ```
 
@@ -101,11 +101,11 @@ function TextField({ label, error, ...props }: any) {
 }
 
 // Использование с Controller
-<Controller
+;<Controller
   name="email"
   control={control}
   render={({ field, fieldState: { error } }) => (
-    <TextField {...field} label="Email" error={error?.message}/>
+    <TextField {...field} label="Email" error={error?.message} />
   )}
 />
 ```
@@ -176,7 +176,7 @@ function SelectForm() {
 ### Select с валидацией
 
 ```tsx
-<select
+;<select
   {...register('country', {
     required: 'Выберите страну',
   })}
@@ -369,7 +369,7 @@ function FileUploadWithPreview() {
         }}
       />
 
-      {preview && <img src={preview} alt="Preview" style={{ maxWidth: '200px' }}/>}
+      {preview && <img src={preview} alt="Preview" style={{ maxWidth: '200px' }} />}
 
       <button type="submit">Загрузить</button>
     </form>
@@ -560,7 +560,7 @@ export function ProductForm() {
             }
           }}
         />
-        {preview && <img src={preview} alt="Preview" style={{ maxWidth: '200px' }}/>}
+        {preview && <img src={preview} alt="Preview" style={{ maxWidth: '200px' }} />}
         {errors.image && <span className="error">{errors.image.message}</span>}
       </div>
 
@@ -585,13 +585,10 @@ export function ProductForm() {
 
 // ✅ Правильно - передаём control
 const { control } = useForm()
-< Controller
-name = "category"
-control = { control }
-render = {({ field })
-=>
-<Select {...field} />
-}
+<Controller
+  name="category"
+  control={control}
+  render={({ field }) => <Select {...field} />}
 />
 ```
 
@@ -636,19 +633,14 @@ UI, Ant Design и т.д.), которые не предоставляют нат
 
 // ✅ Правильно — вызываем onChange от register, добавляя свою логику
 const avatarRegister = register('avatar')
-  < input
-type = "file"
-{...
-  avatarRegister
-}
-onChange = {(e)
-=>
-{
-  avatarRegister.onChange(e)  // Сначала передаём событие в RHF
-  const file = e.target.files?.[0]
-  // Дополнительная обработка (preview и т.д.)
-}
-}
+<input
+  type="file"
+  {...avatarRegister}
+  onChange={(e) => {
+    avatarRegister.onChange(e)  // Сначала передаём событие в RHF
+    const file = e.target.files?.[0]
+    // Дополнительная обработка (preview и т.д.)
+  }}
 />
 ```
 

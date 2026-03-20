@@ -77,10 +77,10 @@ function MyForm() {
   name="category"
   control={control}
   render={({
-             field, // { onChange, onBlur, value, name, ref }
-             fieldState, // { invalid, isTouched, isDirty, error }
-             formState, // { errors, isSubmitting, isValid }
-           }) => <Select {...field} onChange={selected => field.onChange(selected?.value)}/>}
+    field, // { onChange, onBlur, value, name, ref }
+    fieldState, // { invalid, isTouched, isDirty, error }
+    formState, // { errors, isSubmitting, isValid }
+  }) => <Select {...field} onChange={selected => field.onChange(selected?.value)} />}
 />
 ```
 
@@ -105,7 +105,7 @@ function TextField({ label, error, ...props }: any) {
   name="email"
   control={control}
   render={({ field, fieldState: { error } }) => (
-    <TextField {...field} label="Email" error={error?.message}/>
+    <TextField {...field} label="Email" error={error?.message} />
   )}
 />
 ```
@@ -369,7 +369,7 @@ function FileUploadWithPreview() {
         }}
       />
 
-      {preview && <img src={preview} alt="Preview" style={{ maxWidth: '200px' }}/>}
+      {preview && <img src={preview} alt="Preview" style={{ maxWidth: '200px' }} />}
 
       <button type="submit">Upload</button>
     </form>
@@ -561,7 +561,7 @@ export function ProductForm() {
             }
           }}
         />
-        {preview && <img src={preview} alt="Preview" style={{ maxWidth: '200px' }}/>}
+        {preview && <img src={preview} alt="Preview" style={{ maxWidth: '200px' }} />}
         {errors.image && <span className="error">{errors.image.message}</span>}
       </div>
 
@@ -586,13 +586,10 @@ export function ProductForm() {
 
 // ✅ Correct - pass control
 const { control } = useForm()
-< Controller
-name = "category"
-control = { control }
-render = {({ field })
-=>
-<Select {...field} />
-}
+<Controller
+  name="category"
+  control={control}
+  render={({ field }) => <Select {...field} />}
 />
 ```
 

@@ -8,7 +8,7 @@
 **Почему схемы лучше встроенной валидации?**
 
 | Встроенная валидация            | Валидация по схемам            |
-|---------------------------------|--------------------------------|
+| ------------------------------- | ------------------------------ |
 | Правила разбросаны по полям     | Все правила в одном месте      |
 | Сложная кросс-полевая валидация | Легкая кросс-полевая валидация |
 | Меньше типобезопасности         | Полная типобезопасность        |
@@ -269,7 +269,7 @@ const schema = z
 **Когда `superRefine` лучше `refine`?**
 
 | `refine`                                 | `superRefine`                               |
-|------------------------------------------|---------------------------------------------|
+| ---------------------------------------- | ------------------------------------------- |
 | Одна проверка — одна ошибка              | Несколько ошибок за один вызов              |
 | Возвращает `boolean`                     | Вызывает `ctx.addIssue()` для каждой ошибки |
 | Удобен для простых проверок              | Удобен для сложной логики с ветвлениями     |
@@ -341,7 +341,12 @@ type ContactForm = z.infer<typeof contactSchema>
 
 ```tsx
 function ContactForm() {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<ContactForm>({
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<ContactForm>({
     resolver: zodResolver(contactSchema),
   })
 
@@ -355,15 +360,9 @@ function ContactForm() {
         <option value="telegram">Telegram</option>
       </select>
 
-      {method === 'email' && (
-        <input {...register('email')} placeholder="Email"/>
-      )}
-      {method === 'phone' && (
-        <input {...register('phone')} placeholder="Телефон"/>
-      )}
-      {method === 'telegram' && (
-        <input {...register('telegramUsername')} placeholder="@username"/>
-      )}
+      {method === 'email' && <input {...register('email')} placeholder="Email" />}
+      {method === 'phone' && <input {...register('phone')} placeholder="Телефон" />}
+      {method === 'telegram' && <input {...register('telegramUsername')} placeholder="@username" />}
 
       <button type="submit">Отправить</button>
     </form>
@@ -391,7 +390,10 @@ function ContactForm() {
 ```tsx
 const schema = z.object({
   // Trim пробелов
-  name: z.string().min(1, 'Обязательно').transform(val => val.trim()),
+  name: z
+    .string()
+    .min(1, 'Обязательно')
+    .transform(val => val.trim()),
 
   // String -> Number
   age: z.string().transform(val => Number(val)),
@@ -408,7 +410,7 @@ const schema = z.object({
 
 // Input type:  { name: string, age: string, email: string, birthDate: string }
 // Output type: { name: string, age: number, email: string, birthDate: Date }
-type FormInput = z.input<typeof schema>  // тип ДО transform
+type FormInput = z.input<typeof schema> // тип ДО transform
 type FormOutput = z.output<typeof schema> // тип ПОСЛЕ transform (= z.infer)
 ```
 
@@ -439,7 +441,7 @@ const schema = z.object({
 **`transform` vs `pipe`:**
 
 | `transform`                        | `pipe`                                               |
-|------------------------------------|------------------------------------------------------|
+| ---------------------------------- | ---------------------------------------------------- |
 | Преобразует значение               | Передаёт результат в другую схему                    |
 | Нет валидации после преобразования | Валидация преобразованного значения                  |
 | `.transform(v => Number(v))`       | `.transform(v => Number(v)).pipe(z.number().min(1))` |
@@ -456,16 +458,14 @@ const productSchema = z.object({
   price: z
     .string()
     .transform(val => parseFloat(val.replace(',', '.')))
-    .pipe(
-      z.number({ message: 'Должно быть числом' })
-        .positive('Цена должна быть положительной')
-    ),
+    .pipe(z.number({ message: 'Должно быть числом' }).positive('Цена должна быть положительной')),
 
   quantity: z
     .string()
     .transform(val => parseInt(val, 10))
     .pipe(
-      z.number({ message: 'Должно быть числом' })
+      z
+        .number({ message: 'Должно быть числом' })
         .int('Должно быть целым числом')
         .min(1, 'Минимум 1')
     ),
@@ -685,7 +685,7 @@ const schema = yup.object({
 ## Часть 3: Сравнение Zod vs Yup
 
 | Критерий                  | Zod                               | Yup                                  |
-|---------------------------|-----------------------------------|--------------------------------------|
+| ------------------------- | --------------------------------- | ------------------------------------ |
 | **Размер**                | ~12 KB                            | ~14 KB                               |
 | **TypeScript**            | First-class, отличный вывод типов | Хороший, но иногда требует аннотаций |
 | **API**                   | Функциональный, композируемый     | Цепочечный, выразительный            |
@@ -802,16 +802,15 @@ Form.
 
 ```tsx
 // ❌ Неправильно - ошибка не привязана к полю
-.
-refine((data) => data.password === data.confirm, {
+.refine((data) => data.password === data.confirm, {
   message: 'Пароли не совпадают'
 })
 
-  // ✅ Правильно - указываем path
-  .refine((data) => data.password === data.confirm, {
-    message: 'Пароли не совпадают',
-    path: ['confirm']
-  })
+// ✅ Правильно - указываем path
+.refine((data) => data.password === data.confirm, {
+  message: 'Пароли не совпадают',
+  path: ['confirm']
+})
 ```
 
 **Почему это ошибка:** Без `path` ошибка не будет отображена в `errors.confirmPassword`, а будет в

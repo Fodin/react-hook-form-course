@@ -8,7 +8,7 @@ place. This makes the code cleaner, more type-safe, and easier to maintain.
 **Why schemas are better than built-in validation?**
 
 | Built-in Validation            | Schema Validation           |
-|--------------------------------|-----------------------------|
+| ------------------------------ | --------------------------- |
 | Rules scattered across fields  | All rules in one place      |
 | Complex cross-field validation | Easy cross-field validation |
 | Less type safety               | Full type safety            |
@@ -439,7 +439,7 @@ const schema = yup.object({
 ## Part 3: Zod vs Yup Comparison
 
 | Criterion            | Zod                                   | Yup                                      |
-|----------------------|---------------------------------------|------------------------------------------|
+| -------------------- | ------------------------------------- | ---------------------------------------- |
 | **Size**             | ~12 KB                                | ~14 KB                                   |
 | **TypeScript**       | First-class, excellent type inference | Good, but sometimes requires annotations |
 | **API**              | Functional, composable                | Chainable, expressive                    |

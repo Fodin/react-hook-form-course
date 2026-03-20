@@ -60,7 +60,7 @@ useForm<FormData>({
 **Режимы валидации:**
 
 | mode          | Описание                                                                     |
-|---------------|------------------------------------------------------------------------------|
+| ------------- | ---------------------------------------------------------------------------- |
 | `'onSubmit'`  | Валидация только при отправке (по умолчанию)                                 |
 | `'onChange'`  | Валидация при каждом изменении                                               |
 | `'onBlur'`    | Валидация при потере фокуса                                                  |
@@ -184,11 +184,11 @@ const onInvalid = (errors: FieldErrors<FormData>) => {
 
 ```tsx
 handleSubmit(
-  (data) => {
+  data => {
     // Form is valid — send data
     api.submitForm(data)
   },
-  (errors) => {
+  errors => {
     // Form has errors — log to analytics
     analytics.track('form_validation_failed', {
       fields: Object.keys(errors),
@@ -208,10 +208,8 @@ const onSubmit = async (data: FormData) => {
   // isSubmitting === false after resolve/reject
 }
 
-<form onSubmit={handleSubmit(onSubmit)}>
-  <button disabled={isSubmitting}>
-    {isSubmitting ? 'Отправка...' : 'Отправить'}
-  </button>
+;<form onSubmit={handleSubmit(onSubmit)}>
+  <button disabled={isSubmitting}>{isSubmitting ? 'Отправка...' : 'Отправить'}</button>
 </form>
 ```
 
@@ -259,7 +257,7 @@ const onSubmit = async (data: FormData) => {
 ### Textarea
 
 ```tsx
-<textarea {...register('bio')} rows={4} cols={50}/>
+<textarea {...register('bio')} rows={4} cols={50} />
 ```
 
 ### Select
@@ -286,20 +284,12 @@ interface FormData {
 const { register } = useForm<FormData>()
 
 // TypeScript проверит, что значения в option соответствуют типу
-< select
-{...
-  register('country')
-}
->
-<
-option
-value = "" > Выберите
-страну < /option>
-<option value="ru">Россия</option>
-<option value="us">USA</option>
-<option value="de">Germany</option>
-{/* <option value="invalid">❌ Ошибка компиляции!</option> */
-}
+<select {...register('country')}>
+  <option value="">Выберите страну</option>
+  <option value="ru">Россия</option>
+  <option value="us">USA</option>
+  <option value="de">Germany</option>
+  {/* <option value="invalid">❌ Ошибка компиляции!</option> */}
 </select>
 
 // Альтернатива: использование enum
@@ -342,27 +332,20 @@ interface FormData {
 const { register } = useForm<FormData>()
 
 // TypeScript проверит значения
-< div >
-< label >
-< input
-type = "radio"
-value = "male"
-{...
-  register('gender')
-}
-/>
-Мужской
-< /label>
-<label>
-  <input type="radio" value="female" {...register('gender')} />
-  Женский
-</label>
-<label>
-  <input type="radio" value="other" {...register('gender')} />
-  Другое
-</label>
-{/* <input type="radio" value="invalid" {...register('gender')} /> ❌ Ошибка! */
-}
+<div>
+  <label>
+    <input type="radio" value="male" {...register('gender')} />
+    Мужской
+  </label>
+  <label>
+    <input type="radio" value="female" {...register('gender')} />
+    Женский
+  </label>
+  <label>
+    <input type="radio" value="other" {...register('gender')} />
+    Другое
+  </label>
+  {/* <input type="radio" value="invalid" {...register('gender')} /> ❌ Ошибка! */}
 </div>
 
 // Использование констант для избежания опечаток
@@ -374,14 +357,7 @@ const GENDER_OPTIONS = {
 
 type Gender = typeof GENDER_OPTIONS[keyof typeof GENDER_OPTIONS]
 
-<
-input
-type = "radio"
-value = { GENDER_OPTIONS.MALE }
-{...
-  register('gender')
-}
-/>
+<input type="radio" value={GENDER_OPTIONS.MALE} {...register('gender')} />
 ```
 
 ### Checkbox
@@ -423,13 +399,7 @@ const { register } = useForm<FormData>({
 })
 
 // Все чекбоксы используют одно имя — RHF соберёт отмеченные value в массив
-< input
-type = "checkbox"
-value = "react"
-{...
-  register('skills')
-}
-/>
+<input type="checkbox" value="react" {...register('skills')} />
 <label>React</label>
 
 <input type="checkbox" value="typescript" {...register('skills')} />
@@ -511,8 +481,7 @@ const {
 const { formState } = useForm()
 
 // Компонент НЕ будет перерисовываться при изменении errors!
-< div > { formState.errors.email?.message }
-</div>
+<div>{formState.errors.email?.message}</div>
 ```
 
 #### ✅ Правильно: Условный доступ к свойствам
@@ -597,10 +566,10 @@ const {
 ### `watch` vs `onChange` vs `getValues`
 
 | Метод       | Когда использовать                         | Вызывает ререндер? |
-|-------------|--------------------------------------------|--------------------|
-| `watch`     | Нужно **отображать** значение в UI         | ✅ Да               |
-| `onChange`  | Нужно **выполнить действие** при изменении | ❌ Нет              |
-| `getValues` | Нужно **получить** значение один раз       | ❌ Нет              |
+| ----------- | ------------------------------------------ | ------------------ |
+| `watch`     | Нужно **отображать** значение в UI         | ✅ Да              |
+| `onChange`  | Нужно **выполнить действие** при изменении | ❌ Нет             |
+| `getValues` | Нужно **получить** значение один раз       | ❌ Нет             |
 
 **Пример различий:**
 
@@ -609,13 +578,8 @@ const { register, watch, getValues } = useForm()
 
 // ✅ watch — подписка с ререндером
 const password = watch('password')
-  // При каждом изменении password компонент перерисуется
-  < div > Длина
-:
-{
-  password.length
-}
-символов < /div>
+// При каждом изменении password компонент перерисуется
+<div>Длина: {password.length} символов</div>
 
 // ✅ onChange — действие без ререндера
 <input
@@ -926,12 +890,12 @@ export function RegistrationForm() {
 
         <div>
           <label>О себе</label>
-          <textarea {...register('bio')} rows={4}/>
+          <textarea {...register('bio')} rows={4} />
         </div>
 
         <div>
           <label>Сайт</label>
-          <input type="url" {...register('website')} placeholder="https://..."/>
+          <input type="url" {...register('website')} placeholder="https://..." />
         </div>
 
         <div style={{ marginTop: '1rem' }}>
@@ -982,13 +946,11 @@ export function RegistrationForm() {
 ```tsx
 // ❌ Неправильно - undefined до первого рендера
 const value = watch('field')
-  < p > { value.length }
-</p> // Ошибка!
+<p>{value.length}</p> // Ошибка!
 
 // ✅ Правильно - с дефолтным значением
 const value = watch('field', '')
-  < p > { value.length }
-</p> // Работает!
+<p>{value.length}</p> // Работает!
 ```
 
 **Почему это ошибка:** `watch` возвращает `undefined` пока поле не зарегистрировано. Нужно указывать
@@ -1003,11 +965,7 @@ const value = watch('field', '')
 setValue('email', 'test@example.com')
 
 // ✅ Правильно - сначала register, потом setValue
-< input
-{...
-  register('email')
-}
-/>
+<input {...register('email')} />
 setValue('email', 'test@example.com')
 ```
 
@@ -1021,13 +979,11 @@ setValue('email', 'test@example.com')
 ```tsx
 // ❌ Неправильно - значение не будет обновляться в UI
 const values = getValues()
-  < p > { values.email }
-</p>
+<p>{values.email}</p>
 
 // ✅ Правильно - watch подписывается на изменения и обновляет UI
 const email = watch('email')
-  < p > { email }
-</p>
+<p>{email}</p>
 
 // ✅ Также правильно - getValues в обработчиках (не в JSX)
 const onSubmit = () => {
@@ -1053,8 +1009,7 @@ if (someCondition) {
 
 // ✅ Правильно - деструктуризация в render-фазе подписывает Proxy
 const { formState: { errors, isDirty, isValid } } = useForm()
-< p > { errors.email?.message }
-</p>
+<p>{errors.email?.message}</p>
 ```
 
 **Почему это важно:** RHF использует Proxy для отслеживания, какие свойства `formState` вы читаете.

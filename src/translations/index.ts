@@ -17,7 +17,7 @@ export const translations = {
     'nav.dynamic': 'Динамические формы',
     'nav.ux': 'UX',
     'nav.async': 'Асинхронность',
-    'nav.advanced': 'Продвинутые',
+    'nav.advanced': 'Продвинутые техники',
 
     // Задания уровня 0
     'task.0.1': 'Первая форма',

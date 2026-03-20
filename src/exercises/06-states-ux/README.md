@@ -13,7 +13,7 @@
 ### Что такое Dirty и Touched?
 
 | Состояние | Описание            | Когда меняется            |
-|-----------|---------------------|---------------------------|
+| --------- | ------------------- | ------------------------- |
 | `dirty`   | Поле было изменено  | При изменении значения    |
 | `touched` | Поле было затронуто | При потере фокуса (blur)  |
 | `isDirty` | Форма была изменена | При изменении любого поля |
@@ -48,7 +48,7 @@ function MyForm() {
 
 ```tsx
 // Показывать ошибку только после того, как поле затронуто
-<input {...register('email', { required: 'Обязательно' })} />
+;<input {...register('email', { required: 'Обязательно' })} />
 {
   touchedFields.email && errors.email && <span className="error">{errors.email.message}</span>
 }
@@ -181,7 +181,7 @@ resetField('email', {
 ```
 
 > **Разница между `reset` и `resetField`:** `reset` сбрасывает всю форму и все её состояния (
-`isDirty`, `touchedFields`, `errors` и т.д.). `resetField` работает точечно — сбрасывает только
+> `isDirty`, `touchedFields`, `errors` и т.д.). `resetField` работает точечно — сбрасывает только
 > указанное поле.
 
 ### isSubmitSuccessful — отслеживание успешной отправки
@@ -198,7 +198,9 @@ const {
 } = useForm()
 
 // Показать сообщение об успехе
-{isSubmitSuccessful && <div role="status">Форма успешно отправлена!</div>}
+{
+  isSubmitSuccessful && <div role="status">Форма успешно отправлена!</div>
+}
 
 // Сброс формы после успешной отправки
 useEffect(() => {
@@ -262,7 +264,7 @@ function MyForm() {
   }, [setFocus])
 
   // Фокус на первое поле с ошибкой после неудачного submit
-  const onInvalid = (errors) => {
+  const onInvalid = errors => {
     const firstError = Object.keys(errors)[0]
     if (firstError) setFocus(firstError)
   }
@@ -320,7 +322,7 @@ import { UseFormSetFocus, FieldErrors, FieldValues } from 'react-hook-form'
 
 function useFocusOnError<T extends FieldValues>(
   errors: FieldErrors<T>,
-  setFocus: UseFormSetFocus<T>,
+  setFocus: UseFormSetFocus<T>
 ) {
   useEffect(() => {
     const firstError = Object.keys(errors)[0] as keyof T
@@ -390,7 +392,7 @@ function AccessibleForm() {
 ### Основные ARIA атрибуты
 
 | Атрибут            | Описание                      | Пример                           |
-|--------------------|-------------------------------|----------------------------------|
+| ------------------ | ----------------------------- | -------------------------------- |
 | `aria-label`       | Текстовая метка               | `aria-label="Форма входа"`       |
 | `aria-invalid`     | Поле невалидно                | `aria-invalid={!!errors.email}`  |
 | `aria-describedby` | Связь с описанием             | `aria-describedby="email-error"` |
@@ -504,7 +506,10 @@ const { register } = useForm({ shouldUnregister: true })
 видит мелькающие ошибки пока печатает.
 
 ```tsx
-const { register, formState: { errors } } = useForm({
+const {
+  register,
+  formState: { errors },
+} = useForm({
   mode: 'onChange',
   delayError: 500, // Ошибка появится через 500ms после прекращения ввода
 })
@@ -562,21 +567,13 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 export function UXForm() {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setFocus,
-    resetField,
-    getFieldState,
-    watch,
-    formState,
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
-    mode: 'onChange',
-    delayError: 500, // Ошибки появляются с задержкой для лучшего UX
-    shouldFocusError: true,
-  })
+  const { register, handleSubmit, reset, setFocus, resetField, getFieldState, watch, formState } =
+    useForm<FormData>({
+      resolver: zodResolver(schema),
+      mode: 'onChange',
+      delayError: 500, // Ошибки появляются с задержкой для лучшего UX
+      shouldFocusError: true,
+    })
 
   const {
     errors,
@@ -622,11 +619,7 @@ export function UXForm() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit, onInvalid)}
-      aria-label="Форма регистрации"
-      noValidate
-    >
+    <form onSubmit={handleSubmit(onSubmit, onInvalid)} aria-label="Форма регистрации" noValidate>
       {/* Статус бар */}
       <div style={{ marginBottom: '1rem', padding: '0.5rem', background: '#f0f0f0' }}>
         <span>Изменена: {isDirty ? '✅' : '❌'}</span>
@@ -787,7 +780,7 @@ useEffect(() => {
 
 // ✅ Правильно - использовать setFocus из RHF
 const { setFocus } = useForm()
-const onInvalid = (errors) => {
+const onInvalid = errors => {
   const firstError = Object.keys(errors)[0]
   if (firstError) setFocus(firstError)
 }

@@ -69,7 +69,7 @@ function FormTextField({ label, error, ...props }: any) {
 }
 
 // Использование с Controller
-<Controller
+;<Controller
   name="email"
   control={control}
   render={({ field, fieldState: { error } }) => (
@@ -716,7 +716,7 @@ function MyForm() {
 ### Опции useFormState
 
 | Опция      | Тип                  | Описание                                                          |
-|------------|----------------------|-------------------------------------------------------------------|
+| ---------- | -------------------- | ----------------------------------------------------------------- |
 | `control`  | `Control`            | Объект `control` из `useForm`. Необязателен внутри `FormProvider` |
 | `name`     | `string \| string[]` | Подписка на конкретные поля (фильтрация ререндеров)               |
 | `disabled` | `boolean`            | Отключает подписку                                                |
@@ -727,7 +727,10 @@ function MyForm() {
 ```tsx
 // ❌ Весь компонент ререндерится при любом изменении formState
 function App() {
-  const { register, formState: { errors, isSubmitting } } = useForm()
+  const {
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm()
   // ...всё ререндерится
 }
 
@@ -866,7 +869,7 @@ useEffect(() => {
 ### subscribe vs useFormState vs watch
 
 |                      | Ререндер         | Использование                                |
-|----------------------|------------------|----------------------------------------------|
+| -------------------- | ---------------- | -------------------------------------------- |
 | `watch` / `useWatch` | Да               | Отображение значений в JSX                   |
 | `useFormState`       | Да (изолировано) | Отображение formState в JSX (кнопки, ошибки) |
 | `subscribe`          | Нет              | Side-effects: логи, аналитика, localStorage  |
@@ -890,7 +893,11 @@ import { vi } from 'vitest'
 
 // Component under test
 function LoginForm({ onSubmit }: { onSubmit: (data: any) => void }) {
-  const { register, handleSubmit, formState: { errors } } = useForm()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm()
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -968,10 +975,7 @@ test('shows error for taken username', async () => {
 ```tsx
 test('loads and displays default values', async () => {
   render(
-    <EditForm
-      defaultValues={{ name: 'Иван', email: 'ivan@example.com' }}
-      onSubmit={vi.fn()}
-    />
+    <EditForm defaultValues={{ name: 'Иван', email: 'ivan@example.com' }} onSubmit={vi.fn()} />
   )
 
   expect(screen.getByLabelText('Name')).toHaveValue('Иван')
