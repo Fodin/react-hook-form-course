@@ -22,7 +22,6 @@ export function ExerciseLayout({ config }: ExerciseLayoutProps) {
   const defaultTask = taskIds[0]
 
   const { currentTask, changeTask } = useExerciseNavigation({
-    levelId,
     defaultTask,
     validTasks: taskIds,
   })

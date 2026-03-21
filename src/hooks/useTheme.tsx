@@ -1,4 +1,6 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import { createContext, useContext, useEffect, ReactNode } from 'react'
+
+import { useLocalStorage } from './useLocalStorage'
 
 type Theme = 'light' | 'dark'
 
@@ -9,24 +11,14 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
-const STORAGE_KEY = 'rhf-course-theme'
-
 interface ThemeProviderProps {
   children: ReactNode
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    // При первой загрузке читаем из localStorage или используем 'light'
-    const stored = localStorage.getItem(STORAGE_KEY) as Theme | null
-    return stored || 'light'
-  })
+  const [theme, setTheme] = useLocalStorage<Theme>('rhf-course-theme', 'light')
 
   useEffect(() => {
-    // Сохраняем тему в localStorage при изменении
-    localStorage.setItem(STORAGE_KEY, theme)
-
-    // Добавляем/удаляем класс на documentElement для глобальных стилей
     if (theme === 'dark') {
       document.documentElement.classList.add('dark-theme')
     } else {

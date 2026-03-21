@@ -2,13 +2,11 @@ import { useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 interface UseExerciseNavigationOptions {
-  levelId: string
   defaultTask: string
   validTasks: string[]
 }
 
 export function useExerciseNavigation({
-  levelId,
   defaultTask,
   validTasks,
 }: UseExerciseNavigationOptions) {
@@ -20,10 +18,10 @@ export function useExerciseNavigation({
   const changeTask = useCallback(
     (task: string) => {
       if (validTasks.includes(task)) {
-        navigate(`/level/${levelId}/${task}`)
+        navigate(`/task/${task}`)
       }
     },
-    [levelId, validTasks, navigate]
+    [validTasks, navigate]
   )
 
   return {

@@ -1,27 +1,26 @@
+import { type ReactNode } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom'
 
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { ExerciseRenderer } from './components/ExerciseRenderer'
 import { LevelSidebar } from './components/LevelSidebar'
+import { exercisesConfigMap } from './exercises/exercisesConfig'
 import { ThemeProvider, LanguageProvider, ProgressProvider, useLanguage } from './hooks'
-import { useAppLevels } from './hooks/useAppLevels'
 
 import styles from './App.module.css'
 
-function LevelPage() {
-  const { levelId, taskId } = useParams<{ levelId: string; taskId?: string }>()
-  const { levels } = useAppLevels()
+function getLevelFromTaskId(taskId: string): string {
+  return taskId.split('.')[0]
+}
+
+function TaskPage() {
+  const { taskId } = useParams<{ taskId: string }>()
   const { t } = useLanguage()
 
-  // Проверка валидности levelId
-  const isValidLevel = levels.some(level => level.id === levelId)
-  if (!isValidLevel) {
-    return <Navigate to="/level/0/0.1" replace />
-  }
+  const levelId = taskId ? getLevelFromTaskId(taskId) : '0'
 
-  // Если taskId не указан, редирект на первое задание
-  if (!taskId) {
-    const defaultTask = getDefaultTask(levelId || '0')
-    return <Navigate to={`/level/${levelId}/${defaultTask}`} replace />
+  if (!exercisesConfigMap.has(levelId)) {
+    return <Navigate to="/task/0.1" replace />
   }
 
   return (
@@ -30,40 +29,56 @@ function LevelPage() {
         <div className={styles.sidebarHeader}>
           <h2 className={styles.sidebarTitle}>{t('nav.title')}</h2>
         </div>
-        <LevelSidebar levels={levels} currentLevel={levelId || '0'} />
+        <LevelSidebar currentLevel={levelId} />
       </aside>
       <main className={styles.main}>
-        <ExerciseRenderer level={levelId || '0'} />
+        <ErrorBoundary>
+          <ExerciseRenderer level={levelId} />
+        </ErrorBoundary>
       </main>
     </div>
   )
 }
 
-function getDefaultTask(levelId: string): string {
-  return `${levelId}.1`
-}
-
 function AppContent() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/level/0/0.1" replace />} />
-      <Route path="/level/:levelId" element={<LevelPage />} />
-      <Route path="/level/:levelId/:taskId" element={<LevelPage />} />
-      <Route path="*" element={<Navigate to="/level/0/0.1" replace />} />
+      <Route path="/" element={<Navigate to="/task/0.1" replace />} />
+      <Route path="/task/:taskId" element={<TaskPage />} />
+      {/* Обратная совместимость со старыми URL */}
+      <Route path="/level/:levelId/:taskId" element={<OldUrlRedirect />} />
+      <Route path="/level/:levelId" element={<OldLevelRedirect />} />
+      <Route path="*" element={<Navigate to="/task/0.1" replace />} />
     </Routes>
+  )
+}
+
+function OldUrlRedirect() {
+  const { taskId } = useParams<{ taskId: string }>()
+  return <Navigate to={`/task/${taskId}`} replace />
+}
+
+function OldLevelRedirect() {
+  const { levelId } = useParams<{ levelId: string }>()
+  return <Navigate to={`/task/${levelId}.1`} replace />
+}
+
+function AppProviders({ children }: { children: ReactNode }) {
+  return (
+    <ThemeProvider>
+      <LanguageProvider>
+        <ProgressProvider>{children}</ProgressProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   )
 }
 
 export default function App() {
   return (
     <BrowserRouter>
-      <ThemeProvider>
-        <LanguageProvider>
-          <ProgressProvider>
-            <AppContent />
-          </ProgressProvider>
-        </LanguageProvider>
-      </ThemeProvider>
+      <AppProviders>
+        <AppContent />
+      </AppProviders>
     </BrowserRouter>
   )
 }

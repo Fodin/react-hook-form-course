@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  text-align: center;
+  min-height: 200px;
+}
+
+.icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0 0 0.5rem;
+}
+
+.message {
+  color: var(--clr-text-muted);
+  margin: 0 0 1.5rem;
+  max-width: 500px;
+  word-break: break-word;
+}
+
+.button {
+  padding: 0.6rem 1.5rem;
+  border: 2px solid var(--clr-accent);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--clr-accent);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  background: var(--clr-accent);
+  color: #ffffff;
+}

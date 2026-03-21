@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback, useContext, createContext } from 'react'
-import type { ReactNode } from 'react'
-import { createElement } from 'react'
+import { useCallback, useContext, createContext, type ReactNode } from 'react'
+
+import { useLocalStorage } from './useLocalStorage'
 
 const PROGRESS_KEY = 'rhf-course-progress'
 
@@ -22,32 +22,20 @@ interface ProgressContextValue {
 const ProgressContext = createContext<ProgressContextValue | null>(null)
 
 export function ProgressProvider({ children }: { children: ReactNode }) {
-  const [progress, setProgress] = useState<TaskProgress>(() => {
-    try {
-      const saved = localStorage.getItem(PROGRESS_KEY)
-      return saved ? JSON.parse(saved) : {}
-    } catch {
-      return {}
-    }
-  })
+  const [progress, setProgress] = useLocalStorage<TaskProgress>(PROGRESS_KEY, {})
 
-  useEffect(() => {
-    try {
-      localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress))
-    } catch (error) {
-      console.error('Failed to save progress:', error)
-    }
-  }, [progress])
-
-  const toggleTask = useCallback((levelId: string, taskId: string) => {
-    setProgress(prev => ({
-      ...prev,
-      [levelId]: {
-        ...(prev[levelId] || {}),
-        [taskId]: !prev[levelId]?.[taskId],
-      },
-    }))
-  }, [])
+  const toggleTask = useCallback(
+    (levelId: string, taskId: string) => {
+      setProgress(prev => ({
+        ...prev,
+        [levelId]: {
+          ...(prev[levelId] || {}),
+          [taskId]: !prev[levelId]?.[taskId],
+        },
+      }))
+    },
+    [setProgress]
+  )
 
   const isTaskComplete = useCallback(
     (levelId: string, taskId: string) => {
@@ -79,24 +67,25 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
 
   const resetProgress = useCallback(() => {
     setProgress({})
-  }, [])
+  }, [setProgress])
 
-  return createElement(
-    ProgressContext.Provider,
-    {
-      value: {
+  return (
+    <ProgressContext.Provider
+      value={{
         progress,
         toggleTask,
         isTaskComplete,
         getLevelProgress,
         getTotalProgress,
         resetProgress,
-      },
-    },
-    children
+      }}
+    >
+      {children}
+    </ProgressContext.Provider>
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useProgress() {
   const context = useContext(ProgressContext)
   if (!context) {

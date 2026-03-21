@@ -20,36 +20,36 @@ export function FormContainer({ children, taskFile }: FormContainerProps) {
   const [formStats, setFormStats] = useState({ inputs: 0, buttons: 0, hasValidation: false })
 
   useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
     const checkForForm = () => {
-      if (containerRef.current) {
-        const formElement = containerRef.current.querySelector('form')
-        const inputs = containerRef.current.querySelectorAll('input, select, textarea')
-        const buttons = containerRef.current.querySelectorAll('button[type="submit"]')
-        const requiredInputs = containerRef.current.querySelectorAll(
-          '[required], input[aria-required="true"]'
-        )
+      const formElement = container.querySelector('form')
+      const inputs = container.querySelectorAll('input, select, textarea')
+      const buttons = container.querySelectorAll('button[type="submit"]')
+      const requiredInputs = container.querySelectorAll(
+        '[required], input[aria-required="true"]'
+      )
 
-        const found = !!formElement || inputs.length > 0
-        setHasForm(found)
+      const found = !!formElement || inputs.length > 0
+      setHasForm(found)
 
-        if (found) {
-          setFormStats({
-            inputs: inputs.length,
-            buttons: buttons.length,
-            hasValidation:
-              requiredInputs.length > 0 || !!containerRef.current.querySelector('[aria-invalid]'),
-          })
-        }
+      if (found) {
+        setFormStats({
+          inputs: inputs.length,
+          buttons: buttons.length,
+          hasValidation:
+            requiredInputs.length > 0 || !!container.querySelector('[aria-invalid]'),
+        })
       }
     }
 
-    const timer = setTimeout(checkForForm, 100)
-    const interval = setInterval(checkForForm, 500)
+    checkForForm()
 
-    return () => {
-      clearTimeout(timer)
-      clearInterval(interval)
-    }
+    const observer = new MutationObserver(checkForForm)
+    observer.observe(container, { childList: true, subtree: true })
+
+    return () => observer.disconnect()
   }, [children])
 
   return (
