@@ -1,16 +1,12 @@
 import { useState, useEffect, useRef, type Dispatch, type SetStateAction } from 'react'
 
 function readValue<T>(key: string, initialValue: T): T {
+  const item = localStorage.getItem(key)
+  if (item === null) return initialValue
+
   try {
-    const item = localStorage.getItem(key)
-    if (item === null) return initialValue
-    return JSON.parse(item) as T
+    return JSON.parse(item)
   } catch {
-    // Обратная совместимость: raw-строки (до перехода на JSON)
-    const item = localStorage.getItem(key)
-    if (typeof initialValue === 'string' && item !== null) {
-      return item as unknown as T
-    }
     return initialValue
   }
 }
@@ -24,7 +20,6 @@ export function useLocalStorage<T>(
 
   useEffect(() => {
     if (prevKeyRef.current !== key) {
-      // Ключ изменился — читаем из нового ключа, не пишем
       prevKeyRef.current = key
       setValue(readValue(key, initialValue))
     } else {

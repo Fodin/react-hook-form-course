@@ -1,13 +1,14 @@
-import { CSSProperties } from 'react'
+import type { CSSProperties } from 'react'
+
+type StyleMap = Record<string, CSSProperties>
 
 /**
  * Светлая тема в стиле GitHub
  */
-export const githubLightStyle: { [key: string]: CSSProperties } = {
+export const githubLightStyle: StyleMap = {
   hljs: {
     display: 'block',
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    overflowX: 'auto' as any,
+    overflowX: 'auto',
     padding: '1rem',
     color: '#24292e',
     background: '#f6f8fa',
@@ -100,11 +101,10 @@ export const githubLightStyle: { [key: string]: CSSProperties } = {
 /**
  * Темная тема в стиле GitHub Dark
  */
-export const githubDarkStyle: { [key: string]: CSSProperties } = {
+export const githubDarkStyle: StyleMap = {
   hljs: {
     display: 'block',
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    overflowX: 'auto' as any,
+    overflowX: 'auto',
     padding: '1rem',
     color: '#e6edf3',
     background: '#161b22',

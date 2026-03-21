@@ -41,15 +41,10 @@ export function TaskDescription({ taskNumber, level }: TaskDescriptionProps) {
       )
     },
     li: ({ children, node, ...props }) => {
-      const hasCheckbox = node?.children?.some(
-        (child: unknown) =>
-          typeof child === 'object' &&
-          child !== null &&
-          'tagName' in child &&
-          (child as { tagName: string }).tagName === 'input' &&
-          'properties' in child &&
-          (child as { properties: { type?: string } }).properties?.type === 'checkbox'
-      )
+      const hasCheckbox = node?.children?.some(child => {
+        if (!child || child.type !== 'element') return false
+        return child.tagName === 'input' && child.properties?.type === 'checkbox'
+      })
       if (hasCheckbox) {
         return (
           <li {...props}>
