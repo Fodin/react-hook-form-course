@@ -22,6 +22,7 @@ export function useMarkdownLoader(path: string, options: UseMarkdownLoaderOption
     const loadMarkdown = async () => {
       try {
         setLoading(true)
+        setError(null)
 
         // Добавляем .en.md для английского языка
         const localizedPath = language === 'en' ? path.replace('.md', '.en.md') : path

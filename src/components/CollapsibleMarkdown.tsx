@@ -23,9 +23,9 @@ export function CollapsibleMarkdown({
   children,
 }: CollapsibleMarkdownProps) {
   const { isOpen, toggle } = useCollapsible({ initialState: initialOpen })
-  const { content, loading } = useMarkdownLoader(path)
+  const { content } = useMarkdownLoader(path)
 
-  if (!content || loading) {
+  if (!content) {
     return null
   }
 
