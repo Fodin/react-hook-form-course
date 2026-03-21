@@ -1,15 +1,7 @@
-import { createContext, useContext, useEffect, ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 
 import { useLocalStorage } from './useLocalStorage'
-
-type Theme = 'light' | 'dark'
-
-interface ThemeContextType {
-  theme: Theme
-  toggleTheme: () => void
-}
-
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
+import { ThemeContext, type Theme } from './useTheme'
 
 interface ThemeProviderProps {
   children: ReactNode
@@ -31,13 +23,4 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   }
 
   return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>
-}
-
-// eslint-disable-next-line react-refresh/only-export-components
-export function useTheme() {
-  const context = useContext(ThemeContext)
-  if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider')
-  }
-  return context
 }

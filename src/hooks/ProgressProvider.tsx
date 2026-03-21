@@ -1,25 +1,9 @@
-import { useCallback, useContext, createContext, type ReactNode } from 'react'
+import { useCallback, type ReactNode } from 'react'
 
 import { useLocalStorage } from './useLocalStorage'
+import { ProgressContext, type TaskProgress } from './useProgress'
 
 const PROGRESS_KEY = 'rhf-course-progress'
-
-export interface TaskProgress {
-  [levelId: string]: {
-    [taskId: string]: boolean
-  }
-}
-
-interface ProgressContextValue {
-  progress: TaskProgress
-  toggleTask: (levelId: string, taskId: string) => void
-  isTaskComplete: (levelId: string, taskId: string) => boolean
-  getLevelProgress: (levelId: string, totalTasks: number) => number
-  getTotalProgress: (levels: { id: string; tasks: number }[]) => number
-  resetProgress: () => void
-}
-
-const ProgressContext = createContext<ProgressContextValue | null>(null)
 
 export function ProgressProvider({ children }: { children: ReactNode }) {
   const [progress, setProgress] = useLocalStorage<TaskProgress>(PROGRESS_KEY, {})
@@ -83,13 +67,4 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       {children}
     </ProgressContext.Provider>
   )
-}
-
-// eslint-disable-next-line react-refresh/only-export-components
-export function useProgress() {
-  const context = useContext(ProgressContext)
-  if (!context) {
-    throw new Error('useProgress must be used within ProgressProvider')
-  }
-  return context
 }

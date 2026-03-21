@@ -1,15 +1,8 @@
-import { createContext, useContext, useEffect, ReactNode, useCallback } from 'react'
+import { useEffect, type ReactNode, useCallback } from 'react'
 
-import { translations, Language, TranslationKey } from '../translations'
+import { translations, type Language, type TranslationKey } from '../translations'
+import { LanguageContext } from './useLanguage'
 import { useLocalStorage } from './useLocalStorage'
-
-interface LanguageContextType {
-  language: Language
-  setLanguage: (lang: Language) => void
-  t: (key: TranslationKey) => string
-}
-
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
 
 interface LanguageProviderProps {
   children: ReactNode
@@ -34,13 +27,4 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
       {children}
     </LanguageContext.Provider>
   )
-}
-
-// eslint-disable-next-line react-refresh/only-export-components
-export function useLanguage() {
-  const context = useContext(LanguageContext)
-  if (context === undefined) {
-    throw new Error('useLanguage must be used within a LanguageProvider')
-  }
-  return context
 }
